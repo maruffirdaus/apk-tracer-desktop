@@ -1,0 +1,1912 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007fff6721d274, pid=13148, tid=13220
+#
+# JRE version: OpenJDK Runtime Environment (21.0.6) (build 21.0.6+-13391695-b895.109)
+# Java VM: OpenJDK 64-Bit Server VM (21.0.6+-13391695-b895.109, mixed mode, tiered, compressed oops, compressed class ptrs, g1 gc, windows-amd64)
+# Problematic frame:
+# C  [atio6axx.dll+0x23d274]
+#
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   https://youtrack.jetbrains.com/issues/JBR
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -Dskiko.renderApi=OPENGL -Dcompose.reload.launchMode=GradleBlocking -Dcompose.reload.pidFile=C:\Users\maruf\AndroidStudioProjects\APK Tracer\composeApp\build\run\jvmMain\jvmMain.pid -Dcompose.reload.devToolsHeadless=false -Dcompose.reload.devToolsTransparencyEnabled=true -Dcompose.reload.devToolsAnimationsEnabled=true -Dcompose.reload.logStdout=false -Dgradle.build.root=C:\Users\maruf\AndroidStudioProjects\APK Tracer -Dcompose.reload.buildSystem=Gradle -Dcompose.reload.logLevel=Info -Dgradle.build.project=:composeApp -Dgradle.build.task=hotReloadJvmMain -Dorg.gradle.java.home=C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr -Dcompose.reload.build.warmup=false -Dcompose.reload.devToolsEnabled=true -Dcompose.reload.devToolsDetached=false -Dcompose.reload.resourcesDirtyResolverEnabled=false -Dcompose.reload.build.continuous=true -Dcompose.reload.argfile=C:\Users\maruf\AndroidStudioProjects\APK Tracer\composeApp\build\run\jvmMain\jvmMain.argfile -Dcompose.reload.mainClass=app.apktracer.MainKt org.jetbrains.compose.devtools.Main
+
+Host: AMD Ryzen 5 7540U w/ Radeon(TM) 740M Graphics  , 12 cores, 15G,  Windows 11 , 64 bit Build 26100 (10.0.26100.5074)
+Time: Sat Sep 20 01:23:10 2025 SE Asia Standard Time elapsed time: 208.893125 seconds (0d 0h 3m 28s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000015f08bb2cb0):  JavaThread "AWT-EventQueue-0"        [_thread_in_native, id=13220, stack(0x000000376a700000,0x000000376a800000) (1024K)]
+
+Stack: [0x000000376a700000,0x000000376a800000],  sp=0x000000376a7fe250,  free space=1016k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [atio6axx.dll+0x23d274]
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  org.jetbrains.skiko.redrawer.WindowsOpenGLRedrawerKt.deleteContext(J)V+0
+j  org.jetbrains.skiko.redrawer.WindowsOpenGLRedrawerKt.access$deleteContext(J)V+1
+j  org.jetbrains.skiko.redrawer.WindowsOpenGLRedrawer.dispose()V+47
+j  org.jetbrains.skiko.SkiaLayer.dispose()V+46
+j  org.jetbrains.skiko.SkiaLayer.removeNotify()V+75
+j  java.awt.Container.remove(I)V+55 java.desktop@21.0.6
+j  javax.swing.JLayeredPane.remove(I)V+8 java.desktop@21.0.6
+j  java.awt.Container.remove(Ljava/awt/Component;)V+32 java.desktop@21.0.6
+j  androidx.compose.ui.scene.ComposeSceneMediator.dispose()V+60
+j  androidx.compose.ui.scene.ComposeContainer.dispose()V+42
+j  androidx.compose.ui.awt.ComposeWindowPanel.dispose()V+16
+j  androidx.compose.ui.awt.ComposeDialog.dispose()V+4
+j  androidx.compose.ui.awt.SwingDialog_desktopKt.SwingDialog$lambda$32$lambda$31(Landroidx/compose/ui/awt/SwingDialog_desktopKt$SwingDialog$listeners$1$1;Landroidx/compose/ui/awt/ComposeDialog;)Lkotlin/Unit;+23
+j  androidx.compose.ui.awt.SwingDialog_desktopKt$$Lambda+0x00000008002229c8.invoke(Ljava/lang/Object;)Ljava/lang/Object;+8
+j  androidx.compose.ui.awt.SwingDialog_desktopKt.SwingDialog$lambda$10$lambda$9(Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/awt/ComposeDialog;)Lkotlin/Unit;+9
+j  androidx.compose.ui.awt.SwingDialog_desktopKt$$Lambda+0x0000000800228448.invoke(Ljava/lang/Object;)Ljava/lang/Object;+8
+j  androidx.compose.ui.awt.AwtWindow_desktopKt$AwtWindow$lambda$5$lambda$4$$inlined$onDispose$1.dispose()V+13
+j  androidx.compose.runtime.DisposableEffectImpl.onForgotten()V+8
+J 6412 c2 androidx.compose.runtime.internal.RememberEventDispatcher.dispatchRememberObservers()V (364 bytes) @ 0x0000015f74b7b830 [0x0000015f74b7b5c0+0x0000000000000270]
+j  androidx.compose.runtime.CompositionImpl.applyChangesInLocked(Landroidx/compose/runtime/changelist/ChangeList;)V+290
+J 4958 c1 androidx.compose.runtime.CompositionImpl.applyChanges()V (217 bytes) @ 0x0000015f6d60a27c [0x0000015f6d60a1a0+0x00000000000000dc]
+j  androidx.compose.runtime.Recomposer$runRecomposeAndApplyChanges$2.invokeSuspend$lambda$22(Landroidx/compose/runtime/Recomposer;Landroidx/collection/MutableScatterSet;Landroidx/collection/MutableScatterSet;Ljava/util/List;Ljava/util/List;Landroidx/collection/MutableScatterSet;Ljava/util/List;Landroidx/collection/MutableScatterSet;Ljava/util/Set;J)Lkotlin/Unit;+1117
+J 6391 c2 androidx.compose.runtime.Recomposer$runRecomposeAndApplyChanges$2$$Lambda+0x0000000800215890.invoke(Ljava/lang/Object;)Ljava/lang/Object; (47 bytes) @ 0x0000015f74b62ee0 [0x0000015f74b62e20+0x00000000000000c0]
+j  androidx.compose.ui.window.YieldFrameClock.withFrameNanos(Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;+140
+j  androidx.compose.ui.window.YieldFrameClock$withFrameNanos$1.invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;+25
+J 4375 c2 kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(Ljava/lang/Object;)V (124 bytes) @ 0x0000015f748a1c54 [0x0000015f748a1bc0+0x0000000000000094]
+J 6117 c2 kotlinx.coroutines.DispatchedTask.run()V (387 bytes) @ 0x0000015f74a1a50c [0x0000015f74a1a120+0x00000000000003ec]
+J 4976 c2 java.awt.EventQueue.dispatchEvent(Ljava/awt/AWTEvent;)V java.desktop@21.0.6 (80 bytes) @ 0x0000015f748fc164 [0x0000015f748fbba0+0x00000000000005c4]
+J 5000 c2 java.awt.EventDispatchThread.pumpOneEventForFilters(I)V java.desktop@21.0.6 (106 bytes) @ 0x0000015f7490a9d4 [0x0000015f7490a3a0+0x0000000000000634]
+J 6488% c2 java.awt.EventDispatchThread.pumpEventsForFilter(ILjava/awt/Conditional;Ljava/awt/EventFilter;)V java.desktop@21.0.6 (47 bytes) @ 0x0000015f749412dc [0x0000015f74941240+0x000000000000009c]
+j  java.awt.EventDispatchThread.pumpEventsForHierarchy(ILjava/awt/Conditional;Ljava/awt/Component;)V+11 java.desktop@21.0.6
+j  java.awt.EventDispatchThread.pumpEvents(ILjava/awt/Conditional;)V+4 java.desktop@21.0.6
+j  java.awt.EventDispatchThread.pumpEvents(Ljava/awt/Conditional;)V+3 java.desktop@21.0.6
+j  java.awt.EventDispatchThread.run()V+18 java.desktop@21.0.6
+v  ~StubRoutines::call_stub 0x0000015f741710e7
+
+siginfo: EXCEPTION_ACCESS_VIOLATION (0xc0000005), writing address 0x0000000000004008
+
+
+Registers:
+RAX=0x0000000000004000, RBX=0x0000000000004000, RCX=0x0000015f17b6f430, RDX=0x0000000000004000
+RSP=0x000000376a7fe250, RBP=0x000000376a7fe460, RSI=0x0000015f17b6f308, RDI=0x0000015f17b6f430
+R8 =0x000000006a7fe488, R9 =0x0000015f18dc4080, R10=0x000000000000015b, R11=0x000000376a7fe3a8
+R12=0x0000000000000000, R13=0x000000000b2ac5c0, R14=0x0000015f17b6f430, R15=0x0000000008bb2cb0
+RIP=0x00007fff6721d274, EFLAGS=0x0000000000010246
+
+XMM[0]=0x0000000000000000 0x0000000000000000
+XMM[1]=0x0000000000000000 0x0000000000000000
+XMM[2]=0x2525252525252525 0x2525252525252525
+XMM[3]=0x0000000000000000 0x3ff0000000000000
+XMM[4]=0x0000000000000000 0x0000000000000000
+XMM[5]=0x7265776172646552 0x4c476e65704f7377
+XMM[6]=0x0000000000000000 0x000000000014c618
+XMM[7]=0x0000000000000000 0x00000000e161b243
+XMM[8]=0x0000000000000000 0x0000000041400000
+XMM[9]=0x0000000000000000 0x0000000041400000
+XMM[10]=0x0000000000000000 0x00000000f563d036
+XMM[11]=0x0000000000000000 0x2af2aa27b3f58b92
+XMM[12]=0x0000000000000000 0x000000008902e16b
+XMM[13]=0x0000000000000000 0x000000003c661b14
+XMM[14]=0x0000000000000000 0x0000000000000000
+XMM[15]=0x0000000000000000 0x0000000000000000
+  MXCSR=0x00001fa5
+
+
+Register to memory mapping:
+
+RAX=16384 is a compressed pointer to class: 0x0000000800004000
+java.lang.invoke.InvokerBytecodeGenerator$1 {0x0000000800004008}
+ - instance size:     2
+ - klass size:        67
+ - access:            synchronized synthetic 
+ - flags:             rewritten 
+ - state:             fully_initialized
+ - name:              'java/lang/invoke/InvokerBytecodeGenerator$1'
+ - super:             'java/lang/Object'
+ - sub:               
+ - arrays:            null
+ - methods:           Array<T>(0x0000015f0458f718)
+ - method ordering:   Array<T>(0x0000015f04000018)
+ - local interfaces:  Array<T>(0x0000015f04000058)
+ - trans. interfaces: Array<T>(0x0000015f04000058)
+ - constants:         constant pool [253] {0x0000015f0458ee98} for 'java/lang/invoke/InvokerBytecodeGenerator$1' cache=0x0000015f0458ff48
+ - class loader data:  loader data: 0x0000015f7fc112f0 of 'bootstrap'
+ - inner classes:     Array<T>(0x0000015f0458fee0)
+ - nest members:     Array<T>(0x0000015f04000028)
+ - permitted subclasses:     Array<T>(0x0000015f04000028)
+ - java mirror:       a 'java/lang/Class'{0x000000070b5f7018} = 'java/lang/invoke/InvokerBytecodeGenerator$1'
+ - vtable length      5  (start addr: 0x00000008000041e0)
+ - itable length      2 (start addr: 0x0000000800004208)
+ - ---- static fields (2 words):
+ - static final synthetic '$SwitchMap$java$lang$invoke$LambdaForm$BasicType' '[I' @112 
+ - static final synthetic '$SwitchMap$sun$invoke$util$Wrapper' '[I' @116 
+ - static final synthetic '$SwitchMap$java$lang$invoke$LambdaForm$Kind' '[I' @120 
+ - static final synthetic '$SwitchMap$java$lang$invoke$MethodHandleImpl$Intrinsic' '[I' @124 
+ - ---- non-static fields (0 words):
+ - non-static oop maps: 
+RBX=16384 is a compressed pointer to class: 0x0000000800004000
+java.lang.invoke.InvokerBytecodeGenerator$1 {0x0000000800004008}
+ - instance size:     2
+ - klass size:        67
+ - access:            synchronized synthetic 
+ - flags:             rewritten 
+ - state:             fully_initialized
+ - name:              'java/lang/invoke/InvokerBytecodeGenerator$1'
+ - super:             'java/lang/Object'
+ - sub:               
+ - arrays:            null
+ - methods:           Array<T>(0x0000015f0458f718)
+ - method ordering:   Array<T>(0x0000015f04000018)
+ - local interfaces:  Array<T>(0x0000015f04000058)
+ - trans. interfaces: Array<T>(0x0000015f04000058)
+ - constants:         constant pool [253] {0x0000015f0458ee98} for 'java/lang/invoke/InvokerBytecodeGenerator$1' cache=0x0000015f0458ff48
+ - class loader data:  loader data: 0x0000015f7fc112f0 of 'bootstrap'
+ - inner classes:     Array<T>(0x0000015f0458fee0)
+ - nest members:     Array<T>(0x0000015f04000028)
+ - permitted subclasses:     Array<T>(0x0000015f04000028)
+ - java mirror:       a 'java/lang/Class'{0x000000070b5f7018} = 'java/lang/invoke/InvokerBytecodeGenerator$1'
+ - vtable length      5  (start addr: 0x00000008000041e0)
+ - itable length      2 (start addr: 0x0000000800004208)
+ - ---- static fields (2 words):
+ - static final synthetic '$SwitchMap$java$lang$invoke$LambdaForm$BasicType' '[I' @112 
+ - static final synthetic '$SwitchMap$sun$invoke$util$Wrapper' '[I' @116 
+ - static final synthetic '$SwitchMap$java$lang$invoke$LambdaForm$Kind' '[I' @120 
+ - static final synthetic '$SwitchMap$java$lang$invoke$MethodHandleImpl$Intrinsic' '[I' @124 
+ - ---- non-static fields (0 words):
+ - non-static oop maps: 
+RCX=0x0000015f17b6f430 points into unknown readable memory: 0x0000000000000000 | 00 00 00 00 00 00 00 00
+RDX=16384 is a compressed pointer to class: 0x0000000800004000
+java.lang.invoke.InvokerBytecodeGenerator$1 {0x0000000800004008}
+ - instance size:     2
+ - klass size:        67
+ - access:            synchronized synthetic 
+ - flags:             rewritten 
+ - state:             fully_initialized
+ - name:              'java/lang/invoke/InvokerBytecodeGenerator$1'
+ - super:             'java/lang/Object'
+ - sub:               
+ - arrays:            null
+ - methods:           Array<T>(0x0000015f0458f718)
+ - method ordering:   Array<T>(0x0000015f04000018)
+ - local interfaces:  Array<T>(0x0000015f04000058)
+ - trans. interfaces: Array<T>(0x0000015f04000058)
+ - constants:         constant pool [253] {0x0000015f0458ee98} for 'java/lang/invoke/InvokerBytecodeGenerator$1' cache=0x0000015f0458ff48
+ - class loader data:  loader data: 0x0000015f7fc112f0 of 'bootstrap'
+ - inner classes:     Array<T>(0x0000015f0458fee0)
+ - nest members:     Array<T>(0x0000015f04000028)
+ - permitted subclasses:     Array<T>(0x0000015f04000028)
+ - java mirror:       a 'java/lang/Class'{0x000000070b5f7018} = 'java/lang/invoke/InvokerBytecodeGenerator$1'
+ - vtable length      5  (start addr: 0x00000008000041e0)
+ - itable length      2 (start addr: 0x0000000800004208)
+ - ---- static fields (2 words):
+ - static final synthetic '$SwitchMap$java$lang$invoke$LambdaForm$BasicType' '[I' @112 
+ - static final synthetic '$SwitchMap$sun$invoke$util$Wrapper' '[I' @116 
+ - static final synthetic '$SwitchMap$java$lang$invoke$LambdaForm$Kind' '[I' @120 
+ - static final synthetic '$SwitchMap$java$lang$invoke$MethodHandleImpl$Intrinsic' '[I' @124 
+ - ---- non-static fields (0 words):
+ - non-static oop maps: 
+RSP=0x000000376a7fe250 is pointing into the stack for thread: 0x0000015f08bb2cb0
+RBP=0x000000376a7fe460 is pointing into the stack for thread: 0x0000015f08bb2cb0
+RSI=0x0000015f17b6f308 points into unknown readable memory: 0x00007fff6a8f1ba8 | a8 1b 8f 6a ff 7f 00 00
+RDI=0x0000015f17b6f430 points into unknown readable memory: 0x0000000000000000 | 00 00 00 00 00 00 00 00
+R8 =0x000000006a7fe488 is an unknown value
+R9 =0x0000015f18dc4080 points into unknown readable memory: 0x00007fff6a8faa68 | 68 aa 8f 6a ff 7f 00 00
+R10=0x000000000000015b is an unknown value
+R11=0x000000376a7fe3a8 is pointing into the stack for thread: 0x0000015f08bb2cb0
+R12=0x0 is null
+R13=0x000000000b2ac5c0 is an unknown value
+R14=0x0000015f17b6f430 points into unknown readable memory: 0x0000000000000000 | 00 00 00 00 00 00 00 00
+R15=0x0000000008bb2cb0 is an unknown value
+
+Top of Stack: (sp=0x000000376a7fe250)
+0x000000376a7fe250:   0000000000000000 00007fff7d7810a9
+0x000000376a7fe260:   000000376a7fe3b8 00007fff81b93320
+0x000000376a7fe270:   0000015f17b6f308 00007fff673e24cf
+0x000000376a7fe280:   0000015f18c96c50 0000015f0811e7b0
+0x000000376a7fe290:   0000000000000006 0000015f063bfb58
+0x000000376a7fe2a0:   0000015f081ea3a0 00007fff81b667fc
+0x000000376a7fe2b0:   0000015f081ed4b0 0000015f081ed4b0
+0x000000376a7fe2c0:   0000015f0822f1b0 0000015f081ed4b0
+0x000000376a7fe2d0:   000000376a7fe3e0 00007fff818c842d
+0x000000376a7fe2e0:   000000376a7fe3a0 00007fff81b64a6c
+0x000000376a7fe2f0:   0000015f08bb2cb0 0000000000000000
+0x000000376a7fe300:   0000015f05ada698 0000000000000000
+0x000000376a7fe310:   0000015f17b6f308 00000000e16f5e72
+0x000000376a7fe320:   000000376a7fe460 00007fff6770fb86
+0x000000376a7fe330:   0000015f18dc4080 0000000000000000
+0x000000376a7fe340:   0000000000000000 0000000718dc4080
+0x000000376a7fe350:   0000015f08bb2cb0 000000376a7fe488
+0x000000376a7fe360:   000000070b2ac5c0 0000000000010001
+0x000000376a7fe370:   000000376a7fe400 0000015f1643f058
+0x000000376a7fe380:   00007fff7d943300 000000070b2ac5c0
+0x000000376a7fe390:   0000015f08bb2cb0 000000376a7fe488
+0x000000376a7fe3a0:   000000070b2ac5c0 00007fffbd574cba
+0x000000376a7fe3b0:   0000015f18dc4080 0000000000010001
+0x000000376a7fe3c0:   000000376a7fe460 00000000e16f5e72
+0x000000376a7fe3d0:   000000376a7fe488 0000015f7417cf4b
+0x000000376a7fe3e0:   0000015f05ada698 00000000e16f5e72
+0x000000376a7fe3f0:   000000070b2ac5c0 00000000e16f5e72
+0x000000376a7fe400:   00000000e16f5e72 0000015fe163f5ee
+0x000000376a7fe410:   0000015f7417cbdf 000000376a7fe418
+0x000000376a7fe420:   0000015f05ada698 0000000000000005
+0x000000376a7fe430:   0000015f05adaf40 0000000000000000
+0x000000376a7fe440:   000000070b243820 0000015f05ada698 
+
+Instructions: (pc=0x00007fff6721d274)
+0x00007fff6721d174:   20 5f c3 41 83 00 ff 75 16 48 8b 02 48 8b ca ff
+0x00007fff6721d184:   10 48 89 1f 48 8b 5c 24 30 48 83 c4 20 5f c3 48
+0x00007fff6721d194:   89 19 48 8b 5c 24 30 48 83 c4 20 5f c3 cc cc cc
+0x00007fff6721d1a4:   cc cc cc cc cc cc cc cc cc cc cc cc 48 83 ec 28
+0x00007fff6721d1b4:   4c 8b 01 4d 85 c0 74 3d 49 8d 50 08 f6 05 19 15
+0x00007fff6721d1c4:   ba 03 20 74 22 b8 ff ff ff ff f0 0f c1 02 83 f8
+0x00007fff6721d1d4:   01 75 22 33 c9 48 85 d2 49 0f 45 c8 48 8b 01 ff
+0x00007fff6721d1e4:   10 90 48 83 c4 28 c3 83 02 ff 75 09 49 8b 00 49
+0x00007fff6721d1f4:   8b c8 ff 10 90 48 83 c4 28 c3 cc cc 4c 8b 01 48
+0x00007fff6721d204:   89 11 4d 85 c0 74 32 f6 05 ce 14 ba 03 02 49 8d
+0x00007fff6721d214:   50 08 74 0e b8 ff ff ff ff f0 0f c1 02 83 f8 01
+0x00007fff6721d224:   eb 03 83 02 ff 75 12 33 c0 48 85 d2 4c 0f 44 c0
+0x00007fff6721d234:   49 8b c8 49 8b 00 48 ff 20 c3 cc cc 48 8b 12 e9
+0x00007fff6721d244:   08 00 00 00 cc cc cc cc cc cc cc cc 48 89 5c 24
+0x00007fff6721d254:   08 57 48 83 ec 20 48 8b da 48 8b f9 48 85 d2 74
+0x00007fff6721d264:   12 f6 05 74 14 ba 03 02 74 06 f0 ff 42 08 eb 03
+0x00007fff6721d274:   ff 42 08 48 8b 11 48 85 d2 74 54 f6 05 5a 14 ba
+0x00007fff6721d284:   03 02 4c 8d 42 08 74 2b b8 ff ff ff ff f0 41 0f
+0x00007fff6721d294:   c1 00 83 f8 01 75 38 33 c9 4d 85 c0 48 0f 45 ca
+0x00007fff6721d2a4:   48 8b 01 ff 10 48 89 1f 48 8b 5c 24 30 48 83 c4
+0x00007fff6721d2b4:   20 5f c3 41 83 00 ff 75 16 48 8b 02 48 8b ca ff
+0x00007fff6721d2c4:   10 48 89 1f 48 8b 5c 24 30 48 83 c4 20 5f c3 48
+0x00007fff6721d2d4:   89 19 48 8b 5c 24 30 48 83 c4 20 5f c3 cc cc cc
+0x00007fff6721d2e4:   cc cc cc cc cc cc cc cc cc cc cc cc 48 39 11 0f
+0x00007fff6721d2f4:   94 c0 c3 cc cc cc cc cc cc cc cc cc 48 83 ec 28
+0x00007fff6721d304:   4c 8b 01 4d 85 c0 74 3d 49 8d 50 08 f6 05 c9 13
+0x00007fff6721d314:   ba 03 02 74 22 b8 ff ff ff ff f0 0f c1 02 83 f8
+0x00007fff6721d324:   01 75 22 33 c9 48 85 d2 49 0f 45 c8 48 8b 01 ff
+0x00007fff6721d334:   10 90 48 83 c4 28 c3 83 02 ff 75 09 49 8b 00 49
+0x00007fff6721d344:   8b c8 ff 10 90 48 83 c4 28 c3 cc cc 48 39 11 0f
+0x00007fff6721d354:   94 c0 c3 cc cc cc cc cc cc cc cc cc 48 83 ec 28
+0x00007fff6721d364:   4c 8b 01 4d 85 c0 74 3d 49 8d 50 08 f6 05 69 13 
+
+
+Stack slot to memory mapping:
+
+stack at sp + 0 slots: 0x0 is null
+stack at sp + 1 slots: 0x00007fff7d7810a9 skiko-windows-x64.dll
+stack at sp + 2 slots: 0x000000376a7fe3b8 is pointing into the stack for thread: 0x0000015f08bb2cb0
+stack at sp + 3 slots: 0x00007fff81b93320 jvm.dll
+stack at sp + 4 slots: 0x0000015f17b6f308 points into unknown readable memory: 0x00007fff6a8f1ba8 | a8 1b 8f 6a ff 7f 00 00
+stack at sp + 5 slots: 0x00007fff673e24cf atio6axx.dll
+stack at sp + 6 slots: 0x0000015f18c96c50 points into unknown readable memory: 0x0000000000000000 | 00 00 00 00 00 00 00 00
+stack at sp + 7 slots: 0x0000015f0811e7b0 points into unknown readable memory: 0x6e616c2e6176616a | 6a 61 76 61 2e 6c 61 6e
+
+
+Compiled method (c2) 209036 6412   !   4       androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers (364 bytes)
+ total in heap  [0x0000015f74b7b390,0x0000015f74b7c1f0] = 3680
+ relocation     [0x0000015f74b7b4f0,0x0000015f74b7b5a8] = 184
+ main code      [0x0000015f74b7b5c0,0x0000015f74b7bb18] = 1368
+ stub code      [0x0000015f74b7bb18,0x0000015f74b7bb88] = 112
+ oops           [0x0000015f74b7bb88,0x0000015f74b7bb90] = 8
+ metadata       [0x0000015f74b7bb90,0x0000015f74b7bc18] = 136
+ scopes data    [0x0000015f74b7bc18,0x0000015f74b7bfb0] = 920
+ scopes pcs     [0x0000015f74b7bfb0,0x0000015f74b7c0f0] = 320
+ dependencies   [0x0000015f74b7c0f0,0x0000015f74b7c110] = 32
+ handler table  [0x0000015f74b7c110,0x0000015f74b7c1b8] = 168
+ nul chk table  [0x0000015f74b7c1b8,0x0000015f74b7c1f0] = 56
+
+[Constant Pool (empty)]
+
+[MachCode]
+[Entry Point]
+  # {method} {0x0000015f05045a10} 'dispatchRememberObservers' '()V' in 'androidx/compose/runtime/internal/RememberEventDispatcher'
+  #           [sp+0x80]  (sp of caller)
+  0x0000015f74b7b5c0: 448b 5208 | 49bb 0000 | 0000 0800 | 0000 4d03 | d349 3bc2 
+
+  0x0000015f74b7b5d4: ;   {runtime_call ic_miss_stub}
+  0x0000015f74b7b5d4: 0f85 a633 | 64ff 6690 | 0f1f 4000 
+[Verified Entry Point]
+  0x0000015f74b7b5e0: 8984 2400 | 80ff ff55 | 4883 ec70 | 4181 7f20 | 0d00 0000 | 0f85 1405 | 0000 488b | da8b 6a0c 
+  0x0000015f74b7b600: ; implicit exception: dispatches to 0x0000015f74b7b9ec
+  0x0000015f74b7b600: 418b 74ec | 0841 807f | 4000 7533 | 4489 6334 | 448b 5b20 
+
+  0x0000015f74b7b614: ; implicit exception: dispatches to 0x0000015f74b7b9bc
+  0x0000015f74b7b614: 478b 54dc | 0c45 85d2 | 7551 448b | 5b14 478b | 54dc 0c45 | 85d2 756c | 4883 c470 
+
+  0x0000015f74b7b630: ;   {poll_return}
+  0x0000015f74b7b630: 5d49 3ba7 | 4804 0000 | 0f87 ba04 | 0000 c344 | 8b52 3445 | 85d2 74c4 | 4d8b 5f28 | 498b ca48 
+  0x0000015f74b7b650: c1e1 034d | 85db 0f84 | cb02 0000 | 4d8b 5738 | 4b89 4c1a | f849 83c3 | f84d 895f | 28eb 9d41 
+  0x0000015f74b7b670: ffca 4183 | faff 7ea6 | 448b 5b28 
+
+  0x0000015f74b7b67c: ;   {metadata('androidx/collection/MutableSetWrapper')}
+  0x0000015f74b7b67c: 81fe c863 | 1b00 0f85 | 1003 0000 | 4d8d 04ec | 498b d04f | 8d2c dce9 | fc00 0000 | 4d8b c349 
+  0x0000015f74b7b69c: c1e0 0348 
+
+  0x0000015f74b7b6a0: ;   {optimized virtual_call}
+  0x0000015f74b7b6a0: 8bd3 90e8 
+
+  0x0000015f74b7b6a4: ; ImmutableOopMap {}
+                      ;*invokespecial dispatchRememberList {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@331 (line 225)
+  0x0000015f74b7b6a4: d837 64ff 
+
+  0x0000015f74b7b6a8: ;   {other}
+  0x0000015f74b7b6a8: 0f1f 8400 | 1803 0000 | e977 ffff | ff33 c9eb | 2b4c 8b44 | 2440 488b | dd8b 6c24 | 2044 8b54 
+  0x0000015f74b7b6c8: 2424 448b | 5c24 3048 | 8b54 2438 | 4d8b e844 | 8b4c 2434 | 488b 7424 | 4849 8bcd | 4c8b c641 
+  0x0000015f74b7b6e8: ;   {metadata('androidx/compose/ui/node/LayoutNode')}
+  0x0000015f74b7b6e8: 8b78 0881 | ffa8 4d2b | 000f 8575 | 0200 0044 | 894c 2434 | 4c89 6c24 | 4048 8954 | 2438 4489 
+  0x0000015f74b7b708: 5c24 2444 | 8954 2420 | 4889 5c24 | 2849 8bd0 | 4889 7424 | 5048 894c 
+
+  0x0000015f74b7b720: ;   {optimized virtual_call}
+  0x0000015f74b7b720: 2458 90e8 
+
+  0x0000015f74b7b724: ; ImmutableOopMap {rbp=NarrowOop [36]=NarrowOop [40]=Oop [52]=NarrowOop [56]=Oop [64]=Oop [80]=Oop [88]=Oop }
+                      ;*invokeinterface onDeactivate {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@183 (line 215)
+  0x0000015f74b7b724: 5837 64ff 
+
+  0x0000015f74b7b728: ;   {other}
+  0x0000015f74b7b728: 0f1f 8400 | 9803 0001 | 488b 5c24 | 2844 8b54 | 2420 448b | 5c24 2448 | 8b54 2438 | 4c8b 6c24 
+  0x0000015f74b7b748: 40eb 3c0f | 1f44 0000 | 4c8b 5424 | 4849 8bd2 | 4c89 5424 
+
+  0x0000015f74b7b75c: ;   {optimized virtual_call}
+  0x0000015f74b7b75c: 4866 90e8 
+
+  0x0000015f74b7b760: ; ImmutableOopMap {rbp=Oop [32]=NarrowOop [40]=Oop [48]=NarrowOop [52]=NarrowOop [56]=Oop [64]=Oop [72]=Oop }
+                      ;*invokeinterface onRelease {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@170 (line 213)
+  0x0000015f74b7b760: 1c37 64ff 
+
+  0x0000015f74b7b764: ;   {other}
+  0x0000015f74b7b764: 0f1f 8400 | d403 0002 | 488b dd8b | 6c24 2044 | 8b54 2424 | 448b 5c24 | 3048 8b54 | 2438 4c8b 
+  0x0000015f74b7b784: 6c24 4041 | ffca 4183 | faff 0f8e | 8afe ffff | 448b 4320 
+
+  0x0000015f74b7b798: ; implicit exception: dispatches to 0x0000015f74b7ba00
+  0x0000015f74b7b798: 478b 4cc4 | 1043 8b4c | cc0c 443b | d10f 8399 | 0100 004f | 8d04 cc47 | 8b4c 9010 
+
+  0x0000015f74b7b7b4: ; implicit exception: dispatches to 0x0000015f74b7ba48
+  0x0000015f74b7b7b4: 478b 44cc 
+
+  0x0000015f74b7b7b8: ;   {metadata('androidx/compose/runtime/RememberObserverHolder')}
+  0x0000015f74b7b7b8: 0841 81f8 | 7082 1b00 | 0f85 9200 | 0000 4c89 | 6c24 4048 | 8954 2438 | 4489 5c24 | 3044 8954 
+  0x0000015f74b7b7d8: 2424 896c | 2420 4889 | 5c24 284f | 8d14 cc44 | 894c 2434 | 418b 6a0c | 4c89 5424 | 484c 8bd5 
+  0x0000015f74b7b7f8: 49c1 e203 | 4c89 5424 | 504d 8bc2 
+
+  0x0000015f74b7b804: ;   {optimized virtual_call}
+  0x0000015f74b7b804: 6666 90e8 
+
+  0x0000015f74b7b808: ; ImmutableOopMap {rbp=NarrowOop [32]=NarrowOop [40]=Oop [48]=NarrowOop [52]=NarrowOop [56]=Oop [64]=Oop [72]=Oop [80]=Oop }
+                      ;*invokeinterface remove {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@129 (line 207)
+  0x0000015f74b7b808: 1b03 0000 
+
+  0x0000015f74b7b80c: ;   {other}
+  0x0000015f74b7b80c: 0f1f 8400 | 7c04 0003 | 488b 5424 | 5048 8b6c | 2428 6666 | 9048 b8ff | ffff ffff 
+
+  0x0000015f74b7b828: ;   {virtual_call}
+  0x0000015f74b7b828: ffff ffe8 
+
+  0x0000015f74b7b82c: ; ImmutableOopMap {rbp=Oop [32]=NarrowOop [40]=Oop [48]=NarrowOop [52]=NarrowOop [56]=Oop [64]=Oop [72]=Oop }
+                      ;*invokeinterface onForgotten {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@137 (line 208)
+  0x0000015f74b7b82c: b002 64ff 
+
+  0x0000015f74b7b830: ;   {other}
+  0x0000015f74b7b830: 0f1f 8400 | a004 0004 | 488b dd8b | 6c24 2044 | 8b54 2424 | 448b 5c24 | 3048 8b54 | 2438 4c8b 
+  0x0000015f74b7b850: 6c24 4044 | 8b4c 2434 | 478b 44cc | 0844 8944 | 2450 48be | 0000 0000 | 0800 0000 | 4903 f04c 
+  0x0000015f74b7b870: ;   {metadata('androidx/compose/runtime/ComposeNodeLifecycleCallback')}
+  0x0000015f74b7b870: 8b46 2048 | b928 3d2b | 0008 0000 | 004c 3bc1 | 7576 4b8d | 34cc 4585 | db0f 8426 | feff ff48 
+  0x0000015f74b7b890: 8974 2448 | 4489 4c24 | 344c 896c | 2440 4889 | 5424 3844 | 895c 2430 | 4489 5424 | 2489 6c24 
+  0x0000015f74b7b8b0: 2048 895c | 2428 498b | d54c 8bc6 
+
+  0x0000015f74b7b8bc: ;   {optimized virtual_call}
+  0x0000015f74b7b8bc: 488b ebe8 
+
+  0x0000015f74b7b8c0: ; ImmutableOopMap {rbp=Oop [32]=NarrowOop [40]=Oop [48]=NarrowOop [52]=NarrowOop [56]=Oop [64]=Oop [72]=Oop }
+                      ;*invokevirtual contains {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@159 (line 212)
+  0x0000015f74b7b8c0: bc35 64ff 
+
+  0x0000015f74b7b8c4: ;   {other}
+  0x0000015f74b7b8c4: 0f1f 8400 | 3405 0005 | 85c0 0f84 | e5fd ffff | 448b 5c24 
+
+  0x0000015f74b7b8d8: ;   {metadata('androidx/compose/ui/node/LayoutNode')}
+  0x0000015f74b7b8d8: 5041 81fb | a84d 2b00 | 0f84 6afe | ffff bade 
+
+  0x0000015f74b7b8e8: ;   {runtime_call UncommonTrapBlob}
+  0x0000015f74b7b8e8: ffff ffe8 
+
+  0x0000015f74b7b8ec: ; ImmutableOopMap {rbp=Oop [32]=NarrowOop [48]=NarrowOop [52]=NarrowOop }
+                      ;*checkcast {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@167 (line 213)
+  0x0000015f74b7b8ec: 10c4 64ff 
+
+  0x0000015f74b7b8f0: ;   {other}
+  0x0000015f74b7b8f0: 0f1f 8400 | 6005 0006 
+
+  0x0000015f74b7b8f8: ;   {metadata('androidx/compose/runtime/ComposeNodeLifecycleCallback')}
+  0x0000015f74b7b8f8: 48b8 283d | 2b00 0800 | 0000 488b | 7e28 8b0f | 4883 c708 | 4885 c0f2 | 48af 0f85 | 0400 0000 
+  0x0000015f74b7b918: 4889 4620 | 0f85 65fe | ffff e95b | ffff ff49 | 8bd7 49ba | 70ee 8081 | ff7f 0000 
+
+  0x0000015f74b7b934: ;   {other}
+  0x0000015f74b7b934: 41ff d20f | 1f84 0000 | 0000 00e9 | c8fc ffff | bae4 ffff | ff48 895c | 2420 4489 | 4c24 2c44 
+  0x0000015f74b7b954: 8954 2430 | 4489 5c24 
+
+  0x0000015f74b7b95c: ;   {runtime_call UncommonTrapBlob}
+  0x0000015f74b7b95c: 3466 90e8 
+
+  0x0000015f74b7b960: ; ImmutableOopMap {rbp=NarrowOop [32]=Oop [44]=NarrowOop [52]=NarrowOop }
+                      ;*aaload {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@95 (line 314)
+  0x0000015f74b7b960: 9cc3 64ff 
+
+  0x0000015f74b7b964: ;   {other}
+  0x0000015f74b7b964: 0f1f 8400 | d405 0007 | badf ffff | ff44 8954 | 2428 4889 | 5c24 3044 | 894c 242c | 4c89 4424 
+  0x0000015f74b7b984: 3848 894c 
+
+  0x0000015f74b7b988: ;   {runtime_call UncommonTrapBlob}
+  0x0000015f74b7b988: 2440 90e8 
+
+  0x0000015f74b7b98c: ; ImmutableOopMap {rbp=NarrowOop [44]=NarrowOop [48]=Oop [56]=Oop [64]=Oop }
+                      ;*invokeinterface onDeactivate {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@183 (line 215)
+  0x0000015f74b7b98c: 70c3 64ff 
+
+  0x0000015f74b7b990: ;   {other}
+  0x0000015f74b7b990: 0f1f 8400 | 0006 0008 | babe ffff | ff48 895c | 2420 4489 | 5424 2c44 | 895c 2430 
+
+  0x0000015f74b7b9ac: ;   {runtime_call UncommonTrapBlob}
+  0x0000015f74b7b9ac: 6666 90e8 
+
+  0x0000015f74b7b9b0: ; ImmutableOopMap {rbp=NarrowOop [32]=Oop [48]=NarrowOop }
+                      ;*if_icmpge {reexecute=1 rethrow=0 return_oop=0}
+                      ; - (reexecute) androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@76 (line 202)
+  0x0000015f74b7b9b0: 4cc3 64ff 
+
+  0x0000015f74b7b9b4: ;   {other}
+  0x0000015f74b7b9b4: 0f1f 8400 | 2406 0009 | baf6 ffff | ff48 895c 
+
+  0x0000015f74b7b9c4: ;   {runtime_call UncommonTrapBlob}
+  0x0000015f74b7b9c4: 2420 90e8 
+
+  0x0000015f74b7b9c8: ; ImmutableOopMap {rbp=NarrowOop [32]=Oop }
+                      ;*invokevirtual getSize {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@24 (line 310)
+  0x0000015f74b7b9c8: 34c3 64ff 
+
+  0x0000015f74b7b9cc: ;   {other}
+  0x0000015f74b7b9cc: 0f1f 8400 | 3c06 000a | baf6 ffff | ff48 8beb 
+
+  0x0000015f74b7b9dc: ;   {runtime_call UncommonTrapBlob}
+  0x0000015f74b7b9dc: 6666 90e8 
+
+  0x0000015f74b7b9e0: ; ImmutableOopMap {rbp=Oop }
+                      ;*invokevirtual getSize {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@293 (line 322)
+  0x0000015f74b7b9e0: 1cc3 64ff 
+
+  0x0000015f74b7b9e4: ;   {other}
+  0x0000015f74b7b9e4: 0f1f 8400 | 5406 000b | ba45 ffff 
+
+  0x0000015f74b7b9f0: ;   {runtime_call UncommonTrapBlob}
+  0x0000015f74b7b9f0: ff66 90e8 
+
+  0x0000015f74b7b9f4: ; ImmutableOopMap {rbp=NarrowOop }
+                      ;*ifnonnull {reexecute=1 rethrow=0 return_oop=0}
+                      ; - (reexecute) androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@5 (line 195)
+  0x0000015f74b7b9f4: 08c3 64ff 
+
+  0x0000015f74b7b9f8: ;   {other}
+  0x0000015f74b7b9f8: 0f1f 8400 | 6806 000c | baf6 ffff | ff48 895c | 2420 4489 | 5424 2844 | 895c 242c 
+
+  0x0000015f74b7ba14: ;   {runtime_call UncommonTrapBlob}
+  0x0000015f74b7ba14: 6666 90e8 
+
+  0x0000015f74b7ba18: ; ImmutableOopMap {rbp=NarrowOop [32]=Oop [44]=NarrowOop }
+                      ;*getfield content {reexecute=1 rethrow=0 return_oop=0}
+                      ; - (reexecute) androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@90 (line 314)
+  0x0000015f74b7ba18: e4c2 64ff 
+
+  0x0000015f74b7ba1c: ;   {other}
+  0x0000015f74b7ba1c: 0f1f 8400 | 8c06 000d | baf6 ffff | ff48 895c | 2420 4489 | 5424 2c44 | 895c 2430 
+
+  0x0000015f74b7ba38: ;   {runtime_call UncommonTrapBlob}
+  0x0000015f74b7ba38: 6666 90e8 
+
+  0x0000015f74b7ba3c: ; ImmutableOopMap {rbp=NarrowOop [32]=Oop [48]=NarrowOop }
+                      ;*aaload {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@95 (line 314)
+  0x0000015f74b7ba3c: c0c2 64ff 
+
+  0x0000015f74b7ba40: ;   {other}
+  0x0000015f74b7ba40: 0f1f 8400 | b006 000e | baf4 ffff | ff44 8954 | 2428 4889 | 5c24 3044 | 895c 242c 
+
+  0x0000015f74b7ba5c: ;   {runtime_call UncommonTrapBlob}
+  0x0000015f74b7ba5c: 6666 90e8 
+
+  0x0000015f74b7ba60: ; ImmutableOopMap {rbp=NarrowOop [44]=NarrowOop [48]=Oop }
+                      ;*instanceof {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@110 (line 205)
+  0x0000015f74b7ba60: 9cc2 64ff 
+
+  0x0000015f74b7ba64: ;   {other}
+  0x0000015f74b7ba64: 0f1f 8400 | d406 000f | eb6b 488b | d0eb 6948 | 8944 2420 | eb1a 4889 | 4424 20eb | 1348 8944 
+  0x0000015f74b7ba84: 2420 eb0c | 4889 4424 | 20eb 0548 | 8944 2420 | 4c8b 5424 | 2841 8b6a | 1085 ed74 | 3345 8b5c 
+  0x0000015f74b7baa4: ;   {metadata('androidx/compose/runtime/tooling/CompositionErrorContextImpl')}
+  0x0000015f74b7baa4: ec08 4181 | fb98 0a1c | 0075 3749 | 8d14 ec44 | 8b54 2434 | 4d8b ca49 | c1e1 034c | 8b44 2420 
+  0x0000015f74b7bac4: ;   {optimized virtual_call}
+  0x0000015f74b7bac4: 6666 90e8 
+
+  0x0000015f74b7bac8: ; ImmutableOopMap {[32]=Oop }
+                      ;*invokeinterface attachComposeStackTrace {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@234 (line 318)
+  0x0000015f74b7bac8: b433 64ff 
+
+  0x0000015f74b7bacc: ;   {other}
+  0x0000015f74b7bacc: 0f1f 8400 | 3c07 0010 | 488b 4424 | 2048 8bd0 | 4883 c470 
+
+  0x0000015f74b7bae0: ;   {runtime_call _rethrow_Java}
+  0x0000015f74b7bae0: 5de9 9a07 | 72ff badf 
+
+  0x0000015f74b7bae8: ;   {runtime_call UncommonTrapBlob}
+  0x0000015f74b7bae8: ffff ffe8 
+
+  0x0000015f74b7baec: ; ImmutableOopMap {rbp=NarrowOop [32]=Oop [52]=NarrowOop }
+                      ;*invokeinterface attachComposeStackTrace {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::dispatchRememberObservers@234 (line 318)
+  0x0000015f74b7baec: 10c2 64ff 
+
+  0x0000015f74b7baf0: ;   {other}
+  0x0000015f74b7baf0: 0f1f 8400 | 6007 0011 
+
+  0x0000015f74b7baf8: ;   {internal_word}
+  0x0000015f74b7baf8: 49ba 31b6 | b774 5f01 | 0000 4d89 | 9760 0400 
+
+  0x0000015f74b7bb08: ;   {runtime_call SafepointBlob}
+  0x0000015f74b7bb08: 00e9 72b0 
+
+  0x0000015f74b7bb0c: ;   {runtime_call StubRoutines (final stubs)}
+  0x0000015f74b7bb0c: 64ff e8ad | ef62 ffe9 | e2fa ffff 
+[Stub Code]
+  0x0000015f74b7bb18: ;   {no_reloc}
+  0x0000015f74b7bb18: 48bb 0000 | 0000 0000 
+
+  0x0000015f74b7bb20: ;   {runtime_call nmethod}
+  0x0000015f74b7bb20: 0000 e9fb 
+
+  0x0000015f74b7bb24: ;   {static_stub}
+  0x0000015f74b7bb24: ffff ff48 | bb48 a800 | 055f 0100 
+
+  0x0000015f74b7bb30: ;   {runtime_call I2C/C2I adapters}
+  0x0000015f74b7bb30: 00e9 d193 
+
+  0x0000015f74b7bb34: ;   {static_stub}
+  0x0000015f74b7bb34: 64ff 48bb | 0000 0000 | 0000 0000 
+
+  0x0000015f74b7bb40: ;   {runtime_call nmethod}
+  0x0000015f74b7bb40: e9fb ffff 
+
+  0x0000015f74b7bb44: ;   {static_stub}
+  0x0000015f74b7bb44: ff48 bb00 | 0000 0000 
+
+  0x0000015f74b7bb4c: ;   {runtime_call nmethod}
+  0x0000015f74b7bb4c: 0000 00e9 | fbff ffff 
+
+  0x0000015f74b7bb54: ;   {static_stub}
+  0x0000015f74b7bb54: 48bb 0000 | 0000 0000 
+
+  0x0000015f74b7bb5c: ;   {runtime_call nmethod}
+  0x0000015f74b7bb5c: 0000 e9fb 
+
+  0x0000015f74b7bb60: ;   {static_stub}
+  0x0000015f74b7bb60: ffff ff48 | bb00 0000 | 0000 0000 
+
+  0x0000015f74b7bb6c: ;   {runtime_call nmethod}
+  0x0000015f74b7bb6c: 00e9 fbff 
+
+  0x0000015f74b7bb70: ;   {runtime_call ExceptionBlob}
+  0x0000015f74b7bb70: ffff e989 | 4471 ffe8 | 0000 0000 | 4883 2c24 
+
+  0x0000015f74b7bb80: ;   {runtime_call DeoptimizationBlob}
+  0x0000015f74b7bb80: 05e9 9ac4 | 64ff f4f4 
+[/MachCode]
+
+
+Compiled method (c1) 209053 4958   !   3       androidx.compose.runtime.CompositionImpl::applyChanges (217 bytes)
+ total in heap  [0x0000015f6d609f10,0x0000015f6d60b2d8] = 5064
+ relocation     [0x0000015f6d60a070,0x0000015f6d60a188] = 280
+ main code      [0x0000015f6d60a1a0,0x0000015f6d60ab38] = 2456
+ stub code      [0x0000015f6d60ab38,0x0000015f6d60abc8] = 144
+ oops           [0x0000015f6d60abc8,0x0000015f6d60abd0] = 8
+ metadata       [0x0000015f6d60abd0,0x0000015f6d60abe8] = 24
+ scopes data    [0x0000015f6d60abe8,0x0000015f6d60af10] = 808
+ scopes pcs     [0x0000015f6d60af10,0x0000015f6d60b090] = 384
+ dependencies   [0x0000015f6d60b090,0x0000015f6d60b098] = 8
+ handler table  [0x0000015f6d60b098,0x0000015f6d60b2a8] = 528
+ nul chk table  [0x0000015f6d60b2a8,0x0000015f6d60b2d8] = 48
+
+[Constant Pool (empty)]
+
+[MachCode]
+[Entry Point]
+  # {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl'
+  #           [sp+0xa0]  (sp of caller)
+  0x0000015f6d60a1a0: 448b 5208 | 49bb 0000 | 0000 0800 | 0000 4d03 | d34c 3bd0 
+
+  0x0000015f6d60a1b4: ;   {runtime_call ic_miss_stub}
+  0x0000015f6d60a1b4: 0f85 c647 | bb06 660f | 1f44 0000 
+[Verified Entry Point]
+  0x0000015f6d60a1c0: 8984 2400 | 80ff ff55 | 4881 ec90 | 0000 0090 | 4181 7f20 | 0d00 0000 
+
+  0x0000015f6d60a1d8: ;   {runtime_call StubRoutines (final stubs)}
+  0x0000015f6d60a1d8: 7405 e8e1 | 08ba 0648 | 8954 2438 
+
+  0x0000015f6d60a1e4: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a1e4: 48b8 a0c7 | 2b06 5f01 | 0000 448b | 80cc 0000 | 0041 83c0 | 0244 8980 | cc00 0000 | 4181 e0fe 
+  0x0000015f6d60a204: 0700 0045 | 85c0 0f84 | ae07 0000 | 8b72 2448 | c1e6 0348 | 8974 2440 | 4c8d 4424 | 7849 8970 
+  0x0000015f6d60a224: 0848 8b06 | 4883 c801 | 4989 00f0 | 4c0f b106 | 0f84 1200 | 0000 482b | c448 2507 | f0ff ff49 
+  0x0000015f6d60a244: 8900 0f85 | 9807 0000 | 49ff 8748 | 0500 0044 | 8b42 4049 | c1e0 0348 
+
+  0x0000015f6d60a25c: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a25c: 8bfa 48bb | a0c7 2b06 | 5f01 0000 | 4883 8310 | 0100 0001 | 488b fa48 
+
+  0x0000015f6d60a274: ;   {optimized virtual_call}
+  0x0000015f6d60a274: 8bd7 90e8 
+
+  0x0000015f6d60a278: ; ImmutableOopMap {[56]=Oop [64]=Oop [128]=Oop }
+                      ;*invokespecial applyChangesInLocked {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@41 (line 1149)
+  0x0000015f6d60a278: 4424 5407 
+
+  0x0000015f6d60a27c: ;   {other}
+  0x0000015f6d60a27c: 0f1f 8400 | 6c03 0000 | 488b 5424 
+
+  0x0000015f6d60a288: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a288: 3848 bea0 | c72b 065f | 0100 0048 | 8386 2001 | 0000 0148 | 8b54 2438 | 0f1f 8000 
+
+  0x0000015f6d60a2a4: ;   {optimized virtual_call}
+  0x0000015f6d60a2a4: 0000 00e8 
+
+  0x0000015f6d60a2a8: ; ImmutableOopMap {[56]=Oop [64]=Oop [128]=Oop }
+                      ;*invokespecial drainPendingModificationsLocked {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@45 (line 1150)
+  0x0000015f6d60a2a8: d44b bb06 
+
+  0x0000015f6d60a2ac: ;   {other}
+  0x0000015f6d60a2ac: 0f1f 8400 | 9c03 0001 
+
+  0x0000015f6d60a2b4: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a2b4: 48b8 a0c7 | 2b06 5f01 | 0000 ff80 | 3001 0000 
+
+  0x0000015f6d60a2c4: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a2c4: 48b8 a0c7 | 2b06 5f01 | 0000 ff80 | 9803 0000 | e970 0500 | 0049 8b87 | f804 0000 | 4d33 d24d 
+  0x0000015f6d60a2e4: 8997 f804 | 0000 4d33 | d24d 8997 | 0005 0000 
+
+  0x0000015f6d60a2f4: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a2f4: 48ba a0c7 | 2b06 5f01 | 0000 ff82 | 5801 0000 | 4889 4424 | 4848 8b54 | 2438 8b72 | 2848 c1e6 
+  0x0000015f6d60a314: 0348 85f6 
+
+  0x0000015f6d60a318: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a318: 7516 48bb | a0c7 2b06 | 5f01 0000 | 808b 6101 | 0000 01e9 | e700 0000 
+
+  0x0000015f6d60a330: ;   {metadata('java/util/Collection')}
+  0x0000015f6d60a330: 48b9 5060 | 0500 0800 | 0000 8b5e | 0849 ba00 | 0000 0008 | 0000 0049 | 03da 483b | 4b20 0f84 
+  0x0000015f6d60a350: 1a00 0000 | 483b d90f | 8411 0000 
+
+  0x0000015f6d60a35c: ;   {runtime_call slow_subtype_check Runtime1 stub}
+  0x0000015f6d60a35c: 0053 51e8 | 9c56 c806 | 5b5b 85db | 0f84 8d00 
+
+  0x0000015f6d60a36c: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a36c: 0000 48bb | a0c7 2b06 | 5f01 0000 | 8b4e 0849 | ba00 0000 | 0008 0000 | 0049 03ca | 483b 8b78 
+  0x0000015f6d60a38c: 0100 0075 | 0d48 8383 | 8001 0000 | 01e9 7900 | 0000 483b | 8b88 0100 | 0075 0d48 | 8383 9001 
+  0x0000015f6d60a3ac: 0000 01e9 | 6300 0000 | 4883 bb78 | 0100 0000 | 7517 4889 | 8b78 0100 | 0048 c783 | 8001 0000 
+  0x0000015f6d60a3cc: 0100 0000 | e942 0000 | 0048 83bb | 8801 0000 | 0075 1748 | 898b 8801 | 0000 48c7 | 8390 0100 
+  0x0000015f6d60a3ec: 0001 0000 | 00e9 2100 | 0000 e91c 
+
+  0x0000015f6d60a3f8: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a3f8: 0000 0048 | bba0 c72b | 065f 0100 | 0048 83ab | 6801 0000 | 01e9 e505 | 0000 e900 | 0000 0048 
+  0x0000015f6d60a418: 3b06 488b 
+
+  0x0000015f6d60a41c: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a41c: fe48 bba0 | c72b 065f | 0100 008b | 7f08 49ba | 0000 0000 | 0800 0000 | 4903 fa48 | 3bbb b001 
+  0x0000015f6d60a43c: 0000 750d | 4883 83b8 | 0100 0001 | e960 0000 | 0048 3bbb | c001 0000 | 750d 4883 | 83c8 0100 
+  0x0000015f6d60a45c: 0001 e94a | 0000 0048 | 83bb b001 | 0000 0075 | 1748 89bb | b001 0000 | 48c7 83b8 | 0100 0001 
+  0x0000015f6d60a47c: 0000 00e9 | 2900 0000 | 4883 bbc0 | 0100 0000 | 7517 4889 | bbc0 0100 | 0048 c783 | c801 0000 
+  0x0000015f6d60a49c: 0100 0000 | e908 0000 | 0048 8383 | a001 0000 | 0148 8bd6 | 0f1f 4400 | 0048 b8ff | ffff ffff 
+  0x0000015f6d60a4bc: ;   {virtual_call}
+  0x0000015f6d60a4bc: ffff ffe8 
+
+  0x0000015f6d60a4c0: ; ImmutableOopMap {[56]=Oop [64]=Oop [72]=Oop [128]=Oop }
+                      ;*invokeinterface isEmpty {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@87 (line 2237)
+  0x0000015f6d60a4c0: bc4e bb06 
+
+  0x0000015f6d60a4c4: ;   {other}
+  0x0000015f6d60a4c4: 0f1f 8400 | b405 0002 
+
+  0x0000015f6d60a4cc: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a4cc: 85c0 48ba | a0c7 2b06 | 5f01 0000 | 48c7 c6d8 | 0100 0075 | 0748 c7c6 | e801 0000 | 488b 3c32 
+  0x0000015f6d60a4ec: 488d 7f01 | 4889 3c32 | 0f85 1a00 
+
+  0x0000015f6d60a4f8: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a4f8: 0000 48ba | a0c7 2b06 | 5f01 0000 | ff82 f801 | 0000 ba01 | 0000 00e9 | 0500 0000 | ba00 0000 
+  0x0000015f6d60a518: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a518: 0085 d248 | baa0 c72b | 065f 0100 | 0048 c7c6 | 1002 0000 | 7407 48c7 | c620 0200 | 0048 8b3c 
+  0x0000015f6d60a538: 3248 8d7f | 0148 893c | 320f 844f | 0300 0048 | 8b54 2438 | 8b72 6048 | c1e6 0348 | 8974 2450 
+  0x0000015f6d60a558: 8b7a 2848 | c1e7 038b | 5a64 48c1 | e303 483b | 0348 8bc3 
+
+  0x0000015f6d60a56c: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a56c: 48b9 a0c7 | 2b06 5f01 | 0000 4883 | 8130 0200 
+
+  0x0000015f6d60a57c: ;   {metadata(method data for {method} {0x0000015f0505ac00} 'getErrorContext$runtime' '()Landroidx/compose/runtime/tooling/CompositionErrorContextImpl;' in 'androidx/compose/runtime/ComposerImpl')}
+  0x0000015f6d60a57c: 0001 48b8 | 0000 2a06 | 5f01 0000 | 8b88 cc00 | 0000 83c1 | 0289 88cc | 0000 0081 | e1fe ff1f 
+  0x0000015f6d60a59c: 0085 c90f | 8465 0400 | 000f be43 
+
+  0x0000015f6d60a5a8: ;   {metadata(method data for {method} {0x0000015f0505ac00} 'getErrorContext$runtime' '()Landroidx/compose/runtime/tooling/CompositionErrorContextImpl;' in 'androidx/compose/runtime/ComposerImpl')}
+  0x0000015f6d60a5a8: 3185 c048 | b800 002a | 065f 0100 | 0048 c7c1 | 1001 0000 | 7407 48c7 | c120 0100 | 004c 8b04 
+  0x0000015f6d60a5c8: 084d 8d40 | 014c 8904 | 080f 841f | 0000 008b | 9bac 0000 | 0048 c1e3 
+
+  0x0000015f6d60a5e0: ;   {metadata(method data for {method} {0x0000015f0505ac00} 'getErrorContext$runtime' '()Landroidx/compose/runtime/tooling/CompositionErrorContextImpl;' in 'androidx/compose/runtime/ComposerImpl')}
+  0x0000015f6d60a5e0: 0348 b800 | 002a 065f | 0100 00ff | 8030 0100 | 00e9 0a00 
+
+  0x0000015f6d60a5f4: ;   {oop(nullptr)}
+  0x0000015f6d60a5f4: 0000 48bb | 0000 0000 | 0000 0000 | 4885 db75 
+
+  0x0000015f6d60a604: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a604: 1648 b9a0 | c72b 065f | 0100 0080 | 8961 0200 | 0001 e9e9 
+
+  0x0000015f6d60a618: ;   {metadata('androidx/compose/runtime/tooling/CompositionErrorContext')}
+  0x0000015f6d60a618: 0000 0049 | b878 061c | 0008 0000 | 008b 4b08 | 49ba 0000 | 0000 0800 | 0000 4903 | ca4c 3b41 
+  0x0000015f6d60a638: 200f 841b | 0000 0049 | 3bc8 0f84 | 1200 0000 
+
+  0x0000015f6d60a648: ;   {runtime_call slow_subtype_check Runtime1 stub}
+  0x0000015f6d60a648: 5141 50e8 | b053 c806 | 5959 85c9 | 0f84 8e00 
+
+  0x0000015f6d60a658: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a658: 0000 48b9 | a0c7 2b06 | 5f01 0000 | 448b 4308 | 49ba 0000 | 0000 0800 | 0000 4d03 | c24c 3b81 
+  0x0000015f6d60a678: 7802 0000 | 750d 4883 | 8180 0200 | 0001 e979 | 0000 004c | 3b81 8802 | 0000 750d | 4883 8190 
+  0x0000015f6d60a698: 0200 0001 | e963 0000 | 0048 83b9 | 7802 0000 | 0075 174c | 8981 7802 | 0000 48c7 | 8180 0200 
+  0x0000015f6d60a6b8: 0001 0000 | 00e9 4200 | 0000 4883 | b988 0200 | 0000 7517 | 4c89 8188 | 0200 0048 | c781 9002 
+  0x0000015f6d60a6d8: 0000 0100 | 0000 e921 | 0000 00e9 | 1c00 0000 
+
+  0x0000015f6d60a6e8: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a6e8: 48b9 a0c7 | 2b06 5f01 | 0000 4883 | a968 0200 | 0001 e92c | 0300 00e9 | 0000 0000 | 4889 5c24 
+  0x0000015f6d60a708: 6048 897c | 2458 483b | 0648 8bc6 
+
+  0x0000015f6d60a714: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a714: 48b9 a0c7 | 2b06 5f01 | 0000 4883 | 81a0 0200 
+
+  0x0000015f6d60a724: ;   {metadata(method data for {method} {0x0000015f050449a8} 'prepare' '(Ljava/util/Set;Landroidx/compose/runtime/tooling/CompositionErrorContext;)V' in 'androidx/compose/runtime/internal/RememberEventDispatcher')}
+  0x0000015f6d60a724: 0001 48b8 | b88c 2e06 | 5f01 0000 | 8b88 cc00 | 0000 83c1 | 0289 88cc | 0000 0081 | e1fe ff1f 
+  0x0000015f6d60a744: 0085 c90f | 84ec 0200 | 0048 8bc6 
+
+  0x0000015f6d60a750: ;   {metadata(method data for {method} {0x0000015f050449a8} 'prepare' '(Ljava/util/Set;Landroidx/compose/runtime/tooling/CompositionErrorContext;)V' in 'androidx/compose/runtime/internal/RememberEventDispatcher')}
+  0x0000015f6d60a750: 48b9 b88c | 2e06 5f01 | 0000 4883 | 8110 0100 | 0001 488b 
+
+  0x0000015f6d60a764: ;   {optimized virtual_call}
+  0x0000015f6d60a764: d666 90e8 
+
+  0x0000015f6d60a768: ; ImmutableOopMap {[56]=Oop [64]=Oop [72]=Oop [80]=Oop [88]=Oop [96]=Oop [128]=Oop }
+                      ;*invokevirtual clear {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::prepare@1 (line 77)
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@140 (line 2240)
+  0x0000015f6d60a768: 1447 bb06 
+
+  0x0000015f6d60a76c: ;   {other}
+  0x0000015f6d60a76c: 0f1f 8400 | 5c08 0003 | 410f be57 | 4085 d248 | 8b74 2450 | 0f85 d402 | 0000 488b | 7c24 584c 
+  0x0000015f6d60a78c: 8bd7 49c1 | ea03 4489 | 560c 488b | d648 33d7 | 48c1 ea15 | 4883 fa00 | 0f85 cf02 | 0000 410f 
+  0x0000015f6d60a7ac: be57 4085 | d20f 85da | 0200 0048 | 8b5c 2460 | 4c8b d349 | c1ea 0344 | 8956 1048 | 8bd6 4833 
+  0x0000015f6d60a7cc: d348 c1ea | 1548 83fa | 000f 85d5 | 0200 0048 
+
+  0x0000015f6d60a7dc: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a7dc: 8bd6 48bf | a0c7 2b06 | 5f01 0000 | 4883 87d8 | 0200 0001 | 488b d60f 
+
+  0x0000015f6d60a7f4: ;   {optimized virtual_call}
+  0x0000015f6d60a7f4: 1f40 00e8 
+
+  0x0000015f6d60a7f8: ; ImmutableOopMap {[56]=Oop [64]=Oop [72]=Oop [80]=Oop [128]=Oop }
+                      ;*invokevirtual dispatchAbandons {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@152 (line 2238)
+  0x0000015f6d60a7f8: 8446 bb06 
+
+  0x0000015f6d60a7fc: ;   {other}
+  0x0000015f6d60a7fc: 0f1f 8400 | ec08 0004 | 488b 7424 
+
+  0x0000015f6d60a808: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a808: 5048 baa0 | c72b 065f | 0100 0048 | 8382 1003 | 0000 0148 | 8b54 2450 | 0f1f 8000 
+
+  0x0000015f6d60a824: ;   {optimized virtual_call}
+  0x0000015f6d60a824: 0000 00e8 
+
+  0x0000015f6d60a828: ; ImmutableOopMap {[56]=Oop [64]=Oop [72]=Oop [128]=Oop }
+                      ;*invokevirtual clear {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@158 (line 2243)
+  0x0000015f6d60a828: 5446 bb06 
+
+  0x0000015f6d60a82c: ;   {other}
+  0x0000015f6d60a82c: 0f1f 8400 | 1c09 0005 
+
+  0x0000015f6d60a834: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a834: 48b8 a0c7 | 2b06 5f01 | 0000 ff80 | 4803 0000 | e94d 0000 | 0048 8d44 | 2478 488b | 1048 85d2 
+  0x0000015f6d60a854: 0f84 0f00 | 0000 488b | 7008 f048 | 0fb1 160f | 855f 0200 | 0049 ff8f | 4805 0000 
+
+  0x0000015f6d60a870: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a870: 48b8 a0c7 | 2b06 5f01 | 0000 ff80 | e803 0000 | 4881 c490 | 0000 005d 
+
+  0x0000015f6d60a888: ;   {poll_return}
+  0x0000015f6d60a888: 493b a748 | 0400 000f | 8746 0200 | 00c3 488b 
+
+  0x0000015f6d60a898: ; ImmutableOopMap {rax=Oop [56]=Oop [64]=Oop [128]=Oop }
+                      ;*athrow {reexecute=1 rethrow=0 return_oop=0}
+                      ; - (reexecute) androidx.compose.runtime.CompositionImpl::applyChanges@177 (line 2245)
+                      ;   {section_word}
+  0x0000015f6d60a898: 4424 4848 | ba9b a860 | 6d5f 0100 
+
+  0x0000015f6d60a8a4: ;   {runtime_call handle_exception_nofpu Runtime1 stub}
+  0x0000015f6d60a8a4: 00e8 d63d | c806 9049 | 8b87 f804 | 0000 4d33 | d24d 8997 | f804 0000 | 4d33 d24d | 8997 0005 
+  0x0000015f6d60a8c4: 0000 4889 | 4424 6848 | 8b74 2450 
+
+  0x0000015f6d60a8d0: ; implicit exception: dispatches to 0x0000015f6d60aaf1
+  0x0000015f6d60a8d0: 483b 0648 
+
+  0x0000015f6d60a8d4: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a8d4: 8bd6 48bf | a0c7 2b06 | 5f01 0000 | 4883 8760 | 0300 0001 | 488b d60f 
+
+  0x0000015f6d60a8ec: ;   {optimized virtual_call}
+  0x0000015f6d60a8ec: 1f40 00e8 
+
+  0x0000015f6d60a8f0: ; ImmutableOopMap {[56]=Oop [64]=Oop [104]=Oop [128]=Oop }
+                      ;*invokevirtual clear {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@168 (line 2243)
+  0x0000015f6d60a8f0: 8c45 bb06 
+
+  0x0000015f6d60a8f4: ;   {other}
+  0x0000015f6d60a8f4: 0f1f 8400 | e409 0007 | 488b 4424 
+
+  0x0000015f6d60a900: ; ImmutableOopMap {rax=Oop [56]=Oop [64]=Oop [128]=Oop }
+                      ;*athrow {reexecute=1 rethrow=0 return_oop=0}
+                      ; - (reexecute) androidx.compose.runtime.CompositionImpl::applyChanges@173 (line 2243)
+                      ;   {section_word}
+  0x0000015f6d60a900: 6848 ba01 | a960 6d5f 
+
+  0x0000015f6d60a908: ;   {runtime_call handle_exception_nofpu Runtime1 stub}
+  0x0000015f6d60a908: 0100 00e8 | 703d c806 | 9048 8b54 | 2438 498b | 87f8 0400 | 004d 33d2 | 4d89 97f8 | 0400 004d 
+  0x0000015f6d60a928: 33d2 4d89 | 9700 0500 | 0048 8bfa 
+
+  0x0000015f6d60a934: ;   {metadata(method data for {method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a934: 48bb a0c7 | 2b06 5f01 | 0000 4883 | 83b0 0300 | 0001 4889 | 4424 700f 
+
+  0x0000015f6d60a94c: ;   {optimized virtual_call}
+  0x0000015f6d60a94c: 1f40 00e8 
+
+  0x0000015f6d60a950: ; ImmutableOopMap {[64]=Oop [112]=Oop [128]=Oop }
+                      ;*invokevirtual abandonChanges {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@190 (line 2248)
+  0x0000015f6d60a950: 2c45 bb06 
+
+  0x0000015f6d60a954: ;   {other}
+  0x0000015f6d60a954: 0f1f 8400 | 440a 0009 | 488b 4424 
+
+  0x0000015f6d60a960: ; ImmutableOopMap {rax=Oop [64]=Oop [128]=Oop }
+                      ;*athrow {reexecute=1 rethrow=0 return_oop=0}
+                      ; - (reexecute) androidx.compose.runtime.CompositionImpl::applyChanges@195 (line 2249)
+                      ;   {section_word}
+  0x0000015f6d60a960: 7048 ba61 | a960 6d5f 
+
+  0x0000015f6d60a968: ;   {runtime_call handle_exception_nofpu Runtime1 stub}
+  0x0000015f6d60a968: 0100 00e8 | 103d c806 | 9049 8b87 | f804 0000 | 4d33 d24d | 8997 f804 | 0000 4d33 | d24d 8997 
+  0x0000015f6d60a988: 0005 0000 | 488b f048 | 8d44 2478 | 488b 3848 | 85ff 0f84 | 0f00 0000 | 488b 5808 | f048 0fb1 
+  0x0000015f6d60a9a8: 3b0f 8547 | 0100 0049 | ff8f 4805 | 0000 488b | c6e9 6801 
+
+  0x0000015f6d60a9bc: ;   {metadata({method} {0x0000015f04ffe558} 'applyChanges' '()V' in 'androidx/compose/runtime/CompositionImpl')}
+  0x0000015f6d60a9bc: 0000 49ba | 50e5 ff04 | 5f01 0000 | 4c89 5424 | 0848 c704 | 24ff ffff 
+
+  0x0000015f6d60a9d4: ;   {runtime_call counter_overflow Runtime1 stub}
+  0x0000015f6d60a9d4: ffe8 2683 
+
+  0x0000015f6d60a9d8: ; ImmutableOopMap {rdx=Oop [56]=Oop }
+                      ;*synchronization entry
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@-1 (line 1147)
+  0x0000015f6d60a9d8: c806 e931 
+
+  0x0000015f6d60a9dc: ;   {runtime_call throw_null_pointer_exception Runtime1 stub}
+  0x0000015f6d60a9dc: f8ff ffe8 
+
+  0x0000015f6d60a9e0: ; ImmutableOopMap {rdx=Oop rsi=Oop [56]=Oop [64]=Oop }
+                      ;*monitorenter {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@10 (line 2230)
+  0x0000015f6d60a9e0: bc1d c806 | 4889 7424 | 084c 8904 
+
+  0x0000015f6d60a9ec: ;   {runtime_call monitorenter_nofpu Runtime1 stub}
+  0x0000015f6d60a9ec: 24e8 0e59 
+
+  0x0000015f6d60a9f0: ; ImmutableOopMap {rdx=Oop rsi=Oop [56]=Oop [64]=Oop [128]=Oop }
+                      ;*monitorenter {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@10 (line 2230)
+  0x0000015f6d60a9f0: c806 e95c | f8ff ff48 
+
+  0x0000015f6d60a9f8: ;   {runtime_call throw_class_cast_exception Runtime1 stub}
+  0x0000015f6d60a9f8: 8934 24e8 
+
+  0x0000015f6d60a9fc: ; ImmutableOopMap {rdx=Oop [56]=Oop [64]=Oop [72]=Oop [128]=Oop }
+                      ;*checkcast {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@84 (line 2237)
+  0x0000015f6d60a9fc: a049 c806 
+
+  0x0000015f6d60aa00: ;   {runtime_call throw_null_pointer_exception Runtime1 stub}
+  0x0000015f6d60aa00: e89b 1dc8 
+
+  0x0000015f6d60aa04: ; ImmutableOopMap {rdx=Oop rsi=Oop [56]=Oop [64]=Oop [72]=Oop [128]=Oop }
+                      ;*invokeinterface isEmpty {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@87 (line 2237)
+                      ;   {runtime_call throw_null_pointer_exception Runtime1 stub}
+  0x0000015f6d60aa04: 06e8 961d 
+
+  0x0000015f6d60aa08: ; ImmutableOopMap {rdx=Oop rsi=Oop rdi=Oop rbx=Oop [56]=Oop [64]=Oop [72]=Oop [80]=Oop [128]=Oop }
+                      ;*invokevirtual getErrorContext$runtime {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@122 (line 2238)
+                      ;   {metadata({method} {0x0000015f0505ac00} 'getErrorContext$runtime' '()Landroidx/compose/runtime/tooling/CompositionErrorContextImpl;' in 'androidx/compose/runtime/ComposerImpl')}
+  0x0000015f6d60aa08: c806 49ba | f8ab 0505 | 5f01 0000 | 4c89 5424 | 0848 c704 | 24ff ffff 
+
+  0x0000015f6d60aa20: ;   {runtime_call counter_overflow Runtime1 stub}
+  0x0000015f6d60aa20: ffe8 da82 
+
+  0x0000015f6d60aa24: ; ImmutableOopMap {rdx=Oop rsi=Oop rdi=Oop rbx=Oop [56]=Oop [64]=Oop [72]=Oop [80]=Oop [128]=Oop }
+                      ;*synchronization entry
+                      ; - androidx.compose.runtime.ComposerImpl::getErrorContext$runtime@-1 (line 1493)
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@122 (line 2238)
+  0x0000015f6d60aa24: c806 e97a | fbff ff48 
+
+  0x0000015f6d60aa2c: ;   {runtime_call throw_class_cast_exception Runtime1 stub}
+  0x0000015f6d60aa2c: 891c 24e8 
+
+  0x0000015f6d60aa30: ; ImmutableOopMap {rdx=Oop rsi=Oop rdi=Oop [56]=Oop [64]=Oop [72]=Oop [80]=Oop [128]=Oop }
+                      ;*checkcast {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@125 (line 2238)
+  0x0000015f6d60aa30: 6c49 c806 
+
+  0x0000015f6d60aa34: ;   {runtime_call throw_null_pointer_exception Runtime1 stub}
+  0x0000015f6d60aa34: e867 1dc8 
+
+  0x0000015f6d60aa38: ; ImmutableOopMap {rsi=Oop [56]=Oop [64]=Oop [72]=Oop [80]=Oop [88]=Oop [96]=Oop [128]=Oop }
+                      ;*invokevirtual prepare {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@140 (line 2240)
+                      ;   {metadata({method} {0x0000015f050449a8} 'prepare' '(Ljava/util/Set;Landroidx/compose/runtime/tooling/CompositionErrorContext;)V' in 'androidx/compose/runtime/internal/RememberEventDispatcher')}
+  0x0000015f6d60aa38: 0649 baa0 | 4904 055f | 0100 004c | 8954 2408 | 48c7 0424 | ffff ffff 
+
+  0x0000015f6d60aa50: ;   {runtime_call counter_overflow Runtime1 stub}
+  0x0000015f6d60aa50: e8ab 82c8 
+
+  0x0000015f6d60aa54: ; ImmutableOopMap {rsi=Oop [56]=Oop [64]=Oop [72]=Oop [80]=Oop [88]=Oop [96]=Oop [128]=Oop }
+                      ;*synchronization entry
+                      ; - androidx.compose.runtime.internal.RememberEventDispatcher::prepare@-1 (line 77)
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@140 (line 2240)
+  0x0000015f6d60aa54: 06e9 f3fc | ffff 8b56 | 0c48 c1e2 | 0348 83fa | 000f 841b | fdff ff48 
+
+  0x0000015f6d60aa6c: ;   {runtime_call g1_pre_barrier_slow}
+  0x0000015f6d60aa6c: 8914 24e8 | 8c89 c806 | e90d fdff | ff48 83ff | 000f 8427 | fdff ff48 
+
+  0x0000015f6d60aa84: ;   {runtime_call g1_post_barrier_slow}
+  0x0000015f6d60aa84: 8934 24e8 | f48c c806 | e919 fdff | ff8b 5610 | 48c1 e203 | 4883 fa00 | 0f84 15fd | ffff 4889 
+  0x0000015f6d60aaa4: ;   {runtime_call g1_pre_barrier_slow}
+  0x0000015f6d60aaa4: 1424 e855 | 89c8 06e9 | 07fd ffff | 4883 fb00 | 0f84 21fd | ffff 4889 
+
+  0x0000015f6d60aabc: ;   {runtime_call g1_post_barrier_slow}
+  0x0000015f6d60aabc: 3424 e8bd | 8cc8 06e9 | 13fd ffff | 488d 4424 | 7848 8904 
+
+  0x0000015f6d60aad0: ;   {runtime_call monitorexit_nofpu Runtime1 stub}
+  0x0000015f6d60aad0: 24e8 aa5e | c806 e995 
+
+  0x0000015f6d60aad8: ;   {internal_word}
+  0x0000015f6d60aad8: fdff ff49 | ba88 a860 | 6d5f 0100 | 004d 8997 | 6004 0000 
+
+  0x0000015f6d60aaec: ;   {runtime_call SafepointBlob}
+  0x0000015f6d60aaec: e98f c0bb 
+
+  0x0000015f6d60aaf0: ;   {runtime_call throw_null_pointer_exception Runtime1 stub}
+  0x0000015f6d60aaf0: 06e8 aa1c 
+
+  0x0000015f6d60aaf4: ; ImmutableOopMap {rsi=Oop [56]=Oop [64]=Oop [80]=Oop [104]=Oop [128]=Oop }
+                      ;*invokevirtual clear {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.CompositionImpl::applyChanges@168 (line 2243)
+  0x0000015f6d60aaf4: c806 488d | 4424 7848 
+
+  0x0000015f6d60aafc: ;   {runtime_call monitorexit_nofpu Runtime1 stub}
+  0x0000015f6d60aafc: 8904 24e8 | 7c5e c806 | e9ad feff | ff49 8b87 | f804 0000 | 49c7 87f8 | 0400 0000 | 0000 0049 
+  0x0000015f6d60ab1c: c787 0005 | 0000 0000 | 0000 4881 | c490 0000 
+
+  0x0000015f6d60ab2c: ;   {runtime_call unwind_exception Runtime1 stub}
+  0x0000015f6d60ab2c: 005d e94d | 0dc8 06f4 | f4f4 f4f4 
+[Stub Code]
+  0x0000015f6d60ab38: ;   {no_reloc}
+  0x0000015f6d60ab38: 0f1f 4400 
+
+  0x0000015f6d60ab3c: ;   {static_stub}
+  0x0000015f6d60ab3c: 0048 bb00 | 0000 0000 
+
+  0x0000015f6d60ab44: ;   {runtime_call nmethod}
+  0x0000015f6d60ab44: 0000 00e9 | fbff ffff 
+
+  0x0000015f6d60ab4c: ;   {static_stub}
+  0x0000015f6d60ab4c: 48bb 30de | ff04 5f01 
+
+  0x0000015f6d60ab54: ;   {runtime_call I2C/C2I adapters}
+  0x0000015f6d60ab54: 0000 e9ac 
+
+  0x0000015f6d60ab58: ;   {static_stub}
+  0x0000015f6d60ab58: a3bb 0648 | bb00 0000 | 0000 0000 
+
+  0x0000015f6d60ab64: ;   {runtime_call nmethod}
+  0x0000015f6d60ab64: 00e9 fbff 
+
+  0x0000015f6d60ab68: ;   {static_stub}
+  0x0000015f6d60ab68: ffff 48bb | 0000 0000 | 0000 0000 
+
+  0x0000015f6d60ab74: ;   {runtime_call nmethod}
+  0x0000015f6d60ab74: e9fb ffff 
+
+  0x0000015f6d60ab78: ;   {static_stub}
+  0x0000015f6d60ab78: ff48 bb00 | 0000 0000 
+
+  0x0000015f6d60ab80: ;   {runtime_call nmethod}
+  0x0000015f6d60ab80: 0000 00e9 | fbff ffff 
+
+  0x0000015f6d60ab88: ;   {static_stub}
+  0x0000015f6d60ab88: 48bb 0000 | 0000 0000 
+
+  0x0000015f6d60ab90: ;   {runtime_call nmethod}
+  0x0000015f6d60ab90: 0000 e9fb 
+
+  0x0000015f6d60ab94: ;   {runtime_call handle_exception_from_callee Runtime1 stub}
+  0x0000015f6d60ab94: ffff ffe8 | e441 c806 
+
+  0x0000015f6d60ab9c: ;   {external_word}
+  0x0000015f6d60ab9c: 48b9 40de | e281 ff7f | 0000 4883 
+
+  0x0000015f6d60aba8: ;   {runtime_call}
+  0x0000015f6d60aba8: e4f0 48b8 | b079 b181 | ff7f 0000 
+
+  0x0000015f6d60abb4: ;   {section_word}
+  0x0000015f6d60abb4: ffd0 f449 | bab7 ab60 | 6d5f 0100 
+
+  0x0000015f6d60abc0: ;   {runtime_call DeoptimizationBlob}
+  0x0000015f6d60abc0: 0041 52e9 | 58d4 bb06 
+[/MachCode]
+
+
+Compiled method (c2) 209082 6391       4       androidx.compose.runtime.Recomposer$runRecomposeAndApplyChanges$2$$Lambda/0x0000000800215890::invoke (47 bytes)
+ total in heap  [0x0000015f74b62c90,0x0000015f74b630c0] = 1072
+ relocation     [0x0000015f74b62df0,0x0000015f74b62e20] = 48
+ main code      [0x0000015f74b62e20,0x0000015f74b62fa0] = 384
+ stub code      [0x0000015f74b62fa0,0x0000015f74b62fc8] = 40
+ oops           [0x0000015f74b62fc8,0x0000015f74b62fd0] = 8
+ metadata       [0x0000015f74b62fd0,0x0000015f74b62fe8] = 24
+ scopes data    [0x0000015f74b62fe8,0x0000015f74b63040] = 88
+ scopes pcs     [0x0000015f74b63040,0x0000015f74b63090] = 80
+ dependencies   [0x0000015f74b63090,0x0000015f74b63098] = 8
+ handler table  [0x0000015f74b63098,0x0000015f74b630b0] = 24
+ nul chk table  [0x0000015f74b630b0,0x0000015f74b630c0] = 16
+
+[Constant Pool (empty)]
+
+[MachCode]
+[Entry Point]
+  # {method} {0x0000015f052b3e80} 'invoke' '(Ljava/lang/Object;)Ljava/lang/Object;' in 'androidx/compose/runtime/Recomposer$runRecomposeAndApplyChanges$2$$Lambda+0x0000000800215890'
+  # this:     rdx:rdx   = 'androidx/compose/runtime/Recomposer$runRecomposeAndApplyChanges$2$$Lambda+0x0000000800215890'
+  # parm0:    r8:r8     = 'java/lang/Object'
+  #           [sp+0x70]  (sp of caller)
+  0x0000015f74b62e20: 448b 5208 | 49bb 0000 | 0000 0800 | 0000 4d03 | d349 3bc2 
+
+  0x0000015f74b62e34: ;   {runtime_call ic_miss_stub}
+  0x0000015f74b62e34: 0f85 46bb | 65ff 6690 | 0f1f 4000 
+[Verified Entry Point]
+  0x0000015f74b62e40: 8984 2400 | 80ff ff55 | 4883 ec60 | 4181 7f20 | 0d00 0000 | 0f85 3801 | 0000 448b | 4a0c 448b 
+  0x0000015f74b62e60: 5210 8b7a | 148b 7218 | 8b4a 1c8b | 5a20 448b | 5a24 8b6a | 288b 422c 
+
+  0x0000015f74b62e78: ; implicit exception: dispatches to 0x0000015f74b62f45
+  0x0000015f74b62e78: 458b 6808 
+
+  0x0000015f74b62e7c: ;   {metadata('java/lang/Long')}
+  0x0000015f74b62e7c: 4181 fd88 | a105 0075 | 764d 8b68 | 1049 8bd1 | 48c1 e203 | 4d8b c249 | c1e0 034c | 8bcf 49c1 
+  0x0000015f74b62e9c: e103 488b | fe48 c1e7 | 0348 8bf1 | 48c1 e603 | 488b cb48 | c1e1 034d | 8bd3 49c1 | e203 4c8b 
+  0x0000015f74b62ebc: dd49 c1e3 | 0348 8bd8 | 48c1 e303 | 4c89 1424 | 4c89 5c24 | 0848 895c | 2410 4c89 
+
+  0x0000015f74b62ed8: ;   {static_call}
+  0x0000015f74b62ed8: 6c24 18e8 
+
+  0x0000015f74b62edc: ; ImmutableOopMap {}
+                      ;*invokestatic invokeSuspend$lambda$22 {reexecute=0 rethrow=0 return_oop=1}
+                      ; - androidx.compose.runtime.Recomposer$runRecomposeAndApplyChanges$2$$Lambda/0x0000000800215890::invoke@43
+  0x0000015f74b62edc: 00c7 edff 
+
+  0x0000015f74b62ee0: ;   {other}
+  0x0000015f74b62ee0: 0f1f 8400 | 5002 0000 | 4883 c460 
+
+  0x0000015f74b62eec: ;   {poll_return}
+  0x0000015f74b62eec: 5d49 3ba7 | 4804 0000 | 0f87 8200 | 0000 c3ba | deff ffff | 4489 4c24 | 2044 8954 | 2424 897c 
+  0x0000015f74b62f0c: 2428 8974 | 242c 894c | 2430 895c | 2434 4489 | 5c24 3889 | 4424 3c4c | 8944 2440 
+
+  0x0000015f74b62f28: ;   {runtime_call UncommonTrapBlob}
+  0x0000015f74b62f28: 6666 90e8 
+
+  0x0000015f74b62f2c: ; ImmutableOopMap {rbp=NarrowOop [32]=NarrowOop [36]=NarrowOop [40]=NarrowOop [44]=NarrowOop [48]=NarrowOop [52]=NarrowOop [56]=NarrowOop [60]=NarrowOop [64]=Oop }
+                      ;*checkcast {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.Recomposer$runRecomposeAndApplyChanges$2$$Lambda/0x0000000800215890::invoke@37
+  0x0000015f74b62f2c: d04d 66ff 
+
+  0x0000015f74b62f30: ;   {other}
+  0x0000015f74b62f30: 0f1f 8400 | a002 0001 | 488b d048 | 83c4 605d 
+
+  0x0000015f74b62f40: ;   {runtime_call _rethrow_Java}
+  0x0000015f74b62f40: e93b 9373 | ffba f4ff | ffff 4489 | 4c24 2044 | 8954 2424 | 897c 2428 | 8974 242c | 894c 2430 
+  0x0000015f74b62f60: 895c 2434 | 4489 5c24 | 3889 4424 
+
+  0x0000015f74b62f6c: ;   {runtime_call UncommonTrapBlob}
+  0x0000015f74b62f6c: 3c66 90e8 
+
+  0x0000015f74b62f70: ; ImmutableOopMap {rbp=NarrowOop [32]=NarrowOop [36]=NarrowOop [40]=NarrowOop [44]=NarrowOop [48]=NarrowOop [52]=NarrowOop [56]=NarrowOop [60]=NarrowOop }
+                      ;*checkcast {reexecute=0 rethrow=0 return_oop=0}
+                      ; - androidx.compose.runtime.Recomposer$runRecomposeAndApplyChanges$2$$Lambda/0x0000000800215890::invoke@37
+  0x0000015f74b62f70: 8c4d 66ff 
+
+  0x0000015f74b62f74: ;   {other}
+  0x0000015f74b62f74: 0f1f 8400 | e402 0002 
+
+  0x0000015f74b62f7c: ;   {internal_word}
+  0x0000015f74b62f7c: 49ba ed2e | b674 5f01 | 0000 4d89 | 9760 0400 
+
+  0x0000015f74b62f8c: ;   {runtime_call SafepointBlob}
+  0x0000015f74b62f8c: 00e9 ee3b 
+
+  0x0000015f74b62f90: ;   {runtime_call StubRoutines (final stubs)}
+  0x0000015f74b62f90: 66ff e829 | 7b64 ffe9 | befe ffff | f4f4 f4f4 
+[Stub Code]
+  0x0000015f74b62fa0: ;   {no_reloc}
+  0x0000015f74b62fa0: 48bb 0000 | 0000 0000 
+
+  0x0000015f74b62fa8: ;   {runtime_call nmethod}
+  0x0000015f74b62fa8: 0000 e9fb 
+
+  0x0000015f74b62fac: ;   {runtime_call ExceptionBlob}
+  0x0000015f74b62fac: ffff ffe9 | 4cd0 72ff 
+[Deopt Handler Code]
+  0x0000015f74b62fb4: e800 0000 | 0048 832c 
+
+  0x0000015f74b62fbc: ;   {runtime_call DeoptimizationBlob}
+  0x0000015f74b62fbc: 2405 e95d | 5066 fff4 | f4f4 f4f4 
+[/MachCode]
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x0000015f17e49d10, length=38, elements={
+0x0000015f676b2990, 0x0000015f0808e750, 0x0000015f080911b0, 0x0000015f080ae090,
+0x0000015f080b0700, 0x0000015f080a2e60, 0x0000015f080a38b0, 0x0000015f080a4630,
+0x0000015f080cca00, 0x0000015f08264e10, 0x0000015f08265870, 0x0000015f086f78e0,
+0x0000015f0895d5b0, 0x0000015f08afa540, 0x0000015f08bb2cb0, 0x0000015f08a99600,
+0x0000015f08de6f90, 0x0000015f08ac8cf0, 0x0000015f08ac7940, 0x0000015f08ac9380,
+0x0000015f08ac8660, 0x0000015f08ac72b0, 0x0000015f08ac7fd0, 0x0000015f092ec3e0,
+0x0000015f092ea9a0, 0x0000015f092eb030, 0x0000015f092f12a0, 0x0000015f092ee4b0,
+0x0000015f092eeb40, 0x0000015f092efef0, 0x0000015f092f0580, 0x0000015f092ef1d0,
+0x0000015f13727c60, 0x0000015f13726f40, 0x0000015f13725500, 0x0000015f1372c490,
+0x0000015f0893b3b0, 0x0000015f0893a690
+}
+
+Java Threads: ( => current thread )
+  0x0000015f676b2990 JavaThread "main"                              [_thread_blocked, id=30540, stack(0x0000003768f00000,0x0000003769000000) (1024K)]
+  0x0000015f0808e750 JavaThread "Reference Handler"          daemon [_thread_blocked, id=18224, stack(0x0000003769700000,0x0000003769800000) (1024K)]
+  0x0000015f080911b0 JavaThread "Finalizer"                  daemon [_thread_blocked, id=12836, stack(0x0000003769800000,0x0000003769900000) (1024K)]
+  0x0000015f080ae090 JavaThread "Signal Dispatcher"          daemon [_thread_blocked, id=24156, stack(0x0000003769900000,0x0000003769a00000) (1024K)]
+  0x0000015f080b0700 JavaThread "Attach Listener"            daemon [_thread_blocked, id=2080, stack(0x0000003769a00000,0x0000003769b00000) (1024K)]
+  0x0000015f080a2e60 JavaThread "Service Thread"             daemon [_thread_blocked, id=24348, stack(0x0000003769b00000,0x0000003769c00000) (1024K)]
+  0x0000015f080a38b0 JavaThread "Monitor Deflation Thread"   daemon [_thread_blocked, id=20776, stack(0x0000003769c00000,0x0000003769d00000) (1024K)]
+  0x0000015f080a4630 JavaThread "C2 CompilerThread0"         daemon [_thread_blocked, id=27784, stack(0x0000003769d00000,0x0000003769e00000) (1024K)]
+  0x0000015f080cca00 JavaThread "C1 CompilerThread0"         daemon [_thread_blocked, id=15928, stack(0x0000003769e00000,0x0000003769f00000) (1024K)]
+  0x0000015f08264e10 JavaThread "Notification Thread"        daemon [_thread_blocked, id=13020, stack(0x0000003769f00000,0x000000376a000000) (1024K)]
+  0x0000015f08265870 JavaThread "Common-Cleaner"             daemon [_thread_blocked, id=13244, stack(0x000000376a000000,0x000000376a100000) (1024K)]
+  0x0000015f086f78e0 JavaThread "TimerQueue"                 daemon [_thread_blocked, id=14380, stack(0x000000376a300000,0x000000376a400000) (1024K)]
+  0x0000015f0895d5b0 JavaThread "Java2D Disposer"            daemon [_thread_blocked, id=5908, stack(0x000000376a400000,0x000000376a500000) (1024K)]
+  0x0000015f08afa540 JavaThread "AWT-Shutdown"                      [_thread_blocked, id=4732, stack(0x000000376a500000,0x000000376a600000) (1024K)]
+=>0x0000015f08bb2cb0 JavaThread "AWT-EventQueue-0"                  [_thread_in_native, id=13220, stack(0x000000376a700000,0x000000376a800000) (1024K)]
+  0x0000015f08a99600 JavaThread "Hot Reload Main"            daemon [_thread_blocked, id=30748, stack(0x000000376a800000,0x000000376a900000) (1024K)]
+  0x0000015f08de6f90 JavaThread "Orchestration Server"       daemon [_thread_in_native, id=3176, stack(0x000000376a900000,0x000000376aa00000) (1024K)]
+  0x0000015f08ac8cf0 JavaThread "Thread-0"                          [_thread_blocked, id=10564, stack(0x000000376aa00000,0x000000376ab00000) (1024K)]
+  0x0000015f08ac7940 JavaThread "process reaper"             daemon [_thread_blocked, id=33756, stack(0x0000003768990000,0x00000037689b0000) (128K)]
+  0x0000015f08ac9380 JavaThread "Recompiler"                        [_thread_blocked, id=14060, stack(0x000000376ab00000,0x000000376ac00000) (1024K)]
+  0x0000015f08ac8660 JavaThread "process reaper"             daemon [_thread_blocked, id=21812, stack(0x00000037689b0000,0x00000037689d0000) (128K)]
+  0x0000015f08ac72b0 JavaThread "DefaultDispatcher-worker-1" daemon [_thread_blocked, id=23248, stack(0x000000376b700000,0x000000376b800000) (1024K)]
+  0x0000015f08ac7fd0 JavaThread "DefaultDispatcher-worker-2" daemon [_thread_blocked, id=7088, stack(0x000000376b800000,0x000000376b900000) (1024K)]
+  0x0000015f092ec3e0 JavaThread "DefaultDispatcher-worker-3" daemon [_thread_blocked, id=18284, stack(0x000000376b900000,0x000000376ba00000) (1024K)]
+  0x0000015f092ea9a0 JavaThread "kotlinx.coroutines.DefaultExecutor" daemon [_thread_blocked, id=1304, stack(0x000000376a100000,0x000000376a200000) (1024K)]
+  0x0000015f092eb030 JavaThread "Reference Cleaner"          daemon [_thread_blocked, id=23448, stack(0x000000376a200000,0x000000376a300000) (1024K)]
+  0x0000015f092f12a0 JavaThread "DefaultDispatcher-worker-4" daemon [_thread_blocked, id=22004, stack(0x000000376c400000,0x000000376c500000) (1024K)]
+  0x0000015f092ee4b0 JavaThread "DefaultDispatcher-worker-5" daemon [_thread_blocked, id=33872, stack(0x000000376c500000,0x000000376c600000) (1024K)]
+  0x0000015f092eeb40 JavaThread "DefaultDispatcher-worker-6" daemon [_thread_blocked, id=22692, stack(0x000000376c600000,0x000000376c700000) (1024K)]
+  0x0000015f092efef0 JavaThread "DefaultDispatcher-worker-7" daemon [_thread_blocked, id=22244, stack(0x000000376c700000,0x000000376c800000) (1024K)]
+  0x0000015f092f0580 JavaThread "DefaultDispatcher-worker-8" daemon [_thread_blocked, id=22616, stack(0x000000376c800000,0x000000376c900000) (1024K)]
+  0x0000015f092ef1d0 JavaThread "DefaultDispatcher-worker-9" daemon [_thread_blocked, id=24784, stack(0x000000376c900000,0x000000376ca00000) (1024K)]
+  0x0000015f13727c60 JavaThread "DefaultDispatcher-worker-10" daemon [_thread_blocked, id=26408, stack(0x000000376ca00000,0x000000376cb00000) (1024K)]
+  0x0000015f13726f40 JavaThread "DefaultDispatcher-worker-11" daemon [_thread_blocked, id=25184, stack(0x000000376cb00000,0x000000376cc00000) (1024K)]
+  0x0000015f13725500 JavaThread "pool-1-thread-1"            daemon [_thread_blocked, id=28332, stack(0x000000376d500000,0x000000376d600000) (1024K)]
+  0x0000015f1372c490 JavaThread "ForkJoinPool.commonPool-worker-1" daemon [_thread_blocked, id=25080, stack(0x0000003768c00000,0x0000003768d00000) (1024K)]
+  0x0000015f0893b3b0 JavaThread "process reaper"             daemon [_thread_blocked, id=26696, stack(0x00000037689d0000,0x00000037689f0000) (128K)]
+  0x0000015f0893a690 JavaThread "ForkJoinPool.commonPool-worker-2" daemon [_thread_blocked, id=27104, stack(0x000000376a600000,0x000000376a700000) (1024K)]
+Total: 38
+
+Other Threads:
+  0x0000015f0800b090 VMThread "VM Thread"                           [id=19352, stack(0x0000003769600000,0x0000003769700000) (1024K)]
+  0x0000015f7fd42f20 WatcherThread "VM Periodic Task Thread"        [id=13836, stack(0x0000003769500000,0x0000003769600000) (1024K)]
+  0x0000015f69b63060 WorkerThread "GC Thread#0"                     [id=11076, stack(0x0000003769000000,0x0000003769100000) (1024K)]
+  0x0000015f08f80c10 WorkerThread "GC Thread#1"                     [id=30892, stack(0x000000376ac00000,0x000000376ad00000) (1024K)]
+  0x0000015f08f695b0 WorkerThread "GC Thread#2"                     [id=22328, stack(0x000000376ad00000,0x000000376ae00000) (1024K)]
+  0x0000015f08f69d60 WorkerThread "GC Thread#3"                     [id=4468, stack(0x000000376ae00000,0x000000376af00000) (1024K)]
+  0x0000015f08f6a100 WorkerThread "GC Thread#4"                     [id=11428, stack(0x000000376af00000,0x000000376b000000) (1024K)]
+  0x0000015f08f6a4a0 WorkerThread "GC Thread#5"                     [id=35124, stack(0x000000376b000000,0x000000376b100000) (1024K)]
+  0x0000015f08f6b050 WorkerThread "GC Thread#6"                     [id=35020, stack(0x000000376b100000,0x000000376b200000) (1024K)]
+  0x0000015f08f6c330 WorkerThread "GC Thread#7"                     [id=21128, stack(0x000000376b200000,0x000000376b300000) (1024K)]
+  0x0000015f08f6b850 WorkerThread "GC Thread#8"                     [id=18228, stack(0x000000376b300000,0x000000376b400000) (1024K)]
+  0x0000015f08f6c6d0 WorkerThread "GC Thread#9"                     [id=18724, stack(0x000000376b400000,0x000000376b500000) (1024K)]
+  0x0000015f69b73450 ConcurrentGCThread "G1 Main Marker"            [id=2352, stack(0x0000003769100000,0x0000003769200000) (1024K)]
+  0x0000015f69b75440 WorkerThread "G1 Conc#0"                       [id=12428, stack(0x0000003769200000,0x0000003769300000) (1024K)]
+  0x0000015f08f6bf90 WorkerThread "G1 Conc#1"                       [id=18272, stack(0x000000376ba00000,0x000000376bb00000) (1024K)]
+  0x0000015f08f6ce10 WorkerThread "G1 Conc#2"                       [id=1100, stack(0x000000376bb00000,0x000000376bc00000) (1024K)]
+  0x0000015f7fc14960 ConcurrentGCThread "G1 Refine#0"               [id=10160, stack(0x0000003769300000,0x0000003769400000) (1024K)]
+  0x0000015f7fc15180 ConcurrentGCThread "G1 Service"                [id=10208, stack(0x0000003769400000,0x0000003769500000) (1024K)]
+Total: 18
+
+Threads with active compile tasks:
+Total: 0
+
+VM state: not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap address: 0x000000070b000000, size: 3920 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+
+CDS archive(s) not mapped
+Compressed class space mapped at: 0x0000000800000000-0x0000000840000000, reserved size: 1073741824
+Narrow klass base: 0x0000000800000000, Narrow klass shift: 0, Narrow klass range: 0x40000000
+
+GC Precious Log:
+ CardTable entry size: 512
+ Card Set container configuration: InlinePtr #cards 4 size 8 Array Of Cards #cards 16 size 48 Howl #buckets 8 coarsen threshold 3686 Howl Bitmap #cards 512 size 80 coarsen threshold 460 Card regions per heap region 1 cards per card region 4096
+ CPUs: 12 total, 12 available
+ Memory: 15677M
+ Large Page Support: Disabled
+ NUMA Support: Disabled
+ Compressed Oops: Enabled (Zero based)
+ Heap Region Size: 2M
+ Heap Min Capacity: 8M
+ Heap Initial Capacity: 246M
+ Heap Max Capacity: 3920M
+ Pre-touch: Disabled
+ Parallel Workers: 10
+ Concurrent Workers: 3
+ Concurrent Refinement Workers: 10
+ Periodic GC: Disabled
+
+Heap:
+ garbage-first heap   total 49152K, used 23920K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 8 young (16384K), 1 survivors (2048K)
+ Metaspace       used 40309K, committed 40768K, reserved 1114112K
+  class space    used 4009K, committed 4224K, reserved 1048576K
+
+Heap Regions: E=young(eden), S=young(survivor), O=old, HS=humongous(starts), HC=humongous(continues), CS=collection set, F=free, TAMS=top-at-mark-start, PB=parsable bottom
+|   0|0x000000070b000000, 0x000000070b1ffff8, 0x000000070b200000| 99%| O|  |TAMS 0x000000070b000000| PB 0x000000070b000000| Untracked 
+|   1|0x000000070b200000, 0x000000070b30c9d0, 0x000000070b400000| 52%| O|  |TAMS 0x000000070b200000| PB 0x000000070b200000| Untracked 
+|   2|0x000000070b400000, 0x000000070b600000, 0x000000070b600000|100%| O|  |TAMS 0x000000070b400000| PB 0x000000070b400000| Untracked 
+|   3|0x000000070b600000, 0x000000070b7fffe8, 0x000000070b800000| 99%| O|  |TAMS 0x000000070b600000| PB 0x000000070b600000| Untracked 
+|   4|0x000000070b800000, 0x000000070b80fc30, 0x000000070ba00000|  3%| O|  |TAMS 0x000000070b800000| PB 0x000000070b800000| Untracked 
+|   5|0x000000070ba00000, 0x000000070ba00000, 0x000000070bc00000|  0%| F|  |TAMS 0x000000070ba00000| PB 0x000000070ba00000| Untracked 
+|   6|0x000000070bc00000, 0x000000070bc00000, 0x000000070be00000|  0%| F|  |TAMS 0x000000070bc00000| PB 0x000000070bc00000| Untracked 
+|   7|0x000000070be00000, 0x000000070be3fcf0, 0x000000070c000000| 12%| S|CS|TAMS 0x000000070be00000| PB 0x000000070be00000| Complete 
+|   8|0x000000070c000000, 0x000000070c000000, 0x000000070c200000|  0%| F|  |TAMS 0x000000070c000000| PB 0x000000070c000000| Untracked 
+|   9|0x000000070c200000, 0x000000070c400000, 0x000000070c400000|100%|HS|  |TAMS 0x000000070c200000| PB 0x000000070c200000| Untracked 
+|  10|0x000000070c400000, 0x000000070c600000, 0x000000070c600000|100%|HC|  |TAMS 0x000000070c400000| PB 0x000000070c400000| Untracked 
+|  11|0x000000070c600000, 0x000000070c600000, 0x000000070c800000|  0%| F|  |TAMS 0x000000070c600000| PB 0x000000070c600000| Untracked 
+|  12|0x000000070c800000, 0x000000070c800000, 0x000000070ca00000|  0%| F|  |TAMS 0x000000070c800000| PB 0x000000070c800000| Untracked 
+|  13|0x000000070ca00000, 0x000000070ca00000, 0x000000070cc00000|  0%| F|  |TAMS 0x000000070ca00000| PB 0x000000070ca00000| Untracked 
+|  14|0x000000070cc00000, 0x000000070cc00000, 0x000000070ce00000|  0%| F|  |TAMS 0x000000070cc00000| PB 0x000000070cc00000| Untracked 
+|  15|0x000000070ce00000, 0x000000070ce00000, 0x000000070d000000|  0%| F|  |TAMS 0x000000070ce00000| PB 0x000000070ce00000| Untracked 
+|  16|0x000000070d000000, 0x000000070d000000, 0x000000070d200000|  0%| F|  |TAMS 0x000000070d000000| PB 0x000000070d000000| Untracked 
+|  17|0x000000070d200000, 0x000000070d400000, 0x000000070d400000|100%| E|  |TAMS 0x000000070d200000| PB 0x000000070d200000| Complete 
+|  18|0x000000070d400000, 0x000000070d600000, 0x000000070d600000|100%| E|CS|TAMS 0x000000070d400000| PB 0x000000070d400000| Complete 
+|  19|0x000000070d600000, 0x000000070d800000, 0x000000070d800000|100%| E|CS|TAMS 0x000000070d600000| PB 0x000000070d600000| Complete 
+|  20|0x000000070d800000, 0x000000070da00000, 0x000000070da00000|100%| E|CS|TAMS 0x000000070d800000| PB 0x000000070d800000| Complete 
+|  21|0x000000070da00000, 0x000000070dc00000, 0x000000070dc00000|100%| E|CS|TAMS 0x000000070da00000| PB 0x000000070da00000| Complete 
+|  22|0x000000070dc00000, 0x000000070de00000, 0x000000070de00000|100%| E|CS|TAMS 0x000000070dc00000| PB 0x000000070dc00000| Complete 
+|  23|0x000000070de00000, 0x000000070e000000, 0x000000070e000000|100%| E|CS|TAMS 0x000000070de00000| PB 0x000000070de00000| Complete 
+
+Card table byte_map: [0x0000015f7c950000,0x0000015f7d100000] _byte_map_base: 0x0000015f790f8000
+
+Marking Bits: (CMBitMap*) 0x0000015f69b63670
+ Bits: [0x0000015f00000000, 0x0000015f03d40000)
+
+Polling page: 0x0000015f67920000
+
+Metaspace:
+
+Usage:
+  Non-class:     35.45 MB used.
+      Class:      3.92 MB used.
+       Both:     39.36 MB used.
+
+Virtual space:
+  Non-class space:       64.00 MB reserved,      35.69 MB ( 56%) committed,  1 nodes.
+      Class space:        1.00 GB reserved,       4.12 MB ( <1%) committed,  1 nodes.
+             Both:        1.06 GB reserved,      39.81 MB (  4%) committed. 
+
+Chunk freelists:
+   Non-Class:  12.20 MB
+       Class:  11.69 MB
+        Both:  23.90 MB
+
+MaxMetaspaceSize: unlimited
+CompressedClassSpaceSize: 1.00 GB
+Initial GC threshold: 21.00 MB
+Current GC threshold: 65.94 MB
+CDS: off
+ - commit_granule_bytes: 65536.
+ - commit_granule_words: 8192.
+ - virtual_space_node_default_size: 8388608.
+ - enlarge_chunks_in_place: 1.
+ - use_allocation_guard: 0.
+
+
+Internal statistics:
+
+num_allocs_failed_limit: 6.
+num_arena_births: 648.
+num_arena_deaths: 2.
+num_vsnodes_births: 2.
+num_vsnodes_deaths: 0.
+num_space_committed: 637.
+num_space_uncommitted: 0.
+num_chunks_returned_to_freelist: 9.
+num_chunks_taken_from_freelist: 1697.
+num_chunk_merges: 6.
+num_chunk_splits: 1121.
+num_chunks_enlarged: 798.
+num_inconsistent_stats: 0.
+
+CodeHeap 'non-profiled nmethods': size=120000Kb used=5016Kb max_used=5054Kb free=114983Kb
+ bounds [0x0000015f74710000, 0x0000015f74c20000, 0x0000015f7bc40000]
+CodeHeap 'profiled nmethods': size=120000Kb used=8202Kb max_used=13298Kb free=111797Kb
+ bounds [0x0000015f6cc40000, 0x0000015f6d940000, 0x0000015f74170000]
+CodeHeap 'non-nmethods': size=5760Kb used=2629Kb max_used=2692Kb free=3130Kb
+ bounds [0x0000015f74170000, 0x0000015f74430000, 0x0000015f74710000]
+ total_blobs=6267 nmethods=5054 adapters=1117
+ compilation: enabled
+              stopped_count=0, restarted_count=0
+ full_count=0
+
+Compilation events (20 events):
+Event: 149.327 Thread 0x0000015f080a4630 6580       4       org.jetbrains.compose.devtools.theme.DtColors::getStatusColorOrange2-0d7_KjU (4 bytes)
+Event: 149.327 Thread 0x0000015f080a4630 nmethod 6580 0x0000015f74971910 code [0x0000015f74971aa0, 0x0000015f74971b30]
+Event: 154.249 Thread 0x0000015f080cca00 6581       3       kotlinx.coroutines.scheduling.CoroutineScheduler::access$getControlState$volatile$FU (4 bytes)
+Event: 154.249 Thread 0x0000015f080cca00 nmethod 6581 0x0000015f6cc6f610 code [0x0000015f6cc6f7c0, 0x0000015f6cc6f910]
+Event: 165.230 Thread 0x0000015f080a4630 6582       4       kotlinx.coroutines.internal.Segment::tryIncPointers$kotlinx_coroutines_core (64 bytes)
+Event: 165.232 Thread 0x0000015f080a4630 nmethod 6582 0x0000015f74711510 code [0x0000015f747116a0, 0x0000015f747117a8]
+Event: 184.291 Thread 0x0000015f080a4630 6583       4       java.util.concurrent.atomic.AtomicIntegerFieldUpdater$AtomicIntegerFieldUpdaterImpl::get (17 bytes)
+Event: 184.292 Thread 0x0000015f080a4630 nmethod 6583 0x0000015f7471c890 code [0x0000015f7471ca20, 0x0000015f7471cb80]
+Event: 208.795 Thread 0x0000015f080a4630 6584       4       kotlin.collections.CollectionsKt___CollectionsKt::plus (39 bytes)
+Event: 208.795 Thread 0x0000015f080cca00 6585       3       java.util.IdentityHashMap$IdentityHashMapIterator::nextIndex (72 bytes)
+Event: 208.796 Thread 0x0000015f080cca00 nmethod 6585 0x0000015f6cc9ba90 code [0x0000015f6cc9bc80, 0x0000015f6cc9c0b8]
+Event: 208.808 Thread 0x0000015f080a4630 nmethod 6584 0x0000015f74751810 code [0x0000015f74751a40, 0x0000015f74752888]
+Event: 208.832 Thread 0x0000015f080cca00 6586       1       sun.nio.fs.NativeBuffer::size (5 bytes)
+Event: 208.832 Thread 0x0000015f080cca00 nmethod 6586 0x0000015f74716910 code [0x0000015f74716aa0, 0x0000015f74716b68]
+Event: 208.836 Thread 0x0000015f080cca00 6588       3       java.lang.invoke.MethodHandles::argumentsWithCombinerChecks (197 bytes)
+Event: 208.837 Thread 0x0000015f080a4630 6589       4       androidx.compose.runtime.SlotTableKt::access$groupSize (6 bytes)
+Event: 208.837 Thread 0x0000015f080a4630 nmethod 6589 0x0000015f74725410 code [0x0000015f747255a0, 0x0000015f74725650]
+Event: 208.838 Thread 0x0000015f080cca00 nmethod 6588 0x0000015f6ce69890 code [0x0000015f6ce69cc0, 0x0000015f6ce6b5b0]
+Event: 208.838 Thread 0x0000015f080cca00 6587       3       java.lang.invoke.MethodHandles::argumentsWithCombiner (130 bytes)
+Event: 208.839 Thread 0x0000015f080cca00 nmethod 6587 0x0000015f6ceb6c90 code [0x0000015f6ceb6f40, 0x0000015f6ceb7e20]
+
+GC Heap History (20 events):
+Event: 64.106 GC heap before
+{Heap before GC invocations=18 (full 1):
+ garbage-first heap   total 61440K, used 26195K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 9 young (18432K), 1 survivors (2048K)
+ Metaspace       used 40082K, committed 40512K, reserved 1114112K
+  class space    used 3976K, committed 4160K, reserved 1048576K
+}
+Event: 64.140 GC heap after
+{Heap after GC invocations=19 (full 2):
+ garbage-first heap   total 49152K, used 11332K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 0 young (0K), 0 survivors (0K)
+ Metaspace       used 40082K, committed 40512K, reserved 1114112K
+  class space    used 3976K, committed 4160K, reserved 1048576K
+}
+Event: 81.497 GC heap before
+{Heap before GC invocations=19 (full 2):
+ garbage-first heap   total 49152K, used 40004K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 14 young (28672K), 0 survivors (0K)
+ Metaspace       used 40084K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 81.499 GC heap after
+{Heap after GC invocations=20 (full 2):
+ garbage-first heap   total 49152K, used 11599K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 1 young (2048K), 1 survivors (2048K)
+ Metaspace       used 40084K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 94.154 GC heap before
+{Heap before GC invocations=20 (full 2):
+ garbage-first heap   total 49152K, used 32079K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 12 young (24576K), 1 survivors (2048K)
+ Metaspace       used 40084K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 94.187 GC heap after
+{Heap after GC invocations=21 (full 3):
+ garbage-first heap   total 49152K, used 11369K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 0 young (0K), 0 survivors (0K)
+ Metaspace       used 40084K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 111.312 GC heap before
+{Heap before GC invocations=21 (full 3):
+ garbage-first heap   total 49152K, used 40041K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 14 young (28672K), 0 survivors (0K)
+ Metaspace       used 40085K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 111.314 GC heap after
+{Heap after GC invocations=22 (full 3):
+ garbage-first heap   total 49152K, used 11622K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 1 young (2048K), 1 survivors (2048K)
+ Metaspace       used 40085K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 124.189 GC heap before
+{Heap before GC invocations=22 (full 3):
+ garbage-first heap   total 49152K, used 32102K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 12 young (24576K), 1 survivors (2048K)
+ Metaspace       used 40089K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 124.219 GC heap after
+{Heap after GC invocations=23 (full 4):
+ garbage-first heap   total 49152K, used 11379K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 0 young (0K), 0 survivors (0K)
+ Metaspace       used 40089K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 141.243 GC heap before
+{Heap before GC invocations=23 (full 4):
+ garbage-first heap   total 49152K, used 40051K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 14 young (28672K), 0 survivors (0K)
+ Metaspace       used 40092K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 141.244 GC heap after
+{Heap after GC invocations=24 (full 4):
+ garbage-first heap   total 49152K, used 11637K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 1 young (2048K), 1 survivors (2048K)
+ Metaspace       used 40092K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 154.220 GC heap before
+{Heap before GC invocations=24 (full 4):
+ garbage-first heap   total 49152K, used 32117K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 12 young (24576K), 1 survivors (2048K)
+ Metaspace       used 40093K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 154.249 GC heap after
+{Heap after GC invocations=25 (full 5):
+ garbage-first heap   total 49152K, used 11382K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 0 young (0K), 0 survivors (0K)
+ Metaspace       used 40093K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 171.797 GC heap before
+{Heap before GC invocations=25 (full 5):
+ garbage-first heap   total 49152K, used 40054K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 14 young (28672K), 0 survivors (0K)
+ Metaspace       used 40093K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 171.799 GC heap after
+{Heap after GC invocations=26 (full 5):
+ garbage-first heap   total 49152K, used 11643K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 1 young (2048K), 1 survivors (2048K)
+ Metaspace       used 40093K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 184.257 GC heap before
+{Heap before GC invocations=26 (full 5):
+ garbage-first heap   total 49152K, used 32123K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 12 young (24576K), 1 survivors (2048K)
+ Metaspace       used 40093K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 184.291 GC heap after
+{Heap after GC invocations=27 (full 6):
+ garbage-first heap   total 49152K, used 11377K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 0 young (0K), 0 survivors (0K)
+ Metaspace       used 40093K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 201.457 GC heap before
+{Heap before GC invocations=27 (full 6):
+ garbage-first heap   total 49152K, used 40049K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 14 young (28672K), 0 survivors (0K)
+ Metaspace       used 40093K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+Event: 201.459 GC heap after
+{Heap after GC invocations=28 (full 6):
+ garbage-first heap   total 49152K, used 11632K [0x000000070b000000, 0x0000000800000000)
+  region size 2048K, 1 young (2048K), 1 survivors (2048K)
+ Metaspace       used 40093K, committed 40512K, reserved 1114112K
+  class space    used 3977K, committed 4160K, reserved 1048576K
+}
+
+Dll operation events (2 events):
+Event: 0.009 Loaded shared library C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\java.dll
+Event: 0.017 Loaded shared library C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\zip.dll
+
+Deoptimization events (20 events):
+Event: 208.835 Thread 0x0000015f08bb2cb0 Uncommon trap: trap_request=0xffffff45 fr.pc=0x0000015f74a47424 relative=0x0000000000007e44
+Event: 208.835 Thread 0x0000015f08bb2cb0 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000015f74a47424 method=androidx.compose.runtime.Recomposer$runRecomposeAndApplyChanges$2.invokeSuspend$lambda$22(Landroidx/compose/runtime/Recomposer;Landroidx/collection/MutableScatterSet;Landroi
+Event: 208.835 Thread 0x0000015f08bb2cb0 DEOPT PACKING pc=0x0000015f74a47424 sp=0x000000376a7ff090
+Event: 208.835 Thread 0x0000015f08bb2cb0 DEOPT UNPACKING pc=0x0000015f741c7da2 sp=0x000000376a7fef10 mode 2
+Event: 208.835 Thread 0x0000015f08bb2cb0 Uncommon trap: trap_request=0xffffff45 fr.pc=0x0000015f74a1162c relative=0x000000000000108c
+Event: 208.835 Thread 0x0000015f08bb2cb0 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000015f74a1162c method=androidx.compose.runtime.ComposerImpl.end(Z)V @ 1322 c2
+Event: 208.835 Thread 0x0000015f08bb2cb0 DEOPT PACKING pc=0x0000015f74a1162c sp=0x000000376a7fe7b0
+Event: 208.835 Thread 0x0000015f08bb2cb0 DEOPT UNPACKING pc=0x0000015f741c7da2 sp=0x000000376a7fe6a0 mode 2
+Event: 208.836 Thread 0x0000015f08bb2cb0 Uncommon trap: trap_request=0xffffffde fr.pc=0x0000015f74b4e214 relative=0x0000000000001b74
+Event: 208.836 Thread 0x0000015f08bb2cb0 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000015f74b4e214 method=androidx.compose.runtime.CompositionImpl.applyChangesInLocked(Landroidx/compose/runtime/changelist/ChangeList;)V @ 146 c2
+Event: 208.836 Thread 0x0000015f08bb2cb0 DEOPT PACKING pc=0x0000015f74b4e214 sp=0x000000376a7fedd0
+Event: 208.836 Thread 0x0000015f08bb2cb0 DEOPT UNPACKING pc=0x0000015f741c7da2 sp=0x000000376a7fec60 mode 2
+Event: 208.837 Thread 0x0000015f08bb2cb0 Uncommon trap: trap_request=0xffffff45 fr.pc=0x0000015f74ab9618 relative=0x0000000000000c18
+Event: 208.837 Thread 0x0000015f08bb2cb0 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000015f74ab9618 method=androidx.compose.runtime.SlotWriter.recalculateMarks()V @ 5 c2
+Event: 208.837 Thread 0x0000015f08bb2cb0 DEOPT PACKING pc=0x0000015f74ab9618 sp=0x000000376a7fec00
+Event: 208.837 Thread 0x0000015f08bb2cb0 DEOPT UNPACKING pc=0x0000015f741c7da2 sp=0x000000376a7feb68 mode 2
+Event: 208.838 Thread 0x0000015f08bb2cb0 Uncommon trap: trap_request=0xffffff45 fr.pc=0x0000015f749b3970 relative=0x0000000000000250
+Event: 208.838 Thread 0x0000015f08bb2cb0 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000015f749b3970 method=java.util.HashMap.clear()V @ 23 c2
+Event: 208.838 Thread 0x0000015f08bb2cb0 DEOPT PACKING pc=0x0000015f749b3970 sp=0x000000376a7fe9b0
+Event: 208.838 Thread 0x0000015f08bb2cb0 DEOPT UNPACKING pc=0x0000015f741c7da2 sp=0x000000376a7fe960 mode 2
+
+Classes loaded (20 events):
+Event: 208.793 Loading class java/io/InterruptedIOException
+Event: 208.793 Loading class java/io/InterruptedIOException done
+Event: 208.793 Loading class java/net/SocketTimeoutException
+Event: 208.793 Loading class java/net/SocketTimeoutException done
+Event: 208.827 Loading class java/util/concurrent/ForkJoinPool$DefaultForkJoinWorkerThreadFactory$1
+Event: 208.827 Loading class java/util/concurrent/ForkJoinPool$DefaultForkJoinWorkerThreadFactory$1 done
+Event: 208.833 Loading class sun/nio/ch/ChannelInputStream
+Event: 208.833 Loading class sun/nio/ch/ChannelInputStream done
+Event: 208.838 Loading class java/util/LinkedHashMap$LinkedValues
+Event: 208.838 Loading class java/util/LinkedHashMap$LinkedValues done
+Event: 208.839 Loading class java/util/LinkedHashMap$LinkedValueIterator
+Event: 208.839 Loading class java/util/LinkedHashMap$LinkedValueIterator done
+Event: 208.858 Loading class java/util/stream/Streams$RangeIntSpliterator
+Event: 208.858 Loading class java/util/stream/Streams$RangeIntSpliterator done
+Event: 208.858 Loading class java/util/stream/IntPipeline$Head
+Event: 208.858 Loading class java/util/stream/IntPipeline
+Event: 208.859 Loading class java/util/stream/IntPipeline done
+Event: 208.859 Loading class java/util/stream/IntPipeline$Head done
+Event: 208.859 Loading class java/util/function/IntFunction
+Event: 208.859 Loading class java/util/function/IntFunction done
+
+Classes unloaded (1 events):
+Event: 34.073 Thread 0x0000015f0800b090 Unloading class 0x0000000800401c00 'jdk/internal/reflect/GeneratedSerializationConstructorAccessor22'
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (20 events):
+Event: 5.318 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000071a41aa88}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial(java.lang.Object, java.lang.Object, float)'> (0x000000071a41aa88) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.333 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000071a48d430}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeStatic(java.lang.Object, java.lang.Object, long, java.lang.Object)'> (0x000000071a48d430) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.345 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000071a533300}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, int, int, java.lang.Object)'> (0x000000071a533300) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.347 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000071a549c30}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeStatic(java.lang.Object, java.lang.Object, java.lang.Object, int, int, java.lang.Object, java.lang.Object)'> (0x000000071a549c30) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.347 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000071a5521b8}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, int, int, java.lang.Object)'> (0x000000071a5521b8) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.348 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000071a556cb8}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, int, int, java.lang.Object)'> (0x000000071a556cb8) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.349 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000071a56bef8}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, int, int, java.lang.Object, java.lang.Object)'> (0x000000071a56bef8) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.349 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000071a570878}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, int, int, java.lang.Object, java.lang.Object)'> (0x000000071a570878) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.365 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000070c05eca0}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeStatic(java.lang.Object, java.lang.Object, int, int, java.lang.Object)'> (0x000000070c05eca0) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.371 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000070c082428}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, long, java.lang.Object)'> (0x000000070c082428) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.371 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000070c086a90}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, long, java.lang.Object)'> (0x000000070c086a90) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.538 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000070be2a778}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, int, int)'> (0x000000070be2a778) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.539 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000070be3c928}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, int, int)'> (0x000000070be3c928) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.539 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000070be417e8}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, int, int)'> (0x000000070be417e8) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.589 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000070bf43858}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeStatic(java.lang.Object, java.lang.Object, java.lang.Object, int, int, java.lang.Object)'> (0x000000070bf43858) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.589 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000070bf4c088}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeStatic(java.lang.Object, java.lang.Object, java.lang.Object, long, java.lang.Object)'> (0x000000070bf4c088) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 5.713 Thread 0x0000015f08bb2cb0 Exception <a 'java/lang/NoSuchMethodError'{0x000000070bcb83c0}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeStatic(java.lang.Object, long, java.lang.Object, java.lang.Object)'> (0x000000070bcb83c0) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 784]
+Event: 16.523 Thread 0x0000015f08a99600 Exception <a 'java/net/SocketException'{0x0000000712f67310}: Connection reset by peer: shutdown> (0x0000000712f67310) 
+thrown [s\src\hotspot\share\prims\jni.cpp, line 567]
+Event: 16.572 Thread 0x0000015f08bb2cb0 Implicit null exception at 0x0000015f7492be79 to 0x0000015f7492d2fc
+Event: 208.793 Thread 0x0000015f08ac9a10 Exception <a 'sun/net/ConnectionResetException'{0x000000070d201b00}: Connection reset> (0x000000070d201b00) 
+thrown [s\src\hotspot\share\prims\jni.cpp, line 567]
+
+ZGC Phase Switch (0 events):
+No events
+
+VM Operations (20 events):
+Event: 120.425 Executing VM operation: HandshakeAllThreads (HandshakeForDeflation)
+Event: 120.425 Executing VM operation: HandshakeAllThreads (HandshakeForDeflation) done
+Event: 120.425 Executing VM operation: RendezvousGCThreads
+Event: 120.425 Executing VM operation: RendezvousGCThreads done
+Event: 124.188 Executing VM operation: G1CollectFull (System.gc())
+Event: 124.220 Executing VM operation: G1CollectFull (System.gc()) done
+Event: 141.243 Executing VM operation: G1CollectForAllocation (G1 Evacuation Pause)
+Event: 141.244 Executing VM operation: G1CollectForAllocation (G1 Evacuation Pause) done
+Event: 154.220 Executing VM operation: G1CollectFull (System.gc())
+Event: 154.249 Executing VM operation: G1CollectFull (System.gc()) done
+Event: 171.797 Executing VM operation: G1CollectForAllocation (G1 Evacuation Pause)
+Event: 171.799 Executing VM operation: G1CollectForAllocation (G1 Evacuation Pause) done
+Event: 180.619 Executing VM operation: HandshakeAllThreads (HandshakeForDeflation)
+Event: 180.619 Executing VM operation: HandshakeAllThreads (HandshakeForDeflation) done
+Event: 180.619 Executing VM operation: RendezvousGCThreads
+Event: 180.619 Executing VM operation: RendezvousGCThreads done
+Event: 184.257 Executing VM operation: G1CollectFull (System.gc())
+Event: 184.291 Executing VM operation: G1CollectFull (System.gc()) done
+Event: 201.457 Executing VM operation: G1CollectForAllocation (G1 Evacuation Pause)
+Event: 201.459 Executing VM operation: G1CollectForAllocation (G1 Evacuation Pause) done
+
+Memory protections (0 events):
+No events
+
+Nmethod flushes (20 events):
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d723510
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d8e8590
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d8f6310
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d8f6b10
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d8f8990
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d8fb490
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d2ba390
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d4cf190
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d632610
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d6b2410
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d6e2090
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d6f9410
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d6fa410
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d747990
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d748010
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d748810
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d7a6510
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d7a9a90
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d7f1790
+Event: 184.274 Thread 0x0000015f0800b090 flushing  nmethod 0x0000015f6d7f2210
+
+Events (20 events):
+Event: 71.331 Thread 0x0000015f080a4630 Thread added: 0x0000015f080cec10
+Event: 73.764 Thread 0x0000015f080cec10 Thread exited: 0x0000015f080cec10
+Event: 79.832 Thread 0x0000015f080a4630 Thread added: 0x0000015f080cbc60
+Event: 79.832 Thread 0x0000015f080a4630 Thread added: 0x0000015f080cec10
+Event: 80.047 Thread 0x0000015f080cec10 Thread exited: 0x0000015f080cec10
+Event: 88.382 Thread 0x0000015f080a4630 Thread added: 0x0000015f080cec10
+Event: 91.086 Thread 0x0000015f080cec10 Thread exited: 0x0000015f080cec10
+Event: 94.154 Thread 0x0000015f080cbc60 Thread exited: 0x0000015f080cbc60
+Event: 116.031 Thread 0x0000015f080a4630 Thread added: 0x0000015f080cec10
+Event: 116.196 Thread 0x0000015f080cec10 Thread exited: 0x0000015f080cec10
+Event: 135.586 Thread 0x0000015f080a4630 Thread added: 0x0000015f080cec10
+Event: 144.027 Thread 0x0000015f080cec10 Thread exited: 0x0000015f080cec10
+Event: 208.795 Thread 0x0000015f08aca0a0 Thread exited: 0x0000015f08aca0a0
+Event: 208.795 Thread 0x0000015f08ac9a10 Thread exited: 0x0000015f08ac9a10
+Event: 208.828 Thread 0x0000015f08ac7940 Thread added: 0x0000015f1372c490
+Event: 208.834 Thread 0x0000015f08ac8cf0 Thread added: 0x0000015f13729d30
+Event: 208.835 Thread 0x0000015f08ac8cf0 Thread added: 0x0000015f1372a3c0
+Event: 208.835 Thread 0x0000015f08ac8cf0 Thread added: 0x0000015f1372b770
+Event: 208.836 Thread 0x0000015f1372b770 Thread exited: 0x0000015f1372b770
+Event: 208.854 Thread 0x0000015f08a9d860 Thread exited: 0x0000015f08a9d860
+
+
+Dynamic libraries:
+0x00007ff7c7ef0000 - 0x00007ff7c7efa000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\java.exe
+0x00007ff8211c0000 - 0x00007ff821429000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ff81ff30000 - 0x00007ff81fff9000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ff81e7f0000 - 0x00007ff81ebe3000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ff81e3f0000 - 0x00007ff81e53b000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ff811ca0000 - 0x00007ff811cbb000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\VCRUNTIME140.dll
+0x00007ff8175d0000 - 0x00007ff8175e8000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\jli.dll
+0x00007ff820b20000 - 0x00007ff820ce4000 	C:\WINDOWS\System32\USER32.dll
+0x00007ff8050f0000 - 0x00007ff805383000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.5074_none_3e0d6f78e32fd63f\COMCTL32.dll
+0x00007ff81edf0000 - 0x00007ff81ee17000 	C:\WINDOWS\System32\win32u.dll
+0x00007ff820540000 - 0x00007ff8205e9000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ff81efb0000 - 0x00007ff81efdb000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ff81e6c0000 - 0x00007ff81e7ed000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ff81eee0000 - 0x00007ff81ef83000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ff820770000 - 0x00007ff82079f000 	C:\WINDOWS\System32\IMM32.DLL
+0x00007ff8174f0000 - 0x00007ff8174fc000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\vcruntime140_1.dll
+0x00007ff8028a0000 - 0x00007ff80292d000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\msvcp140.dll
+0x00007fff814f0000 - 0x00007fff8217b000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\server\jvm.dll
+0x00007ff81f4d0000 - 0x00007ff81f584000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ff820110000 - 0x00007ff8201b6000 	C:\WINDOWS\System32\sechost.dll
+0x00007ff81f1f0000 - 0x00007ff81f308000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ff820aa0000 - 0x00007ff820b14000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ff81e020000 - 0x00007ff81e07e000 	C:\WINDOWS\SYSTEM32\POWRPROF.dll
+0x00007ff80f1c0000 - 0x00007ff80f1cb000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ff811fb0000 - 0x00007ff811fe5000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ff81e000000 - 0x00007ff81e014000 	C:\WINDOWS\SYSTEM32\UMPDC.dll
+0x00007ff81d100000 - 0x00007ff81d11b000 	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
+0x00007ff811c90000 - 0x00007ff811c9a000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\jimage.dll
+0x00007ff81bb60000 - 0x00007ff81bda2000 	C:\WINDOWS\SYSTEM32\DBGHELP.DLL
+0x00007ff8201c0000 - 0x00007ff82053b000 	C:\WINDOWS\System32\combase.dll
+0x00007ff81f3f0000 - 0x00007ff81f4c7000 	C:\WINDOWS\System32\OLEAUT32.dll
+0x00007ffff39b0000 - 0x00007ffff39ed000 	C:\WINDOWS\SYSTEM32\dbgcore.DLL
+0x00007ff81e350000 - 0x00007ff81e3e9000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ff8067e0000 - 0x00007ff806800000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\java.dll
+0x00007ff806030000 - 0x00007ff806048000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\zip.dll
+0x00007ff81f590000 - 0x00007ff81fcdd000 	C:\WINDOWS\System32\SHELL32.dll
+0x00007ff81ec80000 - 0x00007ff81edec000 	C:\WINDOWS\System32\wintypes.dll
+0x00007ff81bf70000 - 0x00007ff81c7c9000 	C:\WINDOWS\SYSTEM32\windows.storage.dll
+0x00007ff820670000 - 0x00007ff820760000 	C:\WINDOWS\System32\SHCORE.dll
+0x00007ff8200a0000 - 0x00007ff820102000 	C:\WINDOWS\System32\shlwapi.dll
+0x00007ff81e270000 - 0x00007ff81e299000 	C:\WINDOWS\SYSTEM32\profapi.dll
+0x00007ff811c80000 - 0x00007ff811c90000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\net.dll
+0x00007ff817630000 - 0x00007ff81774f000 	C:\WINDOWS\SYSTEM32\WINHTTP.dll
+0x00007ff81d690000 - 0x00007ff81d6fb000 	C:\WINDOWS\system32\mswsock.dll
+0x00007ff801880000 - 0x00007ff801896000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\nio.dll
+0x00007fff81350000 - 0x00007fff814e8000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\awt.dll
+0x00007fffecb30000 - 0x00007fffecb74000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\nvdaControllerClient64.dll
+0x00007ff81b580000 - 0x00007ff81b5ab000 	C:\WINDOWS\SYSTEM32\dwmapi.dll
+0x00007ff81b0d0000 - 0x00007ff81b16e000 	C:\WINDOWS\SYSTEM32\apphelp.dll
+0x00007ff81b280000 - 0x00007ff81b328000 	C:\WINDOWS\system32\uxtheme.dll
+0x00007ff81fd00000 - 0x00007ff81fe58000 	C:\WINDOWS\System32\MSCTF.dll
+0x00007ff820800000 - 0x00007ff820998000 	C:\WINDOWS\System32\ole32.dll
+0x00007ff80c400000 - 0x00007ff80c409000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\extnet.dll
+0x00007ff81d950000 - 0x00007ff81d96b000 	C:\WINDOWS\SYSTEM32\CRYPTSP.dll
+0x00007ff81d060000 - 0x00007ff81d09b000 	C:\WINDOWS\system32\rsaenh.dll
+0x00007ff81d750000 - 0x00007ff81d77b000 	C:\WINDOWS\SYSTEM32\USERENV.dll
+0x00007ff81e240000 - 0x00007ff81e266000 	C:\WINDOWS\SYSTEM32\bcrypt.dll
+0x00007ff81d970000 - 0x00007ff81d97c000 	C:\WINDOWS\SYSTEM32\CRYPTBASE.dll
+0x00007ff81cb40000 - 0x00007ff81cb74000 	C:\WINDOWS\SYSTEM32\IPHLPAPI.DLL
+0x00007ff81efa0000 - 0x00007ff81efaa000 	C:\WINDOWS\System32\NSI.dll
+0x00007ff81b0a0000 - 0x00007ff81b0ca000 	C:\WINDOWS\system32\Wtsapi32.dll
+0x00007ff81e540000 - 0x00007ff81e6b7000 	C:\WINDOWS\System32\CRYPT32.dll
+0x00007ff81d3b0000 - 0x00007ff81d3f9000 	C:\WINDOWS\SYSTEM32\SspiCli.dll
+0x00007ff81dcb0000 - 0x00007ff81dd13000 	C:\WINDOWS\SYSTEM32\WINSTA.dll
+0x00007fffbd570000 - 0x00007fffbd67c000 	C:\WINDOWS\system32\opengl32.dll
+0x00007ffff8f50000 - 0x00007ffff8f7d000 	C:\WINDOWS\SYSTEM32\GLU32.dll
+0x00007ff81b3b0000 - 0x00007ff81b3f4000 	C:\WINDOWS\SYSTEM32\dxcore.dll
+0x00007fff7cd80000 - 0x00007fff7d9a1000 	C:\Users\maruf\.skiko\a4227eca7f84dbee7d1f618c27632f5bb63a4f8e67b017901356781ac5cc07ba\skiko-windows-x64.dll
+0x00007ff818ad0000 - 0x00007ff818bd4000 	C:\WINDOWS\SYSTEM32\PROPSYS.dll
+0x00007ff819b40000 - 0x00007ff819da7000 	C:\WINDOWS\SYSTEM32\dwrite.dll
+0x00007ff801360000 - 0x00007ff801538000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.gdiplus_6595b64144ccf1df_1.1.26100.5074_none_6ef8625e3dc2500d\gdiplus.dll
+0x00007fffea5b0000 - 0x00007fffea637000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\freetype.dll
+0x00007fffd6420000 - 0x00007fffd64fe000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\fontmanager.dll
+0x00007ff81fe70000 - 0x00007ff81ff21000 	C:\WINDOWS\System32\clbcatq.dll
+0x00007ff819450000 - 0x00007ff81967f000 	C:\WINDOWS\SYSTEM32\WindowsCodecs.dll
+0x00007ff80b720000 - 0x00007ff80b727000 	C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\jawt.dll
+0x00007ff8171d0000 - 0x00007ff817230000 	C:\WINDOWS\SYSTEM32\directxdatabasehelper.dll
+0x00007ff8087f0000 - 0x00007ff80880a000 	C:\WINDOWS\SYSTEM32\windows.staterepositorycore.dll
+0x00007ffff6830000 - 0x00007ffff6860000 	C:\WINDOWS\System32\DriverStore\FileRepository\u0404779.inf_amd64_1b50be75f1d3a009\B404750\atig6pxx.dll
+0x00007fff66fe0000 - 0x00007fff6b1a6000 	C:\WINDOWS\System32\DriverStore\FileRepository\u0404779.inf_amd64_1b50be75f1d3a009\B404750\atio6axx.dll
+0x00007ff820cf0000 - 0x00007ff821177000 	C:\WINDOWS\System32\SETUPAPI.dll
+0x00007ff81df80000 - 0x00007ff81dfad000 	C:\WINDOWS\SYSTEM32\DEVOBJ.dll
+0x00007ff81df20000 - 0x00007ff81df77000 	C:\WINDOWS\SYSTEM32\cfgmgr32.dll
+0x00007ff81ebf0000 - 0x00007ff81ec6e000 	C:\WINDOWS\System32\WINTRUST.dll
+0x00007ff81d9c0000 - 0x00007ff81d9d3000 	C:\WINDOWS\SYSTEM32\MSASN1.dll
+0x00007ff810b80000 - 0x00007ff810bb7000 	C:\WINDOWS\System32\DriverStore\FileRepository\u0404779.inf_amd64_1b50be75f1d3a009\B404750\amdihk64.dll
+0x00007ffff5e40000 - 0x00007ffff5f89000 	C:\WINDOWS\SYSTEM32\textinputframework.dll
+0x00007ff81acf0000 - 0x00007ff81ae15000 	C:\WINDOWS\System32\CoreMessaging.dll
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin;C:\WINDOWS\SYSTEM32;C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.5074_none_3e0d6f78e32fd63f;C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr\bin\server;C:\Users\maruf\.skiko\a4227eca7f84dbee7d1f618c27632f5bb63a4f8e67b017901356781ac5cc07ba;C:\WINDOWS\WinSxS\amd64_microsoft.windows.gdiplus_6595b64144ccf1df_1.1.26100.5074_none_6ef8625e3dc2500d;C:\WINDOWS\System32\DriverStore\FileRepository\u0404779.inf_amd64_1b50be75f1d3a009\B404750
+
+VM Arguments:
+jvm_args: -Dskiko.renderApi=OPENGL -Dcompose.reload.launchMode=GradleBlocking -Dcompose.reload.pidFile=C:\Users\maruf\AndroidStudioProjects\APK Tracer\composeApp\build\run\jvmMain\jvmMain.pid -Dcompose.reload.devToolsHeadless=false -Dcompose.reload.devToolsTransparencyEnabled=true -Dcompose.reload.devToolsAnimationsEnabled=true -Dcompose.reload.logStdout=false -Dgradle.build.root=C:\Users\maruf\AndroidStudioProjects\APK Tracer -Dcompose.reload.buildSystem=Gradle -Dcompose.reload.logLevel=Info -Dgradle.build.project=:composeApp -Dgradle.build.task=hotReloadJvmMain -Dorg.gradle.java.home=C:\Users\maruf\AppData\Local\Programs\Android Studio\jbr -Dcompose.reload.build.warmup=false -Dcompose.reload.devToolsEnabled=true -Dcompose.reload.devToolsDetached=false -Dcompose.reload.resourcesDirtyResolverEnabled=false -Dcompose.reload.build.continuous=true -Dcompose.reload.argfile=C:\Users\maruf\AndroidStudioProjects\APK Tracer\composeApp\build\run\jvmMain\jvmMain.argfile -Dcompose.reload.mainClass=app.apktracer.MainKt 
+java_command: org.jetbrains.compose.devtools.Main
+java_class_path (initial): C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.hot-reload\hot-reload-devtools\1.0.0-beta06\305d5e70a220393bdc917d66b11068dca5a433c2\hot-reload-devtools-1.0.0-beta06.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.hot-reload\hot-reload-devtools-api\1.0.0-beta06\49f3c9ea7f5c5053f6362f5a35dcc905dc849d2a\hot-reload-devtools-api-1.0.0-beta06.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.hot-reload\hot-reload-orchestration\1.0.0-beta06\d931979652cb94f4d26fd7d614056f03321cd758\hot-reload-orchestration-1.0.0-beta06.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.hot-reload\hot-reload-core\1.0.0-beta06\23982f63caef876ccc55084e57cf8fc8c160c4ab\hot-reload-core-1.0.0-beta06.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.hot-reload\hot-reload-runtime-api-jvm\1.0.0-beta06\eab277465dd02e4e48ff61bc645ec050b14f5fa5\hot-reload-runtime-api-jvm-1.0.0-beta06.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.desktop\desktop-jvm\1.9.0-rc01\760a7f1c3278719f2ab9fa443228956e64a7a18e\desktop-jvm-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.components\components-resources-desktop\1.9.0-rc01\263d44e856cb89a759959eec68dafae6d1931110\library-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\io.sellmair\evas-compose-jvm\1.3.0\1214dcce9040d1b9f856b02b443cf8c2ebe1573a\evas-compose-jvm-1.3.0.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\io.sellmair\evas-jvm\1.3.0\74c1f6c46502ffda615a698c02b3166fc7e9b2b2\evas-jvm-1.3.0.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.skiko\skiko-awt-runtime-windows-x64\0.9.22\eb9e70290b72c9d8965ab7354ae396fe3a4af375\skiko-awt-runtime-windows-x64-0.9.22.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.material3\material3-desktop\1.8.2\1f1f838506ceb2c25499517559f120517770b014\material3-desktop-1.8.2.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.material\material-desktop\1.9.0-rc01\67e948eefe3e565d3be2ddf0918a12f676537b0d\material-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.material\material-ripple-desktop\1.9.0-rc01\b0741397d2a9b93d7c9510c68196a27b717c07e9\material-ripple-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.foundation\foundation-desktop\1.9.0-rc01\1c47d1cd5a534a3452cff4520232a1483b87b73c\foundation-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.material\material-icons-core-desktop\1.7.3\414b3096050fe647b0638832eace80f22c06b85c\material-icons-core-desktop-1.7.3.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.animation\animation-desktop\1.9.0-rc01\74ac0663bbdcb8dd7bdbce475d3555ff80bd6d4c\animation-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.foundation\foundation-layout-desktop\1.9.0-rc01\1046ee6bfb6a1494a946af7a4ab0f63226412f13\foundation-layout-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.animation\animation-core-desktop\1.9.0-rc01\47a335ae4cb43a1e5f950a1a6a44ac86be531ba5\animation-core-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.ui\ui-desktop\1.9.0-rc01\bb4a24cfc5fa6cf22feb0aeab4c4ffa48587b017\ui-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.ui\ui-text-desktop\1.9.0-rc01\bd0f7eca77ec10ff33a8dcad3ea6ee7845015ab5\ui-text-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.ui\ui-graphics-desktop\1.9.0-rc01\94e03ee7a8da852f08141b07241de12161a50e37\ui-graphics-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.skiko\skiko-awt\0.9.22\e95349de7a56019082f8aa647c197d3eeda7328a\skiko-awt-0.9.22.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.ui\ui-tooling-preview-desktop\1.9.0-rc01\75badc23517c7b5385e9b307a3b215e61bb7c56e\ui-tooling-preview-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.ui\ui-backhandler-desktop\1.9.0-rc01\b7f509317df9bd537c4458bcae9239caa7b57d65\ui-backhandler-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.ui\ui-unit-desktop\1.9.0-rc01\4ff1a779620c559d32f1a915186ee60519a62950\ui-unit-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.runtime\runtime-saveable-desktop\1.9.0-rc01\9042b058ca16dc3e1152426135b6114eee341a32\runtime-saveable-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.androidx.lifecycle\lifecycle-runtime-compose-desktop\2.9.3\d5f410ad59a2cf2a77fa0bc6a80268e3136e00aa\lifecycle-runtime-compose-desktop-2.9.3.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.ui\ui-geometry-desktop\1.9.0-rc01\606e5a5b02206cc37f413369647eadc2dc577fee\ui-geometry-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.androidx.savedstate\savedstate-compose-desktop\1.3.3\9d8414669e7651d086fe84dc0f940cd16abd6412\savedstate-compose-desktop-1.3.3.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.runtime\runtime-desktop\1.9.0-rc01\edbd39fc9691f4ba1e29c6690341148db4272752\runtime-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\androidx.compose.runtime\runtime-annotation-jvm\1.9.0\3195cb969ccebf099b765ecbf41e563c73eaf356\runtime-annotation-jvm-1.9.0.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\androidx.compose.runtime\runtime-desktop\1.9.0\80fd93a5f57cb75101c4a07c9398496c3cc10c1\runtime-desktop-1.9.0.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\androidx.lifecycle\lifecycle-viewmodel-savedstate-desktop\2.9.2\72a1919b08c5a4da224d8a65ce1589aa69934e8a\lifecycle-viewmodel-savedstate-desktop-2.9.2.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\androidx.lifecycle\lifecycle-viewmodel-desktop\2.9.2\93fee6d78f0df0e38f36e0fa2eff74f8da6d5481\lifecycle-viewmodel-desktop-2.9.2.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\androidx.lifecycle\lifecycle-runtime-desktop\2.9.2\1cc820319ec0139e76b8a2fe4be0b356b4e624c4\lifecycle-runtime-desktop-2.9.2.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\androidx.savedstate\savedstate-desktop\1.3.1\1c5bfc3fb56614538528060a06f2c03e34fa5188\savedstate-desktop-1.3.1.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\androidx.lifecycle\lifecycle-common-jvm\2.9.2\ab739bccdb3541983385af169565c7c035d897e7\lifecycle-common-jvm-2.9.2.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlinx\kotlinx-coroutines-core-jvm\1.10.2\4a9f78ef49483748e2c129f3d124b8fa249dafbf\kotlinx-coroutines-core-jvm-1.10.2.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlinx\kotlinx-coroutines-swing\1.10.2\ccb5a2e7c83fa76da0ba4677f05678d3bd3eed57\kotlinx-coroutines-swing-1.10.2.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlinx\kotlinx-datetime-jvm\0.7.1\81c2e0246bd28cc2dcbdf0ab53628322e66a9de9\kotlinx-datetime-jvm-0.7.1.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.hot-reload\hot-reload-annotations-jvm\1.0.0-beta06\c2333c37629336694842db1b42ed71df4908fcb3\hot-reload-annotations-jvm-1.0.0-beta06.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-stdlib-jdk8\2.1.21\fb62497994f5cfa4ad41fcff05020c35976307c6\kotlin-stdlib-jdk8-2.1.21.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.compose.ui\ui-util-desktop\1.9.0-rc01\3f9edd3d5eb28417c667ccbf2931416f3871ed40\ui-util-desktop-1.9.0-rc01.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-stdlib-jdk7\2.1.21\f5e72fe5f9501e0d27ec633beb3996c29641b877\kotlin-stdlib-jdk7-2.1.21.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlinx\atomicfu-jvm\0.23.2\a4601dc42dceb031a586058e8356ff778a57dea0\atomicfu-jvm-0.23.2.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\androidx.collection\collection-jvm\1.5.0\7ba2c69414d46ebc2dd76598bdd0a75c54281a57\collection-jvm-1.5.0.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\androidx.arch.core\core-common\2.2.0\5e1b8b81dfd5f52c56a8d53b18ca759c19a301f3\core-common-2.2.0.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\androidx.annotation\annotation-jvm\1.9.1\b17951747e38bf3986a24431b9ba0d039958aa5f\annotation-jvm-1.9.1.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlinx\kotlinx-serialization-core-jvm\1.7.3\1f226780b845ff9206474c05159245d861556249\kotlinx-serialization-core-jvm-1.7.3.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-stdlib\2.1.21\97a0975aa19d925e109537af60eb46902920015c\kotlin-stdlib-2.1.21.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains\annotations\23.0.0\8cc20c07506ec18e0834947b84a864bfc094484e\annotations-23.0.0.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jetbrains.runtime\jbr-api\1.5.0\4158e485a7a4ecfd521e03095d81e0225529e8d2\jbr-api-1.5.0.jar;C:\Users\maruf\.gradle\caches\modules-2\files-2.1\org.jspecify\jspecify\1.0.0\7425a601c1c7ec76645a78d22b8c6a627edee507\jspecify-1.0.0.jar
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 4                                         {product} {ergonomic}
+     uint ConcGCThreads                            = 3                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 10                                        {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 2097152                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 257949696                                 {product} {ergonomic}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 4110417920                                {product} {ergonomic}
+   size_t MaxNewSize                               = 2466250752                                {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 2097152                                   {product} {ergonomic}
+   size_t MinHeapSize                              = 8388608                                   {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 5839372                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 122909434                              {pd product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 122909434                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+   size_t SoftMaxHeapSize                          = 4110417920                             {manageable} {ergonomic}
+     bool UseCompressedOops                        = true                           {product lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags foldmultilines=false
+ #1: stderr all=off uptime,level,tags foldmultilines=false
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-17.0.16.8-hotspot\
+PATH=C:\Program Files\Eclipse Adoptium\jdk-17.0.16.8-hotspot\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\gradle-8.2.1\bin;C:\Program Files\Go\bin;C:\Program Files\dotnet\;C:\Program Files\PuTTY\;C:\Program Files\nodejs\;C:\xampp\php;C:\Users\maruf\.config\herd\bin\nvm;C:\Program Files\nodejs;C:\Program Files\GitHub CLI\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\ProgramData\ComposerSetup\bin;C:\Program Files\Git\cmd;C:\Program Files\PostgreSQL\17\bin;;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\WireGuard\;C:\Program Files (x86)\cloudflared\;C:\Users\maruf\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\maruf\AppData\Local\Programs\Python\Python310\;C:\Users\maruf\AppData\Local\Microsoft\WindowsApps;C:\Users\maruf\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\maruf\go\bin;C:\Users\maruf\AppData\Local\JetBrains\Toolbox\scripts;C:\msys64\ucrt64\bin;C:\scrcpy-win64-v2.3;C:\flutter\bin;C:\Users\maruf\AppData\Local\Microsoft\WindowsApps;C:\Users\maruf\AppData\Local\Android\Sdk\emulator;C:\Users\maruf\AppData\Local\Android\Sdk\platform-tools;C:\Users\maruf\AppData\Roaming\npm;C:\Users\maruf\AppData\Roaming\Composer\vendor\bin
+USERNAME=maruf
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+TMP=C:\Users\maruf\AppData\Local\Temp
+TEMP=C:\Users\maruf\AppData\Local\Temp
+
+
+
+
+Periodic native trim disabled
+
+JNI global refs:
+JNI global refs: 141, weak refs: 14
+
+JNI global refs memory usage: 2099, weak refs: 833
+
+Process memory usage:
+Resident Set Size: 313560K (1% of 16053556K total physical memory with 2078764K free physical memory)
+
+OOME stack traces (most recent first):
+Classloader memory used:
+Loader jdk.internal.loader.ClassLoaders$AppClassLoader                                 : 20565K
+Loader bootstrap                                                                       : 19669K
+Loader jdk.internal.reflect.DelegatingClassLoader                                      : 75264B
+
+---------------  S Y S T E M  ---------------
+
+OS:
+ Windows 11 , 64 bit Build 26100 (10.0.26100.5074)
+OS uptime: 5 days 8:08 hours
+Hyper-V role detected
+
+CPU: total 12 (initial active 12) (12 cores per cpu, 2 threads per core) family 25 model 116 stepping 1 microcode 0xa70410a, cx8, cmov, fxsr, ht, mmx, 3dnowpref, sse, sse2, sse3, ssse3, sse4a, sse4.1, sse4.2, popcnt, lzcnt, tsc, tscinvbit, avx, avx2, aes, erms, clmul, bmi1, bmi2, adx, avx512f, avx512dq, avx512cd, avx512bw, avx512vl, sha, fma, vzeroupper, avx512_vpopcntdq, avx512_vpclmulqdq, avx512_vaes, avx512_vnni, clflush, clflushopt, avx512_vbmi2, avx512_vbmi, hv, rdtscp, rdpid, fsrm, gfni, avx512_bitalg, f16c, cet_ss, avx512_ifma
+Processor Information for processor 0
+  Max Mhz: 3201, Current Mhz: 2489, Mhz Limit: 3201
+Processor Information for processor 1
+  Max Mhz: 3201, Current Mhz: 3201, Mhz Limit: 3201
+Processor Information for processor 2
+  Max Mhz: 3201, Current Mhz: 2489, Mhz Limit: 3201
+Processor Information for processor 3
+  Max Mhz: 3201, Current Mhz: 2489, Mhz Limit: 3201
+Processor Information for processor 4
+  Max Mhz: 3201, Current Mhz: 3201, Mhz Limit: 3201
+Processor Information for processor 5
+  Max Mhz: 3201, Current Mhz: 2489, Mhz Limit: 3201
+Processor Information for processor 6
+  Max Mhz: 3201, Current Mhz: 2489, Mhz Limit: 3201
+Processor Information for processor 7
+  Max Mhz: 3201, Current Mhz: 3201, Mhz Limit: 3201
+Processor Information for processor 8
+  Max Mhz: 3201, Current Mhz: 2489, Mhz Limit: 3201
+Processor Information for processor 9
+  Max Mhz: 3201, Current Mhz: 2489, Mhz Limit: 3201
+Processor Information for processor 10
+  Max Mhz: 3201, Current Mhz: 2489, Mhz Limit: 3201
+Processor Information for processor 11
+  Max Mhz: 3201, Current Mhz: 2489, Mhz Limit: 3201
+
+Memory: 4k page, system-wide physical 15677M (2030M free)
+TotalPageFile size 31037M (AvailPageFile size 4259M)
+current process WorkingSet (physical memory assigned to process): 306M, peak: 316M
+current process commit charge ("private bytes"): 378M, peak: 477M
+
+vm_info: OpenJDK 64-Bit Server VM (21.0.6+-13391695-b895.109) for windows-amd64 JRE (21.0.6+-13391695-b895.109), built on 2025-04-22T21:19:17Z by "builder" with MS VC++ 16.10 / 16.11 (VS2019)
+
+END.
