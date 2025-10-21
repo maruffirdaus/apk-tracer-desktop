@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import app.apktracer.common.models.Settings
 import app.apktracer.common.utils.ApkUtil
 import app.apktracer.common.utils.AvdUtil
+import app.apktracer.common.utils.LdPlayerUtil
 import app.apktracer.common.utils.StraceUtil
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.PlatformFile
@@ -24,6 +25,7 @@ import kotlinx.serialization.json.Json
 
 class TraceApksViewModel(
     private val avdUtil: AvdUtil,
+    private val ldPlayerUtil: LdPlayerUtil,
     private val apkUtil: ApkUtil,
     private val straceUtil: StraceUtil
 ) : ViewModel() {
@@ -50,6 +52,7 @@ class TraceApksViewModel(
             _uiState.update {
                 it.copy(isTracing = true)
             }
+            val timeout = 60
             val settingsJson = PlatformFile(FileKit.filesDir, "settings.json").let {
                 if (it.exists()) {
                     it.readString()
@@ -59,25 +62,44 @@ class TraceApksViewModel(
             }
             if (settingsJson != null) {
                 val settings = Json.decodeFromString<Settings>(settingsJson)
-                if (settings.avdIni != null) {
+                val outputDir = settings.outputDir ?: PlatformFile(
+                    FileKit.filesDir,
+                    "output"
+                ).absolutePath()
+                if (settings.ldPlayerSelected) {
+                    for (apk in uiState.value.apks) {
+                        ldPlayerUtil.duplicate()
+                        ldPlayerUtil.start()
+                        delay(60000L)
+                        apkUtil.install(apk.absolutePath()).let { packageName ->
+                            if (packageName == null) continue
+                            ldPlayerUtil.launch(packageName)
+                            delay(30000L)
+                            straceUtil.tracePackage(
+                                packageName = packageName,
+                                outputDir = outputDir,
+                                timeout = timeout,
+                                isLdPlayer = true
+                            )
+                        }
+                        ldPlayerUtil.kill()
+                        delay(30000L)
+                        ldPlayerUtil.delete()
+                    }
+                } else if (settings.avdIni != null) {
                     for (apk in uiState.value.apks) {
                         val duplicatedAvdIni = avdUtil.duplicate(settings.avdIni)
                         avdUtil.start(duplicatedAvdIni)
                         delay(60000L)
                         apkUtil.install(apk.absolutePath()).let { packageName ->
                             if (packageName == null) continue
-                            apkUtil.launch(packageName)
+                            avdUtil.launch(packageName)
                             delay(30000L)
                             straceUtil.tracePackage(
-                                packageName,
-                                settings.outputDir ?: PlatformFile(
-                                    FileKit.filesDir,
-                                    "output"
-                                ).absolutePath(),
-                                60
+                                packageName = packageName,
+                                outputDir = outputDir,
+                                timeout = timeout
                             )
-                            apkUtil.kill(packageName)
-                            apkUtil.uninstall(packageName)
                         }
                         avdUtil.kill()
                         delay(30000L)

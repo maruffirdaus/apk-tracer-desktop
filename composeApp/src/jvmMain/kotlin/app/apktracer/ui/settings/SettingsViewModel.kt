@@ -50,6 +50,19 @@ class SettingsViewModel() : ViewModel() {
         }
     }
 
+    fun saveLdPlayerSelected(isSelected: Boolean) {
+        viewModelScope.launch {
+            val settings = uiState.value.settings.copy(ldPlayerSelected = isSelected)
+            PlatformFile(
+                FileKit.filesDir,
+                "settings.json"
+            ).writeString(Json.encodeToString(settings))
+            _uiState.update {
+                it.copy(settings = settings)
+            }
+        }
+    }
+
     fun saveAvdIni(avdIni: String?) {
         viewModelScope.launch {
             val settings = uiState.value.settings.copy(avdIni = avdIni)

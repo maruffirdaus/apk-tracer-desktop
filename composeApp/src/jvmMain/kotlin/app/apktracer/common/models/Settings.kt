@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Settings(
     val outputDir: String? = null,
+    val ldPlayerSelected: Boolean = false,
     val avdIni: String? = null
 )

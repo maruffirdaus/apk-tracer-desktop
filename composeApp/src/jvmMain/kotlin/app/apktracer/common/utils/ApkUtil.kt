@@ -43,24 +43,6 @@ class ApkUtil() {
         return@withContext output.substringAfter("package:").trim()
     }
 
-    suspend fun launch(packageName: String): Boolean = withContext(Dispatchers.IO) {
-        try {
-            ProcessBuilder(
-                "adb",
-                "shell",
-                "monkey -p $packageName -c android.intent.category.LAUNCHER 1"
-            )
-                .redirectErrorStream(true)
-                .inheritIO()
-                .start()
-
-            return@withContext true
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return@withContext false
-        }
-    }
-
     suspend fun kill(packageName: String): Boolean = withContext(Dispatchers.IO) {
         try {
             ProcessBuilder(

@@ -13,12 +13,17 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class StraceUtil() {
-    suspend fun tracePackage(packageName: String, outputDir: String, timeout: Int = 30): Boolean =
+    suspend fun tracePackage(
+        packageName: String,
+        outputDir: String,
+        timeout: Int = 30,
+        isLdPlayer: Boolean = false
+    ): Boolean =
         withContext(Dispatchers.IO) {
             try {
                 pushStraceBinary()
 
-                val pid = findProcessId(packageName)
+                val pid = findProcessId(packageName, isLdPlayer)
                     ?: throw IllegalStateException("Could not find process ID for package: $packageName")
 
                 val timestamp =
@@ -35,7 +40,11 @@ class StraceUtil() {
                     "shell",
                     "su",
                     "-c",
-                    "timeout $timeout /data/local/tmp/strace -f -tt -p $pid"
+                    if (isLdPlayer) {
+                        "sh -c 'timeout ${timeout}s /data/local/tmp/strace -f -tt -p $pid'"
+                    } else {
+                        "timeout $timeout /data/local/tmp/strace -f -tt -p $pid"
+                    }
                 )
                     .redirectErrorStream(true)
                     .start()
@@ -61,14 +70,18 @@ class StraceUtil() {
             }
         }
 
-    private suspend fun findProcessId(packageName: String): Int? = withContext(Dispatchers.IO) {
+    private suspend fun findProcessId(packageName: String, isLdPlayer: Boolean = false): Int? = withContext(Dispatchers.IO) {
         try {
             val process = ProcessBuilder(
                 "adb",
                 "shell",
                 "su",
                 "-c",
-                "ps -A | grep $packageName"
+                if (isLdPlayer) {
+                    "ps | grep $packageName"
+                } else {
+                    "ps -A | grep $packageName"
+                }
             ).start()
             process.waitFor()
 
@@ -111,8 +124,6 @@ class StraceUtil() {
         ProcessBuilder(
             "adb",
             "shell",
-            "su",
-            "-c",
             "chmod 755 /data/local/tmp/strace"
         )
             .inheritIO()

@@ -20,6 +20,7 @@ import app.apktracer.ui.common.components.SectionHeader
 import app.apktracer.ui.common.utils.alignHorizontalSpace
 import io.github.composefluent.component.Button
 import io.github.composefluent.component.CardExpanderItem
+import io.github.composefluent.component.ComboBox
 import io.github.composefluent.component.Icon
 import io.github.composefluent.component.ScrollbarContainer
 import io.github.composefluent.component.Text
@@ -45,6 +46,7 @@ fun SettingsScreen(
         uiState = uiState,
         onSettingsLoad = viewModel::loadSettings,
         onOutputDirSave = viewModel::saveOutputDir,
+        onLdPlayerSelectedSave = viewModel::saveLdPlayerSelected,
         onAvdIniSave = viewModel::saveAvdIni
     )
 }
@@ -54,6 +56,7 @@ private fun SettingsScreenContent(
     uiState: SettingsUiState,
     onSettingsLoad: () -> Unit,
     onOutputDirSave: (String?) -> Unit,
+    onLdPlayerSelectedSave: (Boolean) -> Unit,
     onAvdIniSave: (String?) -> Unit
 ) {
     val outputDirPickerLauncher = rememberDirectoryPickerLauncher { outputDir ->
@@ -115,25 +118,48 @@ private fun SettingsScreenContent(
                 Spacer(Modifier.height(4.dp))
                 CardExpanderItem(
                     heading = {
-                        Text("Android Virtual Device (AVD)")
+                        Text("Emulator")
                     },
                     icon = {
-                        Icon(Icons.Regular.Phone, "Android Virtual Device (AVD)")
-                    },
-                    caption = {
-                        Text(uiState.settings.avdIni ?: "No AVD selected")
+                        Icon(Icons.Regular.Phone, "Emulator")
                     },
                     trailing = {
-                        Button(
-                            onClick = {
-                                avdIniPickerLauncher.launch()
-                            },
-                        ) {
-                            Icon(Icons.Regular.FolderOpen, "Browse")
-                            Text("Browse")
-                        }
+                        ComboBox(
+                            items = listOf(
+                                "AVD",
+                                "LDPlayer"
+                            ),
+                            selected = if (uiState.settings.ldPlayerSelected) 1 else 0,
+                            onSelectionChange = { i, s ->
+                                onLdPlayerSelectedSave(i == 1)
+                            }
+                        )
                     }
                 )
+                if (!uiState.settings.ldPlayerSelected) {
+                    Spacer(Modifier.height(4.dp))
+                    CardExpanderItem(
+                        heading = {
+                            Text("Android Virtual Device (AVD)")
+                        },
+                        icon = {
+                            Icon(Icons.Regular.Phone, "Android Virtual Device (AVD)")
+                        },
+                        caption = {
+                            Text(uiState.settings.avdIni ?: "No AVD selected")
+                        },
+                        trailing = {
+                            Button(
+                                onClick = {
+                                    avdIniPickerLauncher.launch()
+                                },
+                            ) {
+                                Icon(Icons.Regular.FolderOpen, "Browse")
+                                Text("Browse")
+                            }
+                        }
+                    )
+                }
             }
         }
     }
