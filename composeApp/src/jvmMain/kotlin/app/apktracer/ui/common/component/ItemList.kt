@@ -1,8 +1,8 @@
-package app.apktracer.ui.common.components
+package app.apktracer.ui.common.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,38 +10,58 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import io.github.composefluent.FluentTheme
 import io.github.composefluent.component.Icon
 import io.github.composefluent.component.Text
-import io.github.composefluent.icons.Icons
-import io.github.composefluent.icons.regular.Document
-import io.github.vinceglb.filekit.PlatformFile
-import io.github.vinceglb.filekit.name
 
 @Composable
-fun FileList(
-    files: List<PlatformFile>,
-    emptyMessage: String = "No files found"
+fun ItemList(
+    items: List<String>,
+    title: String,
+    icon: ImageVector,
+    modifier: Modifier = Modifier,
+    header: @Composable (() -> Unit)? = null,
+    emptyMessage: String = "No items found",
+    state: LazyListState = rememberLazyListState(),
+    contentPadding: PaddingValues = PaddingValues()
 ) {
-    Column {
-        Container {
-            Text(
-                text = "Name",
-                style = FluentTheme.typography.caption.copy(color = FluentTheme.colors.text.text.secondary)
-            )
+    LazyColumn(
+        state = state,
+        contentPadding = contentPadding,
+        modifier = modifier
+    ) {
+        if (header != null) {
+            item {
+                header()
+            }
         }
-        if (files.isEmpty()) {
-            Container(alternate = true) {
-                Text(emptyMessage)
+        item {
+            Container {
+                Text(
+                    text = title,
+                    style = FluentTheme.typography.caption.copy(color = FluentTheme.colors.text.text.secondary)
+                )
+            }
+        }
+        if (items.isEmpty()) {
+            item {
+                Container(alternate = true) {
+                    Text(emptyMessage)
+                }
             }
         } else {
-            files.forEachIndexed { index, file ->
+            itemsIndexed(items) { index, item ->
                 Container(alternate = index % 2 == 0) {
                     Row {
                         Box(
@@ -49,12 +69,12 @@ fun FileList(
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
-                                imageVector = Icons.Regular.Document,
-                                contentDescription = file.name
+                                imageVector = icon,
+                                contentDescription = item
                             )
                         }
                         Spacer(Modifier.width(8.dp))
-                        Text(file.name)
+                        Text(item)
                     }
                 }
             }

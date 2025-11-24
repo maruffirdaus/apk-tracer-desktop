@@ -2,40 +2,43 @@ package app.apktracer.ui.traceapks
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.apktracer.common.models.Settings
-import app.apktracer.common.utils.ApkUtil
-import app.apktracer.common.utils.AvdUtil
-import app.apktracer.common.utils.LdPlayerUtil
-import app.apktracer.common.utils.StraceUtil
-import io.github.vinceglb.filekit.FileKit
-import io.github.vinceglb.filekit.PlatformFile
-import io.github.vinceglb.filekit.absolutePath
-import io.github.vinceglb.filekit.exists
-import io.github.vinceglb.filekit.extension
-import io.github.vinceglb.filekit.filesDir
-import io.github.vinceglb.filekit.isRegularFile
-import io.github.vinceglb.filekit.list
-import io.github.vinceglb.filekit.readString
-import kotlinx.coroutines.delay
+import app.apktracer.common.model.Settings
+import app.apktracer.common.type.ApkSource
+import app.apktracer.common.type.Emulator
+import app.apktracer.service.AndroZooService
+import app.apktracer.service.SettingsService
+import app.apktracer.service.StraceService
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
+import java.io.File
 
 class TraceApksViewModel(
-    private val avdUtil: AvdUtil,
-    private val ldPlayerUtil: LdPlayerUtil,
-    private val apkUtil: ApkUtil,
-    private val straceUtil: StraceUtil
+    private val straceService: StraceService,
+    private val androZooService: AndroZooService,
+    private val settingsService: SettingsService
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(TraceApksUiState())
     val uiState = _uiState.asStateFlow()
 
+    private lateinit var settings: Settings
+
+    private var traceJob: Job? = null
+
+    fun loadSettings() {
+        viewModelScope.launch {
+            settings = settingsService.getSettings()
+            _uiState.update {
+                it.copy(apkSource = settings.apkSource)
+            }
+        }
+    }
+
     fun changeSelectedFolder(selectedFolder: String?) {
         val apks = if (selectedFolder != null) {
-            PlatformFile(selectedFolder).list()
-                .filter { it.isRegularFile() && it.extension == "apk" }
+            File(selectedFolder).listFiles().filter { it.isFile && it.extension == "apk" }
         } else {
             emptyList()
         }
@@ -47,69 +50,127 @@ class TraceApksViewModel(
         }
     }
 
-    fun traceApks() {
-        viewModelScope.launch {
+    fun changeSelectedCsv(selectedCsv: String?) {
+        val identifiers = if (selectedCsv != null) {
+            File(selectedCsv).readLines().map {
+                it.substringBefore(",").removePrefix("\uFEFF")
+            }
+        } else {
+            emptyList()
+        }
+        _uiState.update {
+            it.copy(
+                selectedCsv = selectedCsv,
+                apkIdentifiers = identifiers
+            )
+        }
+    }
+
+    fun startTrace() {
+        traceJob = viewModelScope.launch {
             _uiState.update {
                 it.copy(isTracing = true)
             }
-            val timeout = 60
-            val settingsJson = PlatformFile(FileKit.filesDir, "settings.json").let {
-                if (it.exists()) {
-                    it.readString()
-                } else {
-                    null
+
+            if (settings.emulator == Emulator.AVD && settings.avdIni == null) {
+                _uiState.update {
+                    it.copy(
+                        errorMessage = "No AVD selected.",
+                        isTracing = false
+                    )
                 }
+                return@launch
             }
-            if (settingsJson != null) {
-                val settings = Json.decodeFromString<Settings>(settingsJson)
-                val outputDir = settings.outputDir ?: PlatformFile(
-                    FileKit.filesDir,
-                    "output"
-                ).absolutePath()
-                if (settings.ldPlayerSelected) {
-                    for (apk in uiState.value.apks) {
-                        ldPlayerUtil.duplicate()
-                        ldPlayerUtil.start()
-                        delay(60000L)
-                        apkUtil.install(apk.absolutePath()).let { packageName ->
-                            if (packageName == null) continue
-                            ldPlayerUtil.launch(packageName)
-                            delay(30000L)
-                            straceUtil.tracePackage(
-                                packageName = packageName,
-                                outputDir = outputDir,
-                                timeout = timeout,
-                                isLdPlayer = true
-                            )
-                        }
-                        ldPlayerUtil.kill()
-                        delay(30000L)
-                        ldPlayerUtil.delete()
-                    }
-                } else if (settings.avdIni != null) {
-                    for (apk in uiState.value.apks) {
-                        val duplicatedAvdIni = avdUtil.duplicate(settings.avdIni)
-                        avdUtil.start(duplicatedAvdIni)
-                        delay(60000L)
-                        apkUtil.install(apk.absolutePath()).let { packageName ->
-                            if (packageName == null) continue
-                            avdUtil.launch(packageName)
-                            delay(30000L)
-                            straceUtil.tracePackage(
-                                packageName = packageName,
-                                outputDir = outputDir,
-                                timeout = timeout
-                            )
-                        }
-                        avdUtil.kill()
-                        delay(30000L)
-                        avdUtil.delete(duplicatedAvdIni)
-                    }
+
+            if (settings.apkSource == ApkSource.ANDRO_ZOO && settings.androZooApiKey.isNullOrBlank()) {
+                _uiState.update {
+                    it.copy(
+                        errorMessage = "No API key provided.",
+                        isTracing = false
+                    )
                 }
+                return@launch
             }
+
+            if (settings.apkSource == ApkSource.LOCAL) {
+                startLocalTrace()
+            }
+
+            if (settings.apkSource == ApkSource.ANDRO_ZOO) {
+                startAndroZooTrace()
+            }
+
             _uiState.update {
                 it.copy(isTracing = false)
             }
+        }
+    }
+
+    private suspend fun startLocalTrace() {
+        for (apk in uiState.value.apks) {
+            straceService.traceApk(
+                apk = apk,
+                avdIni = settings.avdIni,
+                outputDir = settings.outputDir,
+                timeout = settings.traceTimeout.timeout
+            )
+        }
+    }
+
+    private suspend fun startAndroZooTrace() {
+        settings.androZooApiKey?.let {
+            for (sha256 in uiState.value.apkIdentifiers) {
+                val apk = androZooService.downloadApk(it, sha256)
+                if (apk != null) {
+                    traceApk(apk)
+                    apk.delete()
+                }
+            }
+        }
+    }
+
+    private suspend fun traceApk(apk: File) {
+        if (settings.emulator == Emulator.AVD) {
+            if (settings.avdIni != null) {
+                straceService.traceApk(
+                    apk = apk,
+                    avdIni = settings.avdIni,
+                    outputDir = settings.outputDir,
+                    timeout = settings.traceTimeout.timeout
+                )
+            }
+        }
+
+        if (settings.emulator == Emulator.LD_PLAYER) {
+            straceService.traceApk(
+                apk = apk,
+                avdIni = null,
+                outputDir = settings.outputDir,
+                timeout = settings.traceTimeout.timeout
+            )
+        }
+    }
+
+    fun stopTrace() {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(isStoppingTrace = true)
+            }
+            traceJob?.cancel()
+            traceJob = null
+            straceService.cleanupLeftovers()
+            _uiState.update {
+                it.copy(
+                    isTracing = false,
+                    isStoppingTrace = false
+                )
+            }
+        }
+    }
+
+    fun clearErrorMessage() {
+        _uiState.update {
+            it.copy(errorMessage = null)
         }
     }
 }

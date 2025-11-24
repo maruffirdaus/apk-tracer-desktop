@@ -1,9 +1,9 @@
-package app.apktracer.common.utils
+package app.apktracer.service
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class LdPlayerUtil {
+class LdPlayerService {
     private val binary = "C:\\LDPlayer\\LDPlayer9\\ldconsole.exe"
 
     suspend fun duplicate() = withContext(Dispatchers.IO) {

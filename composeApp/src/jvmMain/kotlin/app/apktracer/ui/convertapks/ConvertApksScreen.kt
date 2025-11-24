@@ -2,23 +2,22 @@ package app.apktracer.ui.convertapks
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollbarAdapter
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.apktracer.ui.common.components.ActionDivider
-import app.apktracer.ui.common.components.FileList
-import app.apktracer.ui.common.components.Header
-import app.apktracer.ui.common.components.SectionHeader
-import app.apktracer.ui.common.utils.alignHorizontalSpace
+import app.apktracer.ui.common.component.ActionDivider
+import app.apktracer.ui.common.component.Header
+import app.apktracer.ui.common.component.ItemList
+import app.apktracer.ui.common.component.SectionHeader
+import app.apktracer.ui.common.extension.alignHorizontalSpace
 import io.github.composefluent.component.AccentButton
 import io.github.composefluent.component.Button
 import io.github.composefluent.component.Icon
@@ -27,6 +26,7 @@ import io.github.composefluent.component.ScrollbarContainer
 import io.github.composefluent.component.Text
 import io.github.composefluent.icons.Icons
 import io.github.composefluent.icons.filled.Play
+import io.github.composefluent.icons.regular.Document
 import io.github.composefluent.icons.regular.FolderOpen
 import io.github.vinceglb.filekit.dialogs.compose.rememberDirectoryPickerLauncher
 
@@ -62,7 +62,7 @@ private fun ConvertApksScreenContent(
         }
     } else {
         Column(Modifier.fillMaxSize()) {
-            val scrollState = rememberScrollState()
+            val lazyListState = rememberLazyListState()
 
             Header(
                 text = "Convert to APKs",
@@ -86,19 +86,23 @@ private fun ConvertApksScreenContent(
                 }
             )
             ScrollbarContainer(
-                adapter = rememberScrollbarAdapter(scrollState),
+                adapter = rememberScrollbarAdapter(lazyListState),
                 modifier = Modifier.weight(1f)
             ) {
-                Column(
+                ItemList(
+                    items = uiState.files.map { it.name },
+                    title = "Name",
+                    icon = Icons.Regular.Document,
                     modifier = Modifier
                         .fillMaxHeight()
-                        .verticalScroll(scrollState)
-                        .alignHorizontalSpace()
-                        .padding(bottom = 32.dp),
-                ) {
-                    SectionHeader(uiState.selectedFolder ?: "No folder selected")
-                    FileList(uiState.files)
-                }
+                        .alignHorizontalSpace(),
+                    header = {
+                        SectionHeader(uiState.selectedFolder ?: "No folder selected")
+                    },
+                    emptyMessage = "No files found",
+                    state = lazyListState,
+                    contentPadding = PaddingValues(bottom = 32.dp)
+                )
             }
         }
     }

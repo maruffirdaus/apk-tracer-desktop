@@ -1,4 +1,4 @@
-package app.apktracer.ui.common.utils
+package app.apktracer.ui.common.extension
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

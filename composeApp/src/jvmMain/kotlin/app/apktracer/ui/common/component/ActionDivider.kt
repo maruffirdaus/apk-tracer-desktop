@@ -1,4 +1,4 @@
-package app.apktracer.ui.common.components
+package app.apktracer.ui.common.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer

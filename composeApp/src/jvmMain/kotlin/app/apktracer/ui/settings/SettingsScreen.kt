@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.verticalScroll
@@ -15,26 +16,30 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.apktracer.ui.common.components.Header
-import app.apktracer.ui.common.components.SectionHeader
-import app.apktracer.ui.common.utils.alignHorizontalSpace
+import app.apktracer.common.type.ApkSource
+import app.apktracer.common.type.Emulator
+import app.apktracer.common.type.TraceTimeout
+import app.apktracer.ui.common.component.Header
+import app.apktracer.ui.common.component.SectionHeader
+import app.apktracer.ui.common.extension.alignHorizontalSpace
 import io.github.composefluent.component.Button
 import io.github.composefluent.component.CardExpanderItem
 import io.github.composefluent.component.ComboBox
 import io.github.composefluent.component.Icon
 import io.github.composefluent.component.ScrollbarContainer
 import io.github.composefluent.component.Text
+import io.github.composefluent.component.TextField
 import io.github.composefluent.icons.Icons
+import io.github.composefluent.icons.regular.Box
 import io.github.composefluent.icons.regular.Folder
 import io.github.composefluent.icons.regular.FolderOpen
+import io.github.composefluent.icons.regular.Key
 import io.github.composefluent.icons.regular.Phone
-import io.github.vinceglb.filekit.FileKit
-import io.github.vinceglb.filekit.PlatformFile
-import io.github.vinceglb.filekit.absolutePath
+import io.github.composefluent.icons.regular.PhoneLinkSetup
+import io.github.composefluent.icons.regular.Timer
 import io.github.vinceglb.filekit.dialogs.FileKitType
 import io.github.vinceglb.filekit.dialogs.compose.rememberDirectoryPickerLauncher
 import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
-import io.github.vinceglb.filekit.filesDir
 
 @Composable
 fun SettingsScreen(
@@ -46,7 +51,10 @@ fun SettingsScreen(
         uiState = uiState,
         onSettingsLoad = viewModel::loadSettings,
         onOutputDirSave = viewModel::saveOutputDir,
-        onLdPlayerSelectedSave = viewModel::saveLdPlayerSelected,
+        onTraceTimeoutSave = viewModel::saveTraceTimeout,
+        onApkSourceSave = viewModel::saveApkSource,
+        onAndroZooApiKeySave = viewModel::saveAndroZooApiKey,
+        onEmulatorSave = viewModel::saveEmulator,
         onAvdIniSave = viewModel::saveAvdIni
     )
 }
@@ -56,7 +64,10 @@ private fun SettingsScreenContent(
     uiState: SettingsUiState,
     onSettingsLoad: () -> Unit,
     onOutputDirSave: (String?) -> Unit,
-    onLdPlayerSelectedSave: (Boolean) -> Unit,
+    onTraceTimeoutSave: (Int) -> Unit,
+    onApkSourceSave: (Int) -> Unit,
+    onAndroZooApiKeySave: (String?) -> Unit,
+    onEmulatorSave: (Int) -> Unit,
     onAvdIniSave: (String?) -> Unit
 ) {
     val outputDirPickerLauncher = rememberDirectoryPickerLauncher { outputDir ->
@@ -88,7 +99,7 @@ private fun SettingsScreenContent(
                     .alignHorizontalSpace()
                     .padding(bottom = 32.dp),
             ) {
-                SectionHeader("General")
+                SectionHeader("Trace")
                 CardExpanderItem(
                     heading = {
                         Text("Output folder")
@@ -97,12 +108,7 @@ private fun SettingsScreenContent(
                         Icon(Icons.Regular.Folder, "Output folder")
                     },
                     caption = {
-                        Text(
-                            uiState.settings.outputDir ?: PlatformFile(
-                                FileKit.filesDir,
-                                "output"
-                            ).absolutePath()
-                        )
+                        Text(uiState.settings.outputDir)
                     },
                     trailing = {
                         Button(
@@ -118,6 +124,65 @@ private fun SettingsScreenContent(
                 Spacer(Modifier.height(4.dp))
                 CardExpanderItem(
                     heading = {
+                        Text("Trace timeout")
+                    },
+                    icon = {
+                        Icon(Icons.Regular.Timer, "Trace timeout")
+                    },
+                    trailing = {
+                        ComboBox(
+                            items = TraceTimeout.entries.map { it.label },
+                            selected = uiState.settings.traceTimeout.ordinal,
+                            onSelectionChange = { ordinal, _ ->
+                                onTraceTimeoutSave(ordinal)
+                            }
+                        )
+                    }
+                )
+                Spacer(Modifier.height(32.dp))
+                SectionHeader("APK source")
+                CardExpanderItem(
+                    heading = {
+                        Text("APK source")
+                    },
+                    icon = {
+                        Icon(Icons.Regular.Box, "APK Source")
+                    },
+                    trailing = {
+                        ComboBox(
+                            items = ApkSource.entries.map { it.label },
+                            selected = uiState.settings.apkSource.ordinal,
+                            onSelectionChange = { ordinal, _ ->
+                                onApkSourceSave(ordinal)
+                            }
+                        )
+                    }
+                )
+                if (uiState.settings.apkSource == ApkSource.ANDRO_ZOO) {
+                    Spacer(Modifier.height(4.dp))
+                    CardExpanderItem(
+                        heading = {
+                            Text("AndroZoo API key")
+                        },
+                        icon = {
+                            Icon(Icons.Regular.Key, "AndroZoo API key")
+                        },
+                        trailing = {
+                            TextField(
+                                value = uiState.settings.androZooApiKey ?: "",
+                                onValueChange = { value ->
+                                    onAndroZooApiKeySave(value.trim())
+                                },
+                                singleLine = true,
+                                modifier = Modifier.width(280.dp)
+                            )
+                        }
+                    )
+                }
+                Spacer(Modifier.height(32.dp))
+                SectionHeader("Emulator")
+                CardExpanderItem(
+                    heading = {
                         Text("Emulator")
                     },
                     icon = {
@@ -125,25 +190,22 @@ private fun SettingsScreenContent(
                     },
                     trailing = {
                         ComboBox(
-                            items = listOf(
-                                "AVD",
-                                "LDPlayer"
-                            ),
-                            selected = if (uiState.settings.ldPlayerSelected) 1 else 0,
-                            onSelectionChange = { i, s ->
-                                onLdPlayerSelectedSave(i == 1)
+                            items = Emulator.entries.map { it.label },
+                            selected = uiState.settings.emulator.ordinal,
+                            onSelectionChange = { ordinal, _ ->
+                                onEmulatorSave(ordinal)
                             }
                         )
                     }
                 )
-                if (!uiState.settings.ldPlayerSelected) {
+                if (uiState.settings.emulator == Emulator.AVD) {
                     Spacer(Modifier.height(4.dp))
                     CardExpanderItem(
                         heading = {
                             Text("Android Virtual Device (AVD)")
                         },
                         icon = {
-                            Icon(Icons.Regular.Phone, "Android Virtual Device (AVD)")
+                            Icon(Icons.Regular.PhoneLinkSetup, "Android Virtual Device (AVD)")
                         },
                         caption = {
                             Text(uiState.settings.avdIni ?: "No AVD selected")

@@ -5,7 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import app.apktracer.ui.AppDestination
-import app.apktracer.ui.common.utils.toAppDestination
+import app.apktracer.ui.common.extension.toAppDestination
 import io.github.composefluent.component.Icon
 import io.github.composefluent.component.MenuItem
 import io.github.composefluent.component.NavigationDefaults
@@ -28,14 +28,8 @@ fun MainScreen(
         navHost = navHost,
         currentBackStack = currentBackStack.value,
         onBack = { navController.popBackStack() },
-        onTraceApksClick = {
-            navController.navigate(AppDestination.TraceApks)
-        },
-        onConvertApksClick = {
-            navController.navigate(AppDestination.ConvertApks)
-        },
-        onSettingsClick = {
-            navController.navigate(AppDestination.Settings)
+        onNavigate = { destination ->
+            navController.navigate(destination)
         }
     )
 }
@@ -45,9 +39,7 @@ private fun MainScreenContent(
     navHost: @Composable () -> Unit,
     currentBackStack: List<NavBackStackEntry>,
     onBack: () -> Unit,
-    onTraceApksClick: () -> Unit,
-    onConvertApksClick: () -> Unit,
-    onSettingsClick: () -> Unit
+    onNavigate: (AppDestination) -> Unit
 ) {
     NavigationView(
         menuItems = {
@@ -56,7 +48,7 @@ private fun MainScreenContent(
                     selected = currentBackStack.lastOrNull()
                         ?.toAppDestination() is AppDestination.TraceApks,
                     onClick = {
-                        onTraceApksClick()
+                        onNavigate(AppDestination.TraceApks)
                     },
                     text = {
                         Text("Trace APKs")
@@ -72,7 +64,7 @@ private fun MainScreenContent(
                     selected = currentBackStack.lastOrNull()
                         ?.toAppDestination() is AppDestination.ConvertApks,
                     onClick = {
-                        onConvertApksClick()
+                        onNavigate(AppDestination.ConvertApks)
                     },
                     text = {
                         Text("Convert to APKs")
@@ -96,7 +88,7 @@ private fun MainScreenContent(
                     selected = currentBackStack.lastOrNull()
                         ?.toAppDestination() is AppDestination.Settings,
                     onClick = {
-                        onSettingsClick()
+                        onNavigate(AppDestination.Settings)
                     },
                     text = {
                         Text("Settings")

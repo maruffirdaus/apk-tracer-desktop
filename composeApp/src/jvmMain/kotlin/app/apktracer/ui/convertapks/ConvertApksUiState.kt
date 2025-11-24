@@ -1,9 +1,9 @@
 package app.apktracer.ui.convertapks
 
-import io.github.vinceglb.filekit.PlatformFile
+import java.io.File
 
 data class ConvertApksUiState(
     val selectedFolder: String? = null,
-    val files: List<PlatformFile> = emptyList(),
+    val files: List<File> = emptyList(),
     val isLoading: Boolean = false
 )

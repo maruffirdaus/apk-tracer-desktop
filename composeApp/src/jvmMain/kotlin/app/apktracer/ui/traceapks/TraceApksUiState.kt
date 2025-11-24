@@ -1,9 +1,15 @@
 package app.apktracer.ui.traceapks
 
-import io.github.vinceglb.filekit.PlatformFile
+import app.apktracer.common.type.ApkSource
+import java.io.File
 
 data class TraceApksUiState(
+    val apkSource: ApkSource = ApkSource.LOCAL,
     val selectedFolder: String? = null,
-    val apks: List<PlatformFile> = emptyList(),
-    val isTracing: Boolean = false
+    val apks: List<File> = emptyList(),
+    val selectedCsv: String? = null,
+    val apkIdentifiers: List<String> = emptyList(),
+    val isTracing: Boolean = false,
+    val isStoppingTrace: Boolean = false,
+    val errorMessage: String? = null
 )

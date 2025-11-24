@@ -23,6 +23,7 @@ fun App(
     ) {
         ApkTracerTheme {
             val windowColor = FluentTheme.colors.background.mica.base
+
             WindowStyle(
                 isDarkTheme = isSystemInDarkTheme(),
                 backdropType = WindowBackdrop.Solid(windowColor),
