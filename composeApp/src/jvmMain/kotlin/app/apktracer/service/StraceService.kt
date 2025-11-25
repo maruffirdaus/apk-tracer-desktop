@@ -14,12 +14,21 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 class StraceService(
+    private val adbService: AdbService,
     private val avdService: AvdService,
     private val ldPlayerService: LdPlayerService,
     private val apkService: ApkService
 ) {
+    private lateinit var adbPath: String
     private var isEmulatorRunning: Boolean = false
     private var currentAvdIni: String? = null
+
+    suspend fun init() {
+        adbPath = adbService.resolvePath()
+        avdService.init()
+        ldPlayerService.init()
+        apkService.init()
+    }
 
     suspend fun traceApk(
         apk: File,
@@ -28,49 +37,40 @@ class StraceService(
         timeout: Duration = 1.minutes
     ) = withContext(Dispatchers.IO) {
         val isLdPlayer = avdIni == null
-        currentAvdIni = avdIni
+
         if (isLdPlayer) {
             ldPlayerService.duplicate()
             ldPlayerService.start()
-            isEmulatorRunning = true
-            delay(1.minutes)
-            apkService.install(apk.absolutePath).let { packageName ->
-                if (packageName != null) {
-                    ldPlayerService.launch(packageName)
-                    delay(30.seconds)
-                    tracePackage(
-                        packageName = packageName,
-                        outputDir = outputDir,
-                        timeout = timeout,
-                        isLdPlayer = true
-                    )
-                }
-            }
-            ldPlayerService.kill()
-            delay(30.seconds)
-            ldPlayerService.delete()
         } else {
             val duplicatedAvdIni = avdService.duplicate(avdIni)
+            currentAvdIni = duplicatedAvdIni
             avdService.start(duplicatedAvdIni)
-            isEmulatorRunning = true
-            delay(1.minutes)
-            apkService.install(apk.absolutePath).let { packageName ->
-                if (packageName != null) {
-                    avdService.launch(packageName)
-                    delay(30.seconds)
-                    tracePackage(
-                        packageName = packageName,
-                        outputDir = outputDir,
-                        timeout = timeout
-                    )
-                }
-            }
-            avdService.kill()
-            delay(30.seconds)
-            avdService.delete(duplicatedAvdIni)
-            currentAvdIni = null
         }
-        isEmulatorRunning = false
+
+        isEmulatorRunning = true
+
+        delay(2.minutes)
+
+        apkService.install(apk.absolutePath).let { packageName ->
+            if (packageName != null) {
+                if (isLdPlayer) {
+                    ldPlayerService.launch(packageName)
+                } else {
+                    avdService.launch(packageName)
+                }
+
+                delay(30.seconds)
+
+                tracePackage(
+                    packageName = packageName,
+                    outputDir = outputDir,
+                    timeout = timeout,
+                    isLdPlayer = isLdPlayer
+                )
+            }
+        }
+
+        cleanupLeftovers()
     }
 
     private suspend fun tracePackage(
@@ -95,7 +95,7 @@ class StraceService(
             )
 
             val process = ProcessBuilder(
-                "adb",
+                adbPath,
                 "shell",
                 "su",
                 "-c",
@@ -130,7 +130,7 @@ class StraceService(
         withContext(Dispatchers.IO) {
             try {
                 val process = ProcessBuilder(
-                    "adb",
+                    adbPath,
                     "shell",
                     "su",
                     "-c",
@@ -169,21 +169,19 @@ class StraceService(
         }
 
         ProcessBuilder(
-            "adb",
+            adbPath,
             "push",
             binaryFile.absolutePath,
             "/data/local/tmp/strace"
         )
-            .inheritIO()
             .start()
             .waitFor()
 
         ProcessBuilder(
-            "adb",
+            adbPath,
             "shell",
             "chmod 755 /data/local/tmp/strace"
         )
-            .inheritIO()
             .start()
             .waitFor()
     }
@@ -203,20 +201,27 @@ class StraceService(
     }
 
     suspend fun cleanupLeftovers() = withContext(Dispatchers.IO) {
-        if (isEmulatorRunning) {
-            if (currentAvdIni != null) {
-                avdService.kill()
-                delay(30.seconds)
-                currentAvdIni?.let {
-                    avdService.delete(it)
-                    currentAvdIni = null
-                }
-            } else {
-                ldPlayerService.kill()
-                delay(30.seconds)
-                ldPlayerService.delete()
-            }
-            isEmulatorRunning = false
+        if (!isEmulatorRunning) return@withContext
+
+        val isLdPlayer = currentAvdIni == null
+
+        if (isLdPlayer) {
+            ldPlayerService.kill()
+        } else {
+            avdService.kill()
         }
+
+        delay(30.seconds)
+
+        if (isLdPlayer) {
+            ldPlayerService.delete()
+        }
+
+        currentAvdIni?.let {
+            avdService.delete(it)
+            currentAvdIni = null
+        }
+
+        isEmulatorRunning = false
     }
 }

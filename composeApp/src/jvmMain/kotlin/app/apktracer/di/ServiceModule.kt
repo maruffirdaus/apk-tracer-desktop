@@ -1,5 +1,6 @@
 package app.apktracer.di
 
+import app.apktracer.service.AdbService
 import app.apktracer.service.AndroZooService
 import app.apktracer.service.ApkService
 import app.apktracer.service.AvdService
@@ -10,9 +11,10 @@ import org.koin.dsl.module
 
 val serviceModule = module {
     single { SettingsService() }
-    single { AvdService() }
-    single { LdPlayerService() }
-    single { ApkService() }
-    single { StraceService(get(), get(), get()) }
+    single { AdbService(get()) }
+    single { AvdService(get()) }
+    single { LdPlayerService(get()) }
+    single { ApkService(get()) }
+    single { StraceService(get(), get(), get(), get()) }
     single { AndroZooService(get()) }
 }

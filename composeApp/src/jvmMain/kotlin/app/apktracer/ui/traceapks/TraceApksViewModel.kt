@@ -16,9 +16,9 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 class TraceApksViewModel(
-    private val straceService: StraceService,
+    private val settingsService: SettingsService,
     private val androZooService: AndroZooService,
-    private val settingsService: SettingsService
+    private val straceService: StraceService
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(TraceApksUiState())
     val uiState = _uiState.asStateFlow()
@@ -32,6 +32,24 @@ class TraceApksViewModel(
             settings = settingsService.getSettings()
             _uiState.update {
                 it.copy(apkSource = settings.apkSource)
+            }
+        }
+    }
+
+    fun initStraceService() {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    loadingMessage = "Preparing ADB"
+                )
+            }
+            straceService.init()
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    loadingMessage = null
+                )
             }
         }
     }
@@ -75,7 +93,7 @@ class TraceApksViewModel(
             if (settings.emulator == Emulator.AVD && settings.avdIni == null) {
                 _uiState.update {
                     it.copy(
-                        errorMessage = "No AVD selected.",
+                        errorMessage = "No AVD INI selected.",
                         isTracing = false
                     )
                 }
@@ -122,7 +140,6 @@ class TraceApksViewModel(
             for (sha256 in uiState.value.apkIdentifiers) {
                 val apk = androZooService.downloadApk(it, sha256)
                 if (apk != null) {
-                    println(apk.absolutePath)
                     traceApk(apk)
                     apk.delete()
                 }

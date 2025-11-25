@@ -3,10 +3,18 @@ package app.apktracer.service
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class ApkService() {
+class ApkService(
+    private val adbService: AdbService
+) {
+    private lateinit var adbPath: String
+    
+    suspend fun init() {
+        adbPath = adbService.resolvePath()
+    }
+    
     suspend fun install(apkPath: String): String? = withContext(Dispatchers.IO) {
         val process = ProcessBuilder(
-            "adb",
+            adbPath,
             "install",
             "-g",
             "-i",
@@ -19,14 +27,12 @@ class ApkService() {
 
         val output = process.inputStream.bufferedReader().readText()
 
-        println(output)
-
         return@withContext if (output.contains("Failed", true)) null else getPackageName()
     }
 
     private suspend fun getPackageName(): String = withContext(Dispatchers.IO) {
         val process = ProcessBuilder(
-            "adb",
+            adbPath,
             "shell",
             "\"pm list packages -i | grep app.apktracer\""
         )

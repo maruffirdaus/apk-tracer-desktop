@@ -6,6 +6,7 @@ import io.ktor.client.plugins.HttpTimeout
 import org.koin.dsl.module
 import java.security.cert.X509Certificate
 import javax.net.ssl.X509TrustManager
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 val networkModule = module {
@@ -31,9 +32,9 @@ val networkModule = module {
                 }
             }
             install(HttpTimeout) {
-                requestTimeoutMillis = 60.seconds.inWholeMilliseconds
-                connectTimeoutMillis = 60.seconds.inWholeMilliseconds
-                socketTimeoutMillis = 60.seconds.inWholeMilliseconds
+                requestTimeoutMillis = 60.minutes.inWholeMilliseconds
+                connectTimeoutMillis = 45.seconds.inWholeMilliseconds
+                socketTimeoutMillis = 3.minutes.inWholeMilliseconds
             }
         }
     }

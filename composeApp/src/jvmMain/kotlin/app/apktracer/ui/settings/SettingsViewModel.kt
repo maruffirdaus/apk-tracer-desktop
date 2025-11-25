@@ -36,6 +36,15 @@ class SettingsViewModel(
         }
     }
 
+    fun saveTraceTimeout(ordinal: Int) {
+        viewModelScope.launch {
+            settingsService.saveSettings(
+                settingsService.getSettings().copy(traceTimeout = TraceTimeout.entries[ordinal])
+            )
+            loadSettings()
+        }
+    }
+
     fun saveApkSource(ordinal: Int) {
         viewModelScope.launch {
             settingsService.saveSettings(
@@ -63,17 +72,17 @@ class SettingsViewModel(
         }
     }
 
-    fun saveAvdIni(avdIni: String?) {
+    fun saveAvdIni(avdIni: String) {
         viewModelScope.launch {
             settingsService.saveSettings(settingsService.getSettings().copy(avdIni = avdIni))
             loadSettings()
         }
     }
 
-    fun saveTraceTimeout(ordinal: Int) {
+    fun saveLdConsoleBinary(ldConsoleBinary: String) {
         viewModelScope.launch {
             settingsService.saveSettings(
-                settingsService.getSettings().copy(traceTimeout = TraceTimeout.entries[ordinal])
+                settingsService.getSettings().copy(ldConsoleBinary = ldConsoleBinary)
             )
             loadSettings()
         }

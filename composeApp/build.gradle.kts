@@ -50,9 +50,14 @@ compose.desktop {
     application {
         mainClass = "app.apktracer.MainKt"
 
+        buildTypes.release.proguard {
+            version.set("7.4.0")
+            isEnabled.set(false)
+        }
+
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "app.apktracer"
+            packageName = "APK Tracer"
             packageVersion = "1.0.0"
 
             windows {

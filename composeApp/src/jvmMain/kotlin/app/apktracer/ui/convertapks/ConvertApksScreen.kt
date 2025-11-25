@@ -29,10 +29,11 @@ import io.github.composefluent.icons.filled.Play
 import io.github.composefluent.icons.regular.Document
 import io.github.composefluent.icons.regular.FolderOpen
 import io.github.vinceglb.filekit.dialogs.compose.rememberDirectoryPickerLauncher
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ConvertApksScreen(
-    viewModel: ConvertApksViewModel
+    viewModel: ConvertApksViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 

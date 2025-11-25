@@ -30,45 +30,51 @@ import io.github.composefluent.component.ScrollbarContainer
 import io.github.composefluent.component.Text
 import io.github.composefluent.component.TextField
 import io.github.composefluent.icons.Icons
+import io.github.composefluent.icons.regular.AppGeneric
 import io.github.composefluent.icons.regular.Box
+import io.github.composefluent.icons.regular.DocumentText
 import io.github.composefluent.icons.regular.Folder
 import io.github.composefluent.icons.regular.FolderOpen
 import io.github.composefluent.icons.regular.Key
 import io.github.composefluent.icons.regular.Phone
-import io.github.composefluent.icons.regular.PhoneLinkSetup
 import io.github.composefluent.icons.regular.Timer
 import io.github.vinceglb.filekit.dialogs.FileKitType
 import io.github.vinceglb.filekit.dialogs.compose.rememberDirectoryPickerLauncher
 import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel
+    viewModel: SettingsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    LaunchedEffect(Unit) {
+        viewModel.loadSettings()
+    }
+
     SettingsScreenContent(
         uiState = uiState,
-        onSettingsLoad = viewModel::loadSettings,
         onOutputDirSave = viewModel::saveOutputDir,
         onTraceTimeoutSave = viewModel::saveTraceTimeout,
         onApkSourceSave = viewModel::saveApkSource,
         onAndroZooApiKeySave = viewModel::saveAndroZooApiKey,
         onEmulatorSave = viewModel::saveEmulator,
-        onAvdIniSave = viewModel::saveAvdIni
+        onAvdIniSave = viewModel::saveAvdIni,
+        onLdConsoleBinarySave = viewModel::saveLdConsoleBinary
     )
 }
 
 @Composable
 private fun SettingsScreenContent(
     uiState: SettingsUiState,
-    onSettingsLoad: () -> Unit,
     onOutputDirSave: (String?) -> Unit,
     onTraceTimeoutSave: (Int) -> Unit,
     onApkSourceSave: (Int) -> Unit,
     onAndroZooApiKeySave: (String?) -> Unit,
     onEmulatorSave: (Int) -> Unit,
-    onAvdIniSave: (String?) -> Unit
+    onAvdIniSave: (String) -> Unit,
+    onLdConsoleBinarySave: (String) -> Unit
 ) {
     val outputDirPickerLauncher = rememberDirectoryPickerLauncher { outputDir ->
         onOutputDirSave(outputDir?.file?.absolutePath)
@@ -77,11 +83,17 @@ private fun SettingsScreenContent(
     val avdIniPickerLauncher = rememberFilePickerLauncher(
         type = FileKitType.File("ini")
     ) { avdIni ->
-        onAvdIniSave(avdIni?.file?.absolutePath)
+        avdIni?.file?.absolutePath?.let {
+            onAvdIniSave(it)
+        }
     }
 
-    LaunchedEffect(Unit) {
-        onSettingsLoad()
+    val ldConsoleBinaryPickerLauncher = rememberFilePickerLauncher(
+        type = FileKitType.File("exe")
+    ) { ldConsoleBinary ->
+        ldConsoleBinary?.file?.absolutePath?.let {
+            onLdConsoleBinarySave(it)
+        }
     }
 
     Column(Modifier.fillMaxSize()) {
@@ -202,18 +214,42 @@ private fun SettingsScreenContent(
                     Spacer(Modifier.height(4.dp))
                     CardExpanderItem(
                         heading = {
-                            Text("Android Virtual Device (AVD)")
+                            Text("Android Virtual Device (AVD) INI")
                         },
                         icon = {
-                            Icon(Icons.Regular.PhoneLinkSetup, "Android Virtual Device (AVD)")
+                            Icon(Icons.Regular.DocumentText, "Android Virtual Device (AVD) INI")
                         },
                         caption = {
-                            Text(uiState.settings.avdIni ?: "No AVD selected")
+                            Text(uiState.settings.avdIni ?: "No AVD INI selected")
                         },
                         trailing = {
                             Button(
                                 onClick = {
                                     avdIniPickerLauncher.launch()
+                                },
+                            ) {
+                                Icon(Icons.Regular.FolderOpen, "Browse")
+                                Text("Browse")
+                            }
+                        }
+                    )
+                }
+                if (uiState.settings.emulator == Emulator.LD_PLAYER) {
+                    Spacer(Modifier.height(4.dp))
+                    CardExpanderItem(
+                        heading = {
+                            Text("LDConsole binary")
+                        },
+                        icon = {
+                            Icon(Icons.Regular.AppGeneric, "LDConsole binary")
+                        },
+                        caption = {
+                            Text(uiState.settings.ldConsoleBinary)
+                        },
+                        trailing = {
+                            Button(
+                                onClick = {
+                                    ldConsoleBinaryPickerLauncher.launch()
                                 },
                             ) {
                                 Icon(Icons.Regular.FolderOpen, "Browse")

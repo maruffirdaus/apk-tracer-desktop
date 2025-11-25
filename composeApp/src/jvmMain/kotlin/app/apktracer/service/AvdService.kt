@@ -4,7 +4,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class AvdService() {
+class AvdService(
+    private val adbService: AdbService
+) {
+    private lateinit var adbPath: String
+    
+    suspend fun init() {
+        adbPath = adbService.resolvePath()
+    }
+    
     suspend fun duplicate(avdIni: String): String = withContext(Dispatchers.IO) {
         val file = File(avdIni)
         val lines = file.readText().lines().toMutableList()
@@ -35,14 +43,14 @@ class AvdService() {
 
     suspend fun start(avdIni: String): Unit = withContext(Dispatchers.IO) {
         ProcessBuilder(
-            "adb",
+            adbPath,
             "kill-server"
         )
             .start()
             .waitFor()
 
         ProcessBuilder(
-            "adb",
+            adbPath,
             "start-server"
         )
             .start()
@@ -60,7 +68,7 @@ class AvdService() {
 
     suspend fun kill() = withContext(Dispatchers.IO) {
         ProcessBuilder(
-            "adb",
+            adbPath,
             "emu",
             "kill"
         )
@@ -79,21 +87,11 @@ class AvdService() {
         file.delete()
     }
 
-    suspend fun launch(packageName: String): Boolean = withContext(Dispatchers.IO) {
-        try {
-            ProcessBuilder(
-                "adb",
-                "shell",
-                "monkey -p $packageName -c android.intent.category.LAUNCHER 1"
-            )
-                .redirectErrorStream(true)
-                .inheritIO()
-                .start()
-
-            return@withContext true
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return@withContext false
-        }
+    suspend fun launch(packageName: String): Unit = withContext(Dispatchers.IO) {
+        ProcessBuilder(
+            adbPath,
+            "shell",
+            "monkey -p $packageName -c android.intent.category.LAUNCHER 1"
+        ).start()
     }
 }

@@ -3,29 +3,37 @@ package app.apktracer.service
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class LdPlayerService {
+class LdPlayerService(
+    private val adbService: AdbService
+) {
     private val binary = "C:\\LDPlayer\\LDPlayer9\\ldconsole.exe"
+    private lateinit var adbPath: String
+    
+    suspend fun init() {
+        adbPath = adbService.resolvePath()
+    }
 
     suspend fun duplicate() = withContext(Dispatchers.IO) {
-        val process = ProcessBuilder(
+        ProcessBuilder(
             binary,
             "copy",
             "--from",
             "0"
-        ).start()
-        process.waitFor()
+        )
+            .start()
+            .waitFor()
     }
 
     suspend fun start() = withContext(Dispatchers.IO) {
         ProcessBuilder(
-            "adb",
+            adbPath,
             "kill-server"
         )
             .start()
             .waitFor()
 
         ProcessBuilder(
-            "adb",
+            adbPath,
             "start-server"
         )
             .start()
@@ -53,24 +61,26 @@ class LdPlayerService {
     }
 
     suspend fun delete() = withContext(Dispatchers.IO) {
-        val process = ProcessBuilder(
+        ProcessBuilder(
             binary,
             "remove",
             "--index",
             "1"
-        ).start()
-        process.waitFor()
+        )
+            .start()
+            .waitFor()
     }
 
     suspend fun launch(packageName: String) = withContext(Dispatchers.IO) {
-        val process = ProcessBuilder(
+        ProcessBuilder(
             binary,
             "runapp",
             "--index",
             "1",
             "--packagename",
             packageName
-        ).start()
-        process.waitFor()
+        )
+            .start()
+            .waitFor()
     }
 }

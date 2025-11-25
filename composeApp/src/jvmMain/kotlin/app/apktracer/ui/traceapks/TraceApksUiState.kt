@@ -11,5 +11,7 @@ data class TraceApksUiState(
     val apkIdentifiers: List<String> = emptyList(),
     val isTracing: Boolean = false,
     val isStoppingTrace: Boolean = false,
+    val isLoading: Boolean = false,
+    val loadingMessage: String? = null,
     val errorMessage: String? = null
 )

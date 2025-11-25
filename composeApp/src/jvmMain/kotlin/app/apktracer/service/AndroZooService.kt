@@ -22,6 +22,9 @@ class AndroZooService(
     suspend fun downloadApk(apiKey: String, sha256: String): File? = withContext(Dispatchers.IO) {
         try {
             val outputFile = File(cacheDir, "$sha256.apk")
+            if (outputFile.exists()) {
+                outputFile.delete()
+            }
             val response = client.get("https://androzoo.uni.lu/api/download") {
                 parameter("apikey", apiKey)
                 parameter("sha256", sha256)

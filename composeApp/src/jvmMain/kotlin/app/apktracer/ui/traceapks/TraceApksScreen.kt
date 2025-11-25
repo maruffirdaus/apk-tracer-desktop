@@ -1,16 +1,20 @@
 package app.apktracer.ui.traceapks
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.apktracer.common.type.ApkSource
@@ -26,6 +30,7 @@ import io.github.composefluent.component.ContentDialogButton
 import io.github.composefluent.component.DialogSize
 import io.github.composefluent.component.Icon
 import io.github.composefluent.component.ProgressBar
+import io.github.composefluent.component.ProgressRing
 import io.github.composefluent.component.ScrollbarContainer
 import io.github.composefluent.component.Text
 import io.github.composefluent.icons.Icons
@@ -36,16 +41,21 @@ import io.github.composefluent.icons.regular.Tag
 import io.github.vinceglb.filekit.dialogs.FileKitType
 import io.github.vinceglb.filekit.dialogs.compose.rememberDirectoryPickerLauncher
 import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun TraceApksScreen(
-    viewModel: TraceApksViewModel
+    viewModel: TraceApksViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    LaunchedEffect(Unit) {
+        viewModel.loadSettings()
+        viewModel.initStraceService()
+    }
+
     TraceApksScreenContent(
         uiState = uiState,
-        onSettingsLoad = viewModel::loadSettings,
         onSelectedFolderChange = viewModel::changeSelectedFolder,
         onSelectedCsvChange = viewModel::changeSelectedCsv,
         onTraceStart = viewModel::startTrace,
@@ -57,7 +67,6 @@ fun TraceApksScreen(
 @Composable
 private fun TraceApksScreenContent(
     uiState: TraceApksUiState,
-    onSettingsLoad: () -> Unit,
     onSelectedFolderChange: (String?) -> Unit,
     onSelectedCsvChange: (String?) -> Unit,
     onTraceStart: () -> Unit,
@@ -71,10 +80,6 @@ private fun TraceApksScreenContent(
         type = FileKitType.File("csv")
     ) { file ->
         onSelectedCsvChange(file?.file?.absolutePath)
-    }
-
-    LaunchedEffect(Unit) {
-        onSettingsLoad()
     }
 
     if (uiState.isTracing) {
@@ -127,85 +132,99 @@ private fun TraceApksScreenContent(
         )
     }
 
-    Column(Modifier.fillMaxSize()) {
-        val lazyListState = rememberLazyListState()
-
-        Header(
-            text = "Trace APKs",
-            action = {
-                Button(
-                    onClick = {
-                        if (uiState.apkSource == ApkSource.LOCAL) {
-                            directoryPickerLauncher.launch()
-                        } else {
-                            filePickerLauncher.launch()
-                        }
-                    }
-                ) {
-                    val label = if (uiState.apkSource == ApkSource.LOCAL) {
-                        "Select folder"
-                    } else {
-                        "Select CSV"
-                    }
-                    Icon(Icons.Regular.FolderOpen, label)
-                    Text(label)
-                }
-                ActionDivider()
-                AccentButton(
-                    onClick = onTraceStart,
-                    disabled = if (uiState.apkSource == ApkSource.LOCAL) {
-                        uiState.apks.isEmpty()
-                    } else {
-                        uiState.apkIdentifiers.isEmpty()
-                    }
-                ) {
-                    Icon(Icons.Filled.Play, "Start")
-                    Text("Start")
-                }
-            }
-        )
-        ScrollbarContainer(
-            adapter = rememberScrollbarAdapter(lazyListState),
-            modifier = Modifier.weight(1f)
+    if (uiState.isLoading) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ItemList(
-                items = if (uiState.apkSource == ApkSource.LOCAL) {
-                    uiState.apks.map { it.name }
-                } else {
-                    uiState.apkIdentifiers
-                },
-                title = if (uiState.apkSource == ApkSource.LOCAL) {
-                    "Name"
-                } else {
-                    "Identifier"
-                },
-                icon = if (uiState.apkSource == ApkSource.LOCAL) {
-                    Icons.Regular.Document
-                } else {
-                    Icons.Regular.Tag
-                },
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .alignHorizontalSpace(),
-                header = {
-                    SectionHeader(
-                        text = buildString {
+            ProgressRing()
+            if (uiState.loadingMessage != null) {
+                Spacer(Modifier.height(16.dp))
+                Text(uiState.loadingMessage)
+            }
+        }
+    } else {
+        Column(Modifier.fillMaxSize()) {
+            val lazyListState = rememberLazyListState()
+
+            Header(
+                text = "Trace APKs",
+                action = {
+                    Button(
+                        onClick = {
                             if (uiState.apkSource == ApkSource.LOCAL) {
-                                append(uiState.selectedFolder ?: "No folder selected")
+                                directoryPickerLauncher.launch()
                             } else {
-                                append(uiState.selectedCsv ?: "No CSV selected")
+                                filePickerLauncher.launch()
                             }
                         }
-                    )
-                },
-                emptyMessage = if (uiState.apkSource == ApkSource.LOCAL) {
-                    "No APKs found"
-                } else {
-                    "No APK identifiers found"
-                },
-                state = lazyListState,
-                contentPadding = PaddingValues(bottom = 32.dp)
+                    ) {
+                        val label = if (uiState.apkSource == ApkSource.LOCAL) {
+                            "Select folder"
+                        } else {
+                            "Select CSV"
+                        }
+                        Icon(Icons.Regular.FolderOpen, label)
+                        Text(label)
+                    }
+                    ActionDivider()
+                    AccentButton(
+                        onClick = onTraceStart,
+                        disabled = if (uiState.apkSource == ApkSource.LOCAL) {
+                            uiState.apks.isEmpty()
+                        } else {
+                            uiState.apkIdentifiers.isEmpty()
+                        }
+                    ) {
+                        Icon(Icons.Filled.Play, "Start")
+                        Text("Start")
+                    }
+                }
             )
+            ScrollbarContainer(
+                adapter = rememberScrollbarAdapter(lazyListState),
+                modifier = Modifier.weight(1f)
+            ) {
+                ItemList(
+                    items = if (uiState.apkSource == ApkSource.LOCAL) {
+                        uiState.apks.map { it.name }
+                    } else {
+                        uiState.apkIdentifiers
+                    },
+                    title = if (uiState.apkSource == ApkSource.LOCAL) {
+                        "Name"
+                    } else {
+                        "Identifier"
+                    },
+                    icon = if (uiState.apkSource == ApkSource.LOCAL) {
+                        Icons.Regular.Document
+                    } else {
+                        Icons.Regular.Tag
+                    },
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .alignHorizontalSpace(),
+                    header = {
+                        SectionHeader(
+                            text = buildString {
+                                if (uiState.apkSource == ApkSource.LOCAL) {
+                                    append(uiState.selectedFolder ?: "No folder selected")
+                                } else {
+                                    append(uiState.selectedCsv ?: "No CSV selected")
+                                }
+                            }
+                        )
+                    },
+                    emptyMessage = if (uiState.apkSource == ApkSource.LOCAL) {
+                        "No APKs found"
+                    } else {
+                        "No APK identifiers found"
+                    },
+                    state = lazyListState,
+                    contentPadding = PaddingValues(bottom = 32.dp)
+                )
+            }
         }
     }
 }

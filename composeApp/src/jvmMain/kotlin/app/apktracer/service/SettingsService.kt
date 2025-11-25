@@ -2,9 +2,7 @@ package app.apktracer.service
 
 import app.apktracer.common.model.Settings
 import io.github.vinceglb.filekit.FileKit
-import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.filesDir
-import io.github.vinceglb.filekit.writeString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -27,7 +25,6 @@ class SettingsService {
     }
 
     suspend fun saveSettings(settings: Settings) = withContext(Dispatchers.IO) {
-        PlatformFile(FileKit.filesDir, "settings.json")
-            .writeString(Json.encodeToString(settings))
+        File(FileKit.filesDir.file, "settings.json").writeText(Json.encodeToString(settings))
     }
 }

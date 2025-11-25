@@ -15,5 +15,6 @@ data class Settings(
     val apkSource: ApkSource = ApkSource.LOCAL,
     val androZooApiKey: String? = null,
     val emulator: Emulator = Emulator.AVD,
-    val avdIni: String? = null
+    val avdIni: String? = null,
+    val ldConsoleBinary: String = "C:\\LDPlayer\\LDPlayer9\\ldconsole.exe"
 )
