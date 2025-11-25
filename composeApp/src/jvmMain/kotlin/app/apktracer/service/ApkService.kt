@@ -8,7 +8,9 @@ class ApkService() {
         val process = ProcessBuilder(
             "adb",
             "install",
-            "-r",
+            "-g",
+            "-i",
+            "app.apktracer",
             apkPath
         )
             .redirectErrorStream(true)
@@ -17,6 +19,8 @@ class ApkService() {
 
         val output = process.inputStream.bufferedReader().readText()
 
+        println(output)
+
         return@withContext if (output.contains("Failed", true)) null else getPackageName()
     }
 
@@ -24,10 +28,7 @@ class ApkService() {
         val process = ProcessBuilder(
             "adb",
             "shell",
-            "pm",
-            "list",
-            "packages",
-            "-3"
+            "\"pm list packages -i | grep app.apktracer\""
         )
             .redirectErrorStream(true)
             .start()
@@ -35,6 +36,6 @@ class ApkService() {
 
         val output = process.inputStream.bufferedReader().readLines().first()
 
-        return@withContext output.substringAfter("package:").trim()
+        return@withContext output.trim().split(Regex("\\s+")).first().substringAfter("package:")
     }
 }

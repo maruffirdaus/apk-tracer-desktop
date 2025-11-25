@@ -122,6 +122,7 @@ class TraceApksViewModel(
             for (sha256 in uiState.value.apkIdentifiers) {
                 val apk = androZooService.downloadApk(it, sha256)
                 if (apk != null) {
+                    println(apk.absolutePath)
                     traceApk(apk)
                     apk.delete()
                 }

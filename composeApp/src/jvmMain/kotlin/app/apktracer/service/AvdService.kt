@@ -35,6 +35,20 @@ class AvdService() {
 
     suspend fun start(avdIni: String): Unit = withContext(Dispatchers.IO) {
         ProcessBuilder(
+            "adb",
+            "kill-server"
+        )
+            .start()
+            .waitFor()
+
+        ProcessBuilder(
+            "adb",
+            "start-server"
+        )
+            .start()
+            .waitFor()
+
+        ProcessBuilder(
             "cmd",
             "/c",
             "start",
@@ -45,12 +59,13 @@ class AvdService() {
     }
 
     suspend fun kill() = withContext(Dispatchers.IO) {
-        val process = ProcessBuilder(
+        ProcessBuilder(
             "adb",
             "emu",
             "kill"
-        ).start()
-        process.waitFor()
+        )
+            .start()
+            .waitFor()
     }
 
     suspend fun delete(avdIni: String) = withContext(Dispatchers.IO) {

@@ -17,23 +17,39 @@ class LdPlayerService {
     }
 
     suspend fun start() = withContext(Dispatchers.IO) {
-        val process = ProcessBuilder(
+        ProcessBuilder(
+            "adb",
+            "kill-server"
+        )
+            .start()
+            .waitFor()
+
+        ProcessBuilder(
+            "adb",
+            "start-server"
+        )
+            .start()
+            .waitFor()
+
+        ProcessBuilder(
             binary,
             "launch",
             "--index",
             "1"
-        ).start()
-        process.waitFor()
+        )
+            .start()
+            .waitFor()
     }
 
     suspend fun kill() = withContext(Dispatchers.IO) {
-        val process = ProcessBuilder(
+        ProcessBuilder(
             binary,
             "quit",
             "--index",
             "1"
-        ).start()
-        process.waitFor()
+        )
+            .start()
+            .waitFor()
     }
 
     suspend fun delete() = withContext(Dispatchers.IO) {
