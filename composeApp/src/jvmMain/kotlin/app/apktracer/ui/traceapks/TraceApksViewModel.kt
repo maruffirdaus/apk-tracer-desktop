@@ -93,8 +93,8 @@ class TraceApksViewModel(
             if (settings.emulator == Emulator.AVD && settings.avdIni == null) {
                 _uiState.update {
                     it.copy(
-                        errorMessage = "No AVD INI selected.",
-                        isTracing = false
+                        isTracing = false,
+                        errorMessage = "No AVD INI selected."
                     )
                 }
                 return@launch
@@ -103,8 +103,8 @@ class TraceApksViewModel(
             if (settings.apkSource == ApkSource.ANDRO_ZOO && settings.androZooApiKey.isNullOrBlank()) {
                 _uiState.update {
                     it.copy(
-                        errorMessage = "No API key provided.",
-                        isTracing = false
+                        isTracing = false,
+                        errorMessage = "No API key provided."
                     )
                 }
                 return@launch
@@ -126,12 +126,7 @@ class TraceApksViewModel(
 
     private suspend fun startLocalTrace() {
         for (apk in uiState.value.apks) {
-            straceService.traceApk(
-                apk = apk,
-                avdIni = settings.avdIni,
-                outputDir = settings.outputDir,
-                timeout = settings.traceTimeout.timeout
-            )
+            traceApk(apk)
         }
     }
 
@@ -154,7 +149,8 @@ class TraceApksViewModel(
                     apk = apk,
                     avdIni = settings.avdIni,
                     outputDir = settings.outputDir,
-                    timeout = settings.traceTimeout.timeout
+                    timeout = settings.traceTimeout.duration,
+                    emulatorLaunchWaitTime = settings.emulatorLaunchWaitTime.duration
                 )
             }
         }
@@ -164,7 +160,8 @@ class TraceApksViewModel(
                 apk = apk,
                 avdIni = null,
                 outputDir = settings.outputDir,
-                timeout = settings.traceTimeout.timeout
+                timeout = settings.traceTimeout.duration,
+                emulatorLaunchWaitTime = settings.emulatorLaunchWaitTime.duration
             )
         }
     }

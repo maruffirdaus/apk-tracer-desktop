@@ -34,7 +34,8 @@ class StraceService(
         apk: File,
         avdIni: String?,
         outputDir: String,
-        timeout: Duration = 1.minutes
+        timeout: Duration = 1.minutes,
+        emulatorLaunchWaitTime: Duration = 2.minutes
     ) = withContext(Dispatchers.IO) {
         val isLdPlayer = avdIni == null
 
@@ -49,7 +50,7 @@ class StraceService(
 
         isEmulatorRunning = true
 
-        delay(2.minutes)
+        delay(emulatorLaunchWaitTime)
 
         apkService.install(apk.absolutePath).let { packageName ->
             if (packageName != null) {

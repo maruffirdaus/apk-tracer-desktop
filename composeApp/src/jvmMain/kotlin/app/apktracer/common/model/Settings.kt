@@ -2,6 +2,7 @@ package app.apktracer.common.model
 
 import app.apktracer.common.type.ApkSource
 import app.apktracer.common.type.Emulator
+import app.apktracer.common.type.EmulatorLaunchWaitTime
 import app.apktracer.common.type.TraceTimeout
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.filesDir
@@ -16,5 +17,6 @@ data class Settings(
     val androZooApiKey: String? = null,
     val emulator: Emulator = Emulator.AVD,
     val avdIni: String? = null,
-    val ldConsoleBinary: String = "C:\\LDPlayer\\LDPlayer9\\ldconsole.exe"
+    val ldConsoleBinary: String = "C:\\LDPlayer\\LDPlayer9\\ldconsole.exe",
+    val emulatorLaunchWaitTime: EmulatorLaunchWaitTime = EmulatorLaunchWaitTime.MIN_2
 )

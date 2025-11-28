@@ -6,7 +6,7 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 @Serializable
-enum class TraceTimeout(
+enum class EmulatorLaunchWaitTime(
     val label: String,
     val duration: Duration
 ) {

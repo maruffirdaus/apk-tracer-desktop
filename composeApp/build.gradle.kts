@@ -56,18 +56,16 @@ compose.desktop {
         }
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Msi)
             packageName = "APK Tracer"
-            packageVersion = "1.0.0"
+            packageVersion = "0.1.0"
 
             windows {
-                shortcut = true
-                menu = true
+                upgradeUuid = "86216df0-0da7-5557-89e1-bd83e2449c5d"
                 perUserInstall = true
-            }
-
-            linux {
-                modules("jdk.security.auth")
+                menu = true
+                menuGroup = "APK Tracer"
+                shortcut = true
             }
         }
     }

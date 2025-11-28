@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.apktracer.common.type.ApkSource
 import app.apktracer.common.type.Emulator
+import app.apktracer.common.type.EmulatorLaunchWaitTime
 import app.apktracer.common.type.TraceTimeout
 import app.apktracer.ui.common.component.Header
 import app.apktracer.ui.common.component.SectionHeader
@@ -61,7 +62,8 @@ fun SettingsScreen(
         onAndroZooApiKeySave = viewModel::saveAndroZooApiKey,
         onEmulatorSave = viewModel::saveEmulator,
         onAvdIniSave = viewModel::saveAvdIni,
-        onLdConsoleBinarySave = viewModel::saveLdConsoleBinary
+        onLdConsoleBinarySave = viewModel::saveLdConsoleBinary,
+        onEmulatorLaunchWaitTimeSave = viewModel::saveEmulatorLaunchWaitTime
     )
 }
 
@@ -74,7 +76,8 @@ private fun SettingsScreenContent(
     onAndroZooApiKeySave: (String?) -> Unit,
     onEmulatorSave: (Int) -> Unit,
     onAvdIniSave: (String) -> Unit,
-    onLdConsoleBinarySave: (String) -> Unit
+    onLdConsoleBinarySave: (String) -> Unit,
+    onEmulatorLaunchWaitTimeSave: (Int) -> Unit
 ) {
     val outputDirPickerLauncher = rememberDirectoryPickerLauncher { outputDir ->
         onOutputDirSave(outputDir?.file?.absolutePath)
@@ -258,6 +261,24 @@ private fun SettingsScreenContent(
                         }
                     )
                 }
+                Spacer(Modifier.height(4.dp))
+                CardExpanderItem(
+                    heading = {
+                        Text("Emulator launch wait time")
+                    },
+                    icon = {
+                        Icon(Icons.Regular.Timer, "Emulator launch wait time")
+                    },
+                    trailing = {
+                        ComboBox(
+                            items = EmulatorLaunchWaitTime.entries.map { it.label },
+                            selected = uiState.settings.emulatorLaunchWaitTime.ordinal,
+                            onSelectionChange = { ordinal, _ ->
+                                onEmulatorLaunchWaitTimeSave(ordinal)
+                            }
+                        )
+                    }
+                )
             }
         }
     }

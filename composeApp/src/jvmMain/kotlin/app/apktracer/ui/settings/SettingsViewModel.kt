@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.apktracer.common.type.ApkSource
 import app.apktracer.common.type.Emulator
+import app.apktracer.common.type.EmulatorLaunchWaitTime
 import app.apktracer.common.type.TraceTimeout
 import app.apktracer.service.SettingsService
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -83,6 +84,16 @@ class SettingsViewModel(
         viewModelScope.launch {
             settingsService.saveSettings(
                 settingsService.getSettings().copy(ldConsoleBinary = ldConsoleBinary)
+            )
+            loadSettings()
+        }
+    }
+
+    fun saveEmulatorLaunchWaitTime(ordinal: Int) {
+        viewModelScope.launch {
+            settingsService.saveSettings(
+                settingsService.getSettings()
+                    .copy(emulatorLaunchWaitTime = EmulatorLaunchWaitTime.entries[ordinal])
             )
             loadSettings()
         }
