@@ -21,8 +21,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.io.path.name
 
 class TraceApksViewModel(
     private val settingsService: SettingsService,
@@ -45,11 +48,11 @@ class TraceApksViewModel(
     private lateinit var traceTimeout: TraceTimeout
     private lateinit var apkSource: ApkSource
     private var androZooApiKey: String? = null
-    private lateinit var csvDelimiter: CsvDelimiter
     private lateinit var emulator: Emulator
     private var avdIni: String? = null
     private lateinit var ldConsoleBinary: String
     private lateinit var emulatorLaunchWaitTime: EmulatorLaunchWaitTime
+    private lateinit var csvDelimiter: CsvDelimiter
 
     private var traceJob: Job? = null
 
@@ -58,11 +61,11 @@ class TraceApksViewModel(
         traceTimeout = settingsService.getValue(SettingsKey.TraceTimeout)
         apkSource = settingsService.getValue(SettingsKey.ApkSource)
         androZooApiKey = settingsService.getValue(SettingsKey.AndroZooApiKey)
-        csvDelimiter = settingsService.getValue(SettingsKey.CsvDelimiter)
         emulator = settingsService.getValue(SettingsKey.Emulator)
         avdIni = settingsService.getValue(SettingsKey.AvdIni)
         ldConsoleBinary = settingsService.getValue(SettingsKey.LdConsoleBinary)
         emulatorLaunchWaitTime = settingsService.getValue(SettingsKey.EmulatorLaunchWaitTime)
+        csvDelimiter = settingsService.getValue(SettingsKey.CsvDelimiter)
 
         _uiState.update {
             it.copy(apkSource = apkSource)
@@ -163,23 +166,7 @@ class TraceApksViewModel(
 
         for (apk in uiState.value.apks) {
             traceApk(apk)
-
-            val result = File(outputDir).listFiles().firstOrNull {
-                it.name.split("_", limit = 3).last() == apk.nameWithoutExtension
-            }
-
-            if (result == null) {
-                val failed = File(outputDir, "logs/${timestamp}_failed.csv")
-
-                if (!failed.exists()) {
-                    failed.mkdirs()
-                    failed.createNewFile()
-                }
-
-                csvWriter { delimiter = csvDelimiter.value }.open(failed) {
-                    writeRow(apk.name)
-                }
-            }
+            logOnFailure(apk.nameWithoutExtension, timestamp)
         }
     }
 
@@ -192,24 +179,7 @@ class TraceApksViewModel(
                 val apk = androZooService.downloadApk(apiKey, sha256)
                 if (apk != null) {
                     traceApk(apk)
-
-                    val result = File(outputDir).listFiles().firstOrNull {
-                        it.name.split("_", limit = 3).last() == apk.nameWithoutExtension
-                    }
-
-                    if (result == null) {
-                        val failed = File(outputDir, "logs/${timestamp}_failed.csv")
-
-                        if (!failed.exists()) {
-                            failed.mkdirs()
-                            failed.createNewFile()
-                        }
-
-                        csvWriter { delimiter = csvDelimiter.value }.open(failed) {
-                            writeRow(apk.name)
-                        }
-                    }
-
+                    logOnFailure(apk.nameWithoutExtension, timestamp)
                     apk.delete()
                 }
             }
@@ -237,6 +207,29 @@ class TraceApksViewModel(
                 timeout = traceTimeout.duration,
                 emulatorLaunchWaitTime = emulatorLaunchWaitTime.duration
             )
+        }
+    }
+
+    private fun logOnFailure(apkName: String, timestamp: String) {
+        var isSuccess = false
+
+        Files.newDirectoryStream(Paths.get(outputDir)).use { stream ->
+            stream.forEach { path ->
+                isSuccess = path.name.contains(apkName)
+            }
+        }
+
+        if (!isSuccess) {
+            val failed = File(outputDir, "logs/${timestamp}_failed.csv")
+            failed.parentFile?.mkdirs()
+
+            if (!failed.exists()) {
+                failed.createNewFile()
+            }
+
+            csvWriter { delimiter = csvDelimiter.value }.open(failed) {
+                writeRow(apkName)
+            }
         }
     }
 
