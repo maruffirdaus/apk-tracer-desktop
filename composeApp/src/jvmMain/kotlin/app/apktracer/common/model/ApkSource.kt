@@ -1,4 +1,4 @@
-package app.apktracer.common.type
+package app.apktracer.common.model
 
 enum class ApkSource(val label: String) {
     LOCAL("Local"),

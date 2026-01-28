@@ -11,13 +11,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.apktracer.common.type.ApkSource
+import app.apktracer.common.model.ApkSource
 import app.apktracer.ui.common.component.ActionDivider
 import app.apktracer.ui.common.component.Header
 import app.apktracer.ui.common.component.ItemList
@@ -48,11 +47,6 @@ fun TraceApksScreen(
     viewModel: TraceApksViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
-    LaunchedEffect(Unit) {
-        viewModel.loadSettings()
-        viewModel.initStraceService()
-    }
 
     TraceApksScreenContent(
         uiState = uiState,

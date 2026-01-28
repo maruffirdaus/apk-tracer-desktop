@@ -11,15 +11,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.apktracer.common.type.ApkSource
-import app.apktracer.common.type.Emulator
-import app.apktracer.common.type.EmulatorLaunchWaitTime
-import app.apktracer.common.type.TraceTimeout
+import app.apktracer.common.model.ApkSource
+import app.apktracer.common.model.CsvDelimiter
+import app.apktracer.common.model.Emulator
+import app.apktracer.common.model.EmulatorLaunchWaitTime
+import app.apktracer.common.model.TraceTimeout
 import app.apktracer.ui.common.component.Header
 import app.apktracer.ui.common.component.SectionHeader
 import app.apktracer.ui.common.extension.alignHorizontalSpace
@@ -37,6 +37,7 @@ import io.github.composefluent.icons.regular.DocumentText
 import io.github.composefluent.icons.regular.Folder
 import io.github.composefluent.icons.regular.FolderOpen
 import io.github.composefluent.icons.regular.Key
+import io.github.composefluent.icons.regular.NumberSymbol
 import io.github.composefluent.icons.regular.Phone
 import io.github.composefluent.icons.regular.Timer
 import io.github.vinceglb.filekit.dialogs.FileKitType
@@ -50,10 +51,6 @@ fun SettingsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.loadSettings()
-    }
-
     SettingsScreenContent(
         uiState = uiState,
         onOutputDirSave = viewModel::saveOutputDir,
@@ -63,7 +60,8 @@ fun SettingsScreen(
         onEmulatorSave = viewModel::saveEmulator,
         onAvdIniSave = viewModel::saveAvdIni,
         onLdConsoleBinarySave = viewModel::saveLdConsoleBinary,
-        onEmulatorLaunchWaitTimeSave = viewModel::saveEmulatorLaunchWaitTime
+        onEmulatorLaunchWaitTimeSave = viewModel::saveEmulatorLaunchWaitTime,
+        onCsvDelimiterSave = viewModel::saveCsvDelimiter
     )
 }
 
@@ -77,7 +75,8 @@ private fun SettingsScreenContent(
     onEmulatorSave: (Int) -> Unit,
     onAvdIniSave: (String) -> Unit,
     onLdConsoleBinarySave: (String) -> Unit,
-    onEmulatorLaunchWaitTimeSave: (Int) -> Unit
+    onEmulatorLaunchWaitTimeSave: (Int) -> Unit,
+    onCsvDelimiterSave: (Int) -> Unit
 ) {
     val outputDirPickerLauncher = rememberDirectoryPickerLauncher { outputDir ->
         onOutputDirSave(outputDir?.file?.absolutePath)
@@ -123,7 +122,7 @@ private fun SettingsScreenContent(
                         Icon(Icons.Regular.Folder, "Output folder")
                     },
                     caption = {
-                        Text(uiState.settings.outputDir)
+                        Text(uiState.outputDir)
                     },
                     trailing = {
                         Button(
@@ -147,7 +146,7 @@ private fun SettingsScreenContent(
                     trailing = {
                         ComboBox(
                             items = TraceTimeout.entries.map { it.label },
-                            selected = uiState.settings.traceTimeout.ordinal,
+                            selected = uiState.traceTimeout.ordinal,
                             onSelectionChange = { ordinal, _ ->
                                 onTraceTimeoutSave(ordinal)
                             }
@@ -166,14 +165,14 @@ private fun SettingsScreenContent(
                     trailing = {
                         ComboBox(
                             items = ApkSource.entries.map { it.label },
-                            selected = uiState.settings.apkSource.ordinal,
+                            selected = uiState.apkSource.ordinal,
                             onSelectionChange = { ordinal, _ ->
                                 onApkSourceSave(ordinal)
                             }
                         )
                     }
                 )
-                if (uiState.settings.apkSource == ApkSource.ANDRO_ZOO) {
+                if (uiState.apkSource == ApkSource.ANDRO_ZOO) {
                     Spacer(Modifier.height(4.dp))
                     CardExpanderItem(
                         heading = {
@@ -184,7 +183,7 @@ private fun SettingsScreenContent(
                         },
                         trailing = {
                             TextField(
-                                value = uiState.settings.androZooApiKey ?: "",
+                                value = uiState.androZooApiKey ?: "",
                                 onValueChange = { value ->
                                     onAndroZooApiKeySave(value.trim())
                                 },
@@ -206,14 +205,14 @@ private fun SettingsScreenContent(
                     trailing = {
                         ComboBox(
                             items = Emulator.entries.map { it.label },
-                            selected = uiState.settings.emulator.ordinal,
+                            selected = uiState.emulator.ordinal,
                             onSelectionChange = { ordinal, _ ->
                                 onEmulatorSave(ordinal)
                             }
                         )
                     }
                 )
-                if (uiState.settings.emulator == Emulator.AVD) {
+                if (uiState.emulator == Emulator.AVD) {
                     Spacer(Modifier.height(4.dp))
                     CardExpanderItem(
                         heading = {
@@ -223,7 +222,7 @@ private fun SettingsScreenContent(
                             Icon(Icons.Regular.DocumentText, "Android Virtual Device (AVD) INI")
                         },
                         caption = {
-                            Text(uiState.settings.avdIni ?: "No AVD INI selected")
+                            Text(uiState.avdIni ?: "No AVD INI selected")
                         },
                         trailing = {
                             Button(
@@ -237,7 +236,7 @@ private fun SettingsScreenContent(
                         }
                     )
                 }
-                if (uiState.settings.emulator == Emulator.LD_PLAYER) {
+                if (uiState.emulator == Emulator.LD_PLAYER) {
                     Spacer(Modifier.height(4.dp))
                     CardExpanderItem(
                         heading = {
@@ -247,7 +246,7 @@ private fun SettingsScreenContent(
                             Icon(Icons.Regular.AppGeneric, "LDConsole binary")
                         },
                         caption = {
-                            Text(uiState.settings.ldConsoleBinary)
+                            Text(uiState.ldConsoleBinary)
                         },
                         trailing = {
                             Button(
@@ -272,9 +271,28 @@ private fun SettingsScreenContent(
                     trailing = {
                         ComboBox(
                             items = EmulatorLaunchWaitTime.entries.map { it.label },
-                            selected = uiState.settings.emulatorLaunchWaitTime.ordinal,
+                            selected = uiState.emulatorLaunchWaitTime.ordinal,
                             onSelectionChange = { ordinal, _ ->
                                 onEmulatorLaunchWaitTimeSave(ordinal)
+                            }
+                        )
+                    }
+                )
+                Spacer(Modifier.height(32.dp))
+                SectionHeader("Other")
+                CardExpanderItem(
+                    heading = {
+                        Text("CSV delimiter")
+                    },
+                    icon = {
+                        Icon(Icons.Regular.NumberSymbol, "CSV delimiter")
+                    },
+                    trailing = {
+                        ComboBox(
+                            items = CsvDelimiter.entries.map { it.label },
+                            selected = uiState.csvDelimiter.ordinal,
+                            onSelectionChange = { ordinal, _ ->
+                                onCsvDelimiterSave(ordinal)
                             }
                         )
                     }

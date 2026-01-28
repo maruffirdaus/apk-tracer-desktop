@@ -23,10 +23,10 @@ class StraceService(
     private var isEmulatorRunning: Boolean = false
     private var currentAvdIni: String? = null
 
-    suspend fun init() {
+    suspend fun init(ldConsoleBinary: String) {
         adbPath = adbService.resolvePath()
         avdService.init()
-        ldPlayerService.init()
+        ldPlayerService.init(ldConsoleBinary)
         apkService.init()
     }
 
@@ -63,6 +63,7 @@ class StraceService(
                 delay(30.seconds)
 
                 tracePackage(
+                    fileName = apk.nameWithoutExtension,
                     packageName = packageName,
                     outputDir = outputDir,
                     timeout = timeout,
@@ -75,6 +76,7 @@ class StraceService(
     }
 
     private suspend fun tracePackage(
+        fileName: String,
         packageName: String,
         outputDir: String,
         isLdPlayer: Boolean = false,
@@ -92,7 +94,7 @@ class StraceService(
                 File(outputDir).also {
                     it.mkdirs()
                 },
-                "${timestamp}_${packageName}.txt"
+                "${timestamp}_${packageName}_${fileName}.txt"
             )
 
             val process = ProcessBuilder(

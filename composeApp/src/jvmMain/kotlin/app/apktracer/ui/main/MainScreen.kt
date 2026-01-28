@@ -1,14 +1,17 @@
 package app.apktracer.ui.main
 
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
-import app.apktracer.ui.AppDestination
+import androidx.window.core.layout.WindowSizeClass
+import app.apktracer.ui.navigation.AppDestination
 import app.apktracer.ui.common.extension.toAppDestination
 import io.github.composefluent.component.Icon
 import io.github.composefluent.component.MenuItem
 import io.github.composefluent.component.NavigationDefaults
+import io.github.composefluent.component.NavigationDisplayMode
 import io.github.composefluent.component.NavigationView
 import io.github.composefluent.component.Text
 import io.github.composefluent.component.rememberNavigationState
@@ -41,6 +44,12 @@ private fun MainScreenContent(
     onBack: () -> Unit,
     onNavigate: (AppDestination) -> Unit
 ) {
+    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+    val isAtLeastMediumBreakpoint =
+        windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
+    val isAtLeastExpandedBreakpoint =
+        windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND)
+
     NavigationView(
         menuItems = {
             item {
@@ -75,7 +84,14 @@ private fun MainScreenContent(
                 )
             }
         },
-        state = rememberNavigationState(initialExpanded = false),
+        displayMode = if (isAtLeastExpandedBreakpoint) {
+            NavigationDisplayMode.Left
+        } else if (isAtLeastMediumBreakpoint) {
+            NavigationDisplayMode.LeftCompact
+        } else {
+            NavigationDisplayMode.LeftCollapsed
+        },
+        state = rememberNavigationState(initialExpanded = isAtLeastExpandedBreakpoint),
         backButton = {
             NavigationDefaults.BackButton(
                 onClick = onBack,

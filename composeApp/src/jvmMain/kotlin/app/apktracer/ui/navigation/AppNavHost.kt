@@ -1,4 +1,4 @@
-package app.apktracer.ui
+package app.apktracer.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

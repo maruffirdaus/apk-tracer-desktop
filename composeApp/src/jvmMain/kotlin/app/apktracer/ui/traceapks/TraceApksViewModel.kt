@@ -2,18 +2,27 @@ package app.apktracer.ui.traceapks
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.apktracer.common.model.Settings
-import app.apktracer.common.type.ApkSource
-import app.apktracer.common.type.Emulator
+import app.apktracer.common.model.ApkSource
+import app.apktracer.common.model.CsvDelimiter
+import app.apktracer.common.model.Emulator
+import app.apktracer.common.model.EmulatorLaunchWaitTime
+import app.apktracer.common.model.SettingsKey
+import app.apktracer.common.model.TraceTimeout
 import app.apktracer.service.AndroZooService
 import app.apktracer.service.SettingsService
 import app.apktracer.service.StraceService
+import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
+import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class TraceApksViewModel(
     private val settingsService: SettingsService,
@@ -21,22 +30,46 @@ class TraceApksViewModel(
     private val straceService: StraceService
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(TraceApksUiState())
-    val uiState = _uiState.asStateFlow()
+    val uiState = _uiState
+        .onStart {
+            loadSettings()
+            initStraceService()
+        }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            TraceApksUiState()
+        )
 
-    private lateinit var settings: Settings
+    private lateinit var outputDir: String
+    private lateinit var traceTimeout: TraceTimeout
+    private lateinit var apkSource: ApkSource
+    private var androZooApiKey: String? = null
+    private lateinit var csvDelimiter: CsvDelimiter
+    private lateinit var emulator: Emulator
+    private var avdIni: String? = null
+    private lateinit var ldConsoleBinary: String
+    private lateinit var emulatorLaunchWaitTime: EmulatorLaunchWaitTime
 
     private var traceJob: Job? = null
 
-    fun loadSettings() {
-        viewModelScope.launch {
-            settings = settingsService.getSettings()
-            _uiState.update {
-                it.copy(apkSource = settings.apkSource)
-            }
+    private fun loadSettings() {
+        outputDir = settingsService.getValue(SettingsKey.OutputDir)
+        traceTimeout = settingsService.getValue(SettingsKey.TraceTimeout)
+        apkSource = settingsService.getValue(SettingsKey.ApkSource)
+        androZooApiKey = settingsService.getValue(SettingsKey.AndroZooApiKey)
+        csvDelimiter = settingsService.getValue(SettingsKey.CsvDelimiter)
+        emulator = settingsService.getValue(SettingsKey.Emulator)
+        avdIni = settingsService.getValue(SettingsKey.AvdIni)
+        ldConsoleBinary = settingsService.getValue(SettingsKey.LdConsoleBinary)
+        emulatorLaunchWaitTime = settingsService.getValue(SettingsKey.EmulatorLaunchWaitTime)
+
+        _uiState.update {
+            it.copy(apkSource = apkSource)
         }
     }
 
-    fun initStraceService() {
+    private fun initStraceService() {
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
@@ -44,7 +77,7 @@ class TraceApksViewModel(
                     loadingMessage = "Preparing ADB"
                 )
             }
-            straceService.init()
+            straceService.init(ldConsoleBinary)
             _uiState.update {
                 it.copy(
                     isLoading = false,
@@ -70,8 +103,8 @@ class TraceApksViewModel(
 
     fun changeSelectedCsv(selectedCsv: String?) {
         val identifiers = if (selectedCsv != null) {
-            File(selectedCsv).readLines().map {
-                it.substringBefore(",").removePrefix("\uFEFF")
+            csvReader { delimiter = csvDelimiter.value }.open(selectedCsv) {
+                readAllAsSequence().map { row -> row.first() }.toList()
             }
         } else {
             emptyList()
@@ -90,7 +123,7 @@ class TraceApksViewModel(
                 it.copy(isTracing = true)
             }
 
-            if (settings.emulator == Emulator.AVD && settings.avdIni == null) {
+            if (emulator == Emulator.AVD && avdIni == null) {
                 _uiState.update {
                     it.copy(
                         isTracing = false,
@@ -100,7 +133,7 @@ class TraceApksViewModel(
                 return@launch
             }
 
-            if (settings.apkSource == ApkSource.ANDRO_ZOO && settings.androZooApiKey.isNullOrBlank()) {
+            if (apkSource == ApkSource.ANDRO_ZOO && androZooApiKey.isNullOrBlank()) {
                 _uiState.update {
                     it.copy(
                         isTracing = false,
@@ -110,11 +143,11 @@ class TraceApksViewModel(
                 return@launch
             }
 
-            if (settings.apkSource == ApkSource.LOCAL) {
+            if (apkSource == ApkSource.LOCAL) {
                 startLocalTrace()
             }
 
-            if (settings.apkSource == ApkSource.ANDRO_ZOO) {
+            if (apkSource == ApkSource.ANDRO_ZOO) {
                 startAndroZooTrace()
             }
 
@@ -125,17 +158,58 @@ class TraceApksViewModel(
     }
 
     private suspend fun startLocalTrace() {
+        val timestamp =
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"))
+
         for (apk in uiState.value.apks) {
             traceApk(apk)
+
+            val result = File(outputDir).listFiles().firstOrNull {
+                it.name.split("_", limit = 3).last() == apk.nameWithoutExtension
+            }
+
+            if (result == null) {
+                val failed = File(outputDir, "logs/${timestamp}_failed.csv")
+
+                if (!failed.exists()) {
+                    failed.mkdirs()
+                    failed.createNewFile()
+                }
+
+                csvWriter { delimiter = csvDelimiter.value }.open(failed) {
+                    writeRow(apk.name)
+                }
+            }
         }
     }
 
     private suspend fun startAndroZooTrace() {
-        settings.androZooApiKey?.let {
+        androZooApiKey?.let { apiKey ->
+            val timestamp =
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"))
+
             for (sha256 in uiState.value.apkIdentifiers) {
-                val apk = androZooService.downloadApk(it, sha256)
+                val apk = androZooService.downloadApk(apiKey, sha256)
                 if (apk != null) {
                     traceApk(apk)
+
+                    val result = File(outputDir).listFiles().firstOrNull {
+                        it.name.split("_", limit = 3).last() == apk.nameWithoutExtension
+                    }
+
+                    if (result == null) {
+                        val failed = File(outputDir, "logs/${timestamp}_failed.csv")
+
+                        if (!failed.exists()) {
+                            failed.mkdirs()
+                            failed.createNewFile()
+                        }
+
+                        csvWriter { delimiter = csvDelimiter.value }.open(failed) {
+                            writeRow(apk.name)
+                        }
+                    }
+
                     apk.delete()
                 }
             }
@@ -143,25 +217,25 @@ class TraceApksViewModel(
     }
 
     private suspend fun traceApk(apk: File) {
-        if (settings.emulator == Emulator.AVD) {
-            if (settings.avdIni != null) {
+        if (emulator == Emulator.AVD) {
+            if (avdIni != null) {
                 straceService.traceApk(
                     apk = apk,
-                    avdIni = settings.avdIni,
-                    outputDir = settings.outputDir,
-                    timeout = settings.traceTimeout.duration,
-                    emulatorLaunchWaitTime = settings.emulatorLaunchWaitTime.duration
+                    avdIni = avdIni,
+                    outputDir = outputDir,
+                    timeout = traceTimeout.duration,
+                    emulatorLaunchWaitTime = emulatorLaunchWaitTime.duration
                 )
             }
         }
 
-        if (settings.emulator == Emulator.LD_PLAYER) {
+        if (emulator == Emulator.LD_PLAYER) {
             straceService.traceApk(
                 apk = apk,
                 avdIni = null,
-                outputDir = settings.outputDir,
-                timeout = settings.traceTimeout.duration,
-                emulatorLaunchWaitTime = settings.emulatorLaunchWaitTime.duration
+                outputDir = outputDir,
+                timeout = traceTimeout.duration,
+                emulatorLaunchWaitTime = emulatorLaunchWaitTime.duration
             )
         }
     }

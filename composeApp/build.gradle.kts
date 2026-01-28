@@ -1,10 +1,9 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.composeHotReload)
+    alias(libs.plugins.compose)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -13,33 +12,36 @@ kotlin {
     
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.navigation.compose)
-            implementation(libs.kotlinx.serialization.json)
-            implementation(project.dependencies.platform(libs.koin.bom))
-            implementation(libs.koin.core)
+            implementation(libs.compose.components.resources)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3.adaptive)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.filekit.core)
+            implementation(libs.filekit.dialogs.compose)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.compose.viewmodel.navigation)
-            implementation(libs.filekit.core)
-            implementation(libs.filekit.dialogs.compose)
-            implementation(libs.ktor.client.core)
+            implementation(libs.koin.core)
+            implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.core)
+            implementation(libs.mutliplatformSettings)
+            implementation(project.dependencies.platform(libs.koin.bom))
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutinesSwing)
             implementation(libs.fluent.desktop)
-            implementation(libs.fluentIconsExtended.desktop)
+            implementation(libs.fluent.iconsExtended.desktop)
+            implementation(libs.kotlinCsv.jvm)
+            implementation(libs.kotlinx.coroutinesSwing)
             implementation(libs.windowStyler)
         }
     }
@@ -58,7 +60,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Msi)
             packageName = "APK Tracer"
-            packageVersion = "0.1.0"
+            packageVersion = "0.2.0"
 
             windows {
                 upgradeUuid = "86216df0-0da7-5557-89e1-bd83e2449c5d"

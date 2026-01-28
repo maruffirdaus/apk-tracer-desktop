@@ -1,4 +1,4 @@
-package app.apktracer.common.type
+package app.apktracer.common.model
 
 import kotlinx.serialization.Serializable
 

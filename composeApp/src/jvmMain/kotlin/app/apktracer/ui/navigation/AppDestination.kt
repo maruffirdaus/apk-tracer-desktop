@@ -1,4 +1,4 @@
-package app.apktracer.ui
+package app.apktracer.ui.navigation
 
 import kotlinx.serialization.Serializable
 

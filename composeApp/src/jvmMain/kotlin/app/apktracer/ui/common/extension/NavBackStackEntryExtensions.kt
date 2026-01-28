@@ -2,7 +2,7 @@ package app.apktracer.ui.common.extension
 
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.toRoute
-import app.apktracer.ui.AppDestination
+import app.apktracer.ui.navigation.AppDestination
 import java.lang.Exception
 
 fun NavBackStackEntry.toAppDestination(): AppDestination? {

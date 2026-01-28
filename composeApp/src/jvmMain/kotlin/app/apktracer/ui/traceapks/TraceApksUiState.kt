@@ -1,6 +1,6 @@
 package app.apktracer.ui.traceapks
 
-import app.apktracer.common.type.ApkSource
+import app.apktracer.common.model.ApkSource
 import java.io.File
 
 data class TraceApksUiState(

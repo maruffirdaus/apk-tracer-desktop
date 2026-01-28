@@ -6,10 +6,11 @@ import kotlinx.coroutines.withContext
 class LdPlayerService(
     private val adbService: AdbService
 ) {
-    private val binary = "C:\\LDPlayer\\LDPlayer9\\ldconsole.exe"
+    private lateinit var binary: String
     private lateinit var adbPath: String
     
-    suspend fun init() {
+    suspend fun init(binary: String) {
+        this.binary = binary
         adbPath = adbService.resolvePath()
     }
 
