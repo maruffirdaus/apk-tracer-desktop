@@ -91,10 +91,10 @@ class StraceService(
             val timestamp =
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"))
             val outputFile = File(
-                File(outputDir).also {
+                File(outputDir, "unfinished").also {
                     it.mkdirs()
                 },
-                "${timestamp}_${packageName}_${fileName}.txt"
+                "[${fileName}]_${timestamp}_${packageName}.txt"
             )
 
             val process = ProcessBuilder(
@@ -112,17 +112,24 @@ class StraceService(
                 .start()
 
             outputFile.bufferedWriter().use { writer ->
-                process.inputStream.bufferedReader().forEachLine { line ->
-                    if (line.startsWith("[pid")) {
-                        writer.write(line)
-                        writer.newLine()
+                process.inputStream.bufferedReader().use { reader ->
+                    reader.forEachLine { line ->
+                        if (line.startsWith("[pid")) {
+                            writer.write(line)
+                            writer.newLine()
+                        }
                     }
                 }
             }
 
             val exitCode = process.waitFor()
 
-            return@withContext exitCode == 0 || exitCode == 124
+            if (exitCode == 0 || exitCode == 124 || exitCode == 142) {
+                outputFile.renameTo(File(outputDir, outputFile.name))
+                return@withContext true
+            } else {
+                return@withContext false
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             return@withContext false

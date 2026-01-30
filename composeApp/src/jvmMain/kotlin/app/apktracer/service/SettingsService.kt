@@ -4,6 +4,7 @@ import app.apktracer.common.model.ApkSource
 import app.apktracer.common.model.CsvDelimiter
 import app.apktracer.common.model.Emulator
 import app.apktracer.common.model.EmulatorLaunchWaitTime
+import app.apktracer.common.model.RenderingMode
 import app.apktracer.common.model.SettingsKey
 import app.apktracer.common.model.TraceTimeout
 import com.russhwolf.settings.PreferencesSettings
@@ -23,6 +24,7 @@ class SettingsService {
             SettingsKey.EmulatorLaunchWaitTime -> getEnum<EmulatorLaunchWaitTime>(key.name)
             SettingsKey.LdConsoleBinary -> settings.getStringOrNull(key.name)
             SettingsKey.OutputDir -> settings.getStringOrNull(key.name)
+            SettingsKey.RenderingMode -> getEnum<RenderingMode>(key.name)
             SettingsKey.TraceTimeout -> getEnum<TraceTimeout>(key.name)
         } as T? ?: key.default
     }
@@ -56,6 +58,7 @@ class SettingsService {
 
             SettingsKey.LdConsoleBinary -> settings.putString(key.name, value as String)
             SettingsKey.OutputDir -> settings.putString(key.name, value as String)
+            SettingsKey.RenderingMode -> settings.putString(key.name, (value as RenderingMode).name)
             SettingsKey.TraceTimeout -> settings.putString(key.name, (value as TraceTimeout).name)
         }
     }

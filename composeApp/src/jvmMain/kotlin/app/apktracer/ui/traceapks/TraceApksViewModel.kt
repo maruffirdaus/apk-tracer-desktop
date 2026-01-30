@@ -13,6 +13,7 @@ import app.apktracer.service.SettingsService
 import app.apktracer.service.StraceService
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -161,10 +163,13 @@ class TraceApksViewModel(
     }
 
     private suspend fun startLocalTrace() {
+        val existing = scanExistingTraces()
         val timestamp =
             LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"))
 
         for (apk in uiState.value.apks) {
+            if (apk.nameWithoutExtension in existing) continue
+
             traceApk(apk)
             logOnFailure(apk.nameWithoutExtension, timestamp)
         }
@@ -172,18 +177,37 @@ class TraceApksViewModel(
 
     private suspend fun startAndroZooTrace() {
         androZooApiKey?.let { apiKey ->
+            val existing = scanExistingTraces()
             val timestamp =
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"))
 
             for (sha256 in uiState.value.apkIdentifiers) {
+                if (sha256 in existing) continue
+
                 val apk = androZooService.downloadApk(apiKey, sha256)
                 if (apk != null) {
                     traceApk(apk)
-                    logOnFailure(apk.nameWithoutExtension, timestamp)
                     apk.delete()
                 }
+                logOnFailure(sha256, timestamp)
             }
         }
+    }
+
+    private suspend fun scanExistingTraces(): Set<String> = withContext(Dispatchers.IO) {
+        File(outputDir).listFiles()
+            ?.asSequence()
+            ?.filter { it.isFile }
+            ?.mapNotNull {
+                val name = it.name
+                if (name.contains("[") && name.contains("]")) {
+                    name.substringAfter("[").substringBefore("]")
+                } else {
+                    null
+                }
+            }
+            ?.toSet()
+            ?: emptySet()
     }
 
     private suspend fun traceApk(apk: File) {

@@ -13,12 +13,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.apktracer.common.model.ApkSource
 import app.apktracer.common.model.CsvDelimiter
 import app.apktracer.common.model.Emulator
 import app.apktracer.common.model.EmulatorLaunchWaitTime
+import app.apktracer.common.model.RenderingMode
 import app.apktracer.common.model.TraceTimeout
 import app.apktracer.ui.common.component.Header
 import app.apktracer.ui.common.component.SectionHeader
@@ -26,13 +28,16 @@ import app.apktracer.ui.common.extension.alignHorizontalSpace
 import io.github.composefluent.component.Button
 import io.github.composefluent.component.CardExpanderItem
 import io.github.composefluent.component.ComboBox
+import io.github.composefluent.component.DialogSize
 import io.github.composefluent.component.Icon
+import io.github.composefluent.component.LocalContentDialog
 import io.github.composefluent.component.ScrollbarContainer
 import io.github.composefluent.component.Text
 import io.github.composefluent.component.TextField
 import io.github.composefluent.icons.Icons
 import io.github.composefluent.icons.regular.AppGeneric
 import io.github.composefluent.icons.regular.Box
+import io.github.composefluent.icons.regular.Desktop
 import io.github.composefluent.icons.regular.DocumentText
 import io.github.composefluent.icons.regular.Folder
 import io.github.composefluent.icons.regular.FolderOpen
@@ -43,6 +48,7 @@ import io.github.composefluent.icons.regular.Timer
 import io.github.vinceglb.filekit.dialogs.FileKitType
 import io.github.vinceglb.filekit.dialogs.compose.rememberDirectoryPickerLauncher
 import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -61,7 +67,8 @@ fun SettingsScreen(
         onAvdIniSave = viewModel::saveAvdIni,
         onLdConsoleBinarySave = viewModel::saveLdConsoleBinary,
         onEmulatorLaunchWaitTimeSave = viewModel::saveEmulatorLaunchWaitTime,
-        onCsvDelimiterSave = viewModel::saveCsvDelimiter
+        onCsvDelimiterSave = viewModel::saveCsvDelimiter,
+        onRenderingModeSave = viewModel::saveRenderingMode
     )
 }
 
@@ -76,8 +83,12 @@ private fun SettingsScreenContent(
     onAvdIniSave: (String) -> Unit,
     onLdConsoleBinarySave: (String) -> Unit,
     onEmulatorLaunchWaitTimeSave: (Int) -> Unit,
-    onCsvDelimiterSave: (Int) -> Unit
+    onCsvDelimiterSave: (Int) -> Unit,
+    onRenderingModeSave: (Int) -> Unit
 ) {
+    val dialog = LocalContentDialog.current
+    val scope = rememberCoroutineScope()
+
     val outputDirPickerLauncher = rememberDirectoryPickerLauncher { outputDir ->
         onOutputDirSave(outputDir?.file?.absolutePath)
     }
@@ -293,6 +304,32 @@ private fun SettingsScreenContent(
                             selected = uiState.csvDelimiter.ordinal,
                             onSelectionChange = { ordinal, _ ->
                                 onCsvDelimiterSave(ordinal)
+                            }
+                        )
+                    }
+                )
+                Spacer(Modifier.height(4.dp))
+                CardExpanderItem(
+                    heading = {
+                        Text("Rendering mode")
+                    },
+                    icon = {
+                        Icon(Icons.Regular.Desktop, "Rendering mode")
+                    },
+                    trailing = {
+                        ComboBox(
+                            items = RenderingMode.entries.map { it.label },
+                            selected = uiState.renderingMode.ordinal,
+                            onSelectionChange = { ordinal, _ ->
+                                onRenderingModeSave(ordinal)
+                                scope.launch {
+                                    dialog.show(
+                                        title = "Restart required",
+                                        contentText = "Rendering mode changes only take effect after the app is restarted.",
+                                        primaryButtonText = "Close",
+                                        size = DialogSize.Min
+                                    )
+                                }
                             }
                         )
                     }

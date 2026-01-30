@@ -17,10 +17,9 @@ import java.io.File
 class AndroZooService(
     private val client: HttpClient
 ) {
-    private val cacheDir = File(FileKit.cacheDir.file, "AndroZoo").also { it.mkdirs() }
-
     suspend fun downloadApk(apiKey: String, sha256: String): File? = withContext(Dispatchers.IO) {
         try {
+            val cacheDir = File(FileKit.cacheDir.file, "AndroZoo").also { it.mkdirs() }
             val outputFile = File(cacheDir, "$sha256.apk")
             if (outputFile.exists()) {
                 outputFile.delete()

@@ -33,6 +33,11 @@ sealed class SettingsKey<T>(val name: String, val default: T) {
     object OutputDir :
         SettingsKey<String>("output_dir", File(FileKit.filesDir.file, "output").absolutePath)
 
+    object RenderingMode : SettingsKey<app.apktracer.common.model.RenderingMode>(
+        "rendering_mode",
+        app.apktracer.common.model.RenderingMode.HARDWARE
+    )
+
     object TraceTimeout : SettingsKey<app.apktracer.common.model.TraceTimeout>(
         "trace_timeout",
         app.apktracer.common.model.TraceTimeout.MIN_1

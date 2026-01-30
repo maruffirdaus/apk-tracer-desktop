@@ -6,6 +6,7 @@ import app.apktracer.common.model.ApkSource
 import app.apktracer.common.model.CsvDelimiter
 import app.apktracer.common.model.Emulator
 import app.apktracer.common.model.EmulatorLaunchWaitTime
+import app.apktracer.common.model.RenderingMode
 import app.apktracer.common.model.SettingsKey
 import app.apktracer.common.model.TraceTimeout
 import app.apktracer.service.SettingsService
@@ -38,7 +39,8 @@ class SettingsViewModel(
                 avdIni = settingsService.getValue(SettingsKey.AvdIni),
                 ldConsoleBinary = settingsService.getValue(SettingsKey.LdConsoleBinary),
                 emulatorLaunchWaitTime = settingsService.getValue(SettingsKey.EmulatorLaunchWaitTime),
-                csvDelimiter = settingsService.getValue(SettingsKey.CsvDelimiter)
+                csvDelimiter = settingsService.getValue(SettingsKey.CsvDelimiter),
+                renderingMode = settingsService.getValue(SettingsKey.RenderingMode)
             )
         }
     }
@@ -108,6 +110,13 @@ class SettingsViewModel(
         settingsService.setValue(SettingsKey.CsvDelimiter, CsvDelimiter.entries[ordinal])
         _uiState.update {
             it.copy(csvDelimiter = settingsService.getValue(SettingsKey.CsvDelimiter))
+        }
+    }
+
+    fun saveRenderingMode(ordinal: Int) {
+        settingsService.setValue(SettingsKey.RenderingMode, RenderingMode.entries[ordinal])
+        _uiState.update {
+            it.copy(renderingMode = settingsService.getValue(SettingsKey.RenderingMode))
         }
     }
 }
