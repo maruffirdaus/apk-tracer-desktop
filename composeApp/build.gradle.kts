@@ -42,7 +42,6 @@ kotlin {
             implementation(libs.fluent.iconsExtended.desktop)
             implementation(libs.kotlinCsv.jvm)
             implementation(libs.kotlinx.coroutinesSwing)
-            implementation(libs.windowStyler)
         }
     }
 }
@@ -60,7 +59,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Msi)
             packageName = "APK Tracer"
-            packageVersion = "0.2.2"
+            packageVersion = "0.2.3"
 
             windows {
                 upgradeUuid = "86216df0-0da7-5557-89e1-bd83e2449c5d"

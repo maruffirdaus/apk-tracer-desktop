@@ -15,6 +15,31 @@ class LdPlayerService(
     }
 
     suspend fun duplicate() = withContext(Dispatchers.IO) {
+        val list2Process = ProcessBuilder(
+            binary,
+            "list2"
+        ).start()
+        list2Process.waitFor()
+
+        val list2Output = list2Process.inputStream.bufferedReader().use { it.readLines() }
+
+        if (list2Output.size > 1) {
+            val indices = list2Output.map { it.split(",").first() }
+
+            for (index in indices) {
+                if (index == "0") continue
+
+                ProcessBuilder(
+                    binary,
+                    "remove",
+                    "--index",
+                    index
+                )
+                    .start()
+                    .waitFor()
+            }
+        }
+
         ProcessBuilder(
             binary,
             "copy",

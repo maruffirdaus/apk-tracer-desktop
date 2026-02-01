@@ -251,7 +251,7 @@ class TraceApksViewModel(
                 failed.createNewFile()
             }
 
-            csvWriter { delimiter = csvDelimiter.value }.open(failed) {
+            csvWriter { delimiter = csvDelimiter.value }.open(failed, append = true) {
                 writeRow(apkName)
             }
         }
