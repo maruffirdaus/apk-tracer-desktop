@@ -56,6 +56,7 @@ class TraceApksViewModel(
     private lateinit var emulatorLaunchWaitTime: EmulatorLaunchWaitTime
     private lateinit var csvDelimiter: CsvDelimiter
 
+    private var traceStartTime: String? = null
     private var traceJob: Job? = null
 
     private fun loadSettings() {
@@ -109,7 +110,9 @@ class TraceApksViewModel(
     fun changeSelectedCsv(selectedCsv: String?) {
         val identifiers = if (selectedCsv != null) {
             csvReader { delimiter = csvDelimiter.value }.open(selectedCsv) {
-                readAllAsSequence().map { row -> row.first() }.toList()
+                readAllAsSequence()
+                    .mapNotNull { row -> row.first().takeIf { it.isNotBlank() } }
+                    .toList()
             }
         } else {
             emptyList()
@@ -121,6 +124,9 @@ class TraceApksViewModel(
             )
         }
     }
+
+    private fun getCurrentTime(): String =
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"))
 
     fun startTrace() {
         traceJob = viewModelScope.launch {
@@ -149,10 +155,16 @@ class TraceApksViewModel(
             }
 
             if (apkSource == ApkSource.LOCAL) {
+                _uiState.update {
+                    it.copy(totalTraceCount = it.apks.size)
+                }
                 startLocalTrace()
             }
 
             if (apkSource == ApkSource.ANDRO_ZOO) {
+                _uiState.update {
+                    it.copy(totalTraceCount = it.apkIdentifiers.size)
+                }
                 startAndroZooTrace()
             }
 
@@ -164,32 +176,55 @@ class TraceApksViewModel(
 
     private suspend fun startLocalTrace() {
         val existing = scanExistingTraces()
-        val timestamp =
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"))
+        traceStartTime = getCurrentTime()
 
         for (apk in uiState.value.apks) {
-            if (apk.nameWithoutExtension in existing) continue
+            if (apk.nameWithoutExtension in existing) {
+                _uiState.update {
+                    it.copy(completedTraceCount = it.completedTraceCount + 1)
+                }
+                continue
+            }
 
+            _uiState.update {
+                it.copy(traceMessage = "Tracing ${apk.nameWithoutExtension}")
+            }
             traceApk(apk)
-            logOnFailure(apk.nameWithoutExtension, timestamp)
+            checkTraceResult(apk.nameWithoutExtension)
+            _uiState.update {
+                it.copy(traceMessage = null)
+            }
         }
     }
 
     private suspend fun startAndroZooTrace() {
         androZooApiKey?.let { apiKey ->
             val existing = scanExistingTraces()
-            val timestamp =
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"))
+            traceStartTime = getCurrentTime()
 
             for (sha256 in uiState.value.apkIdentifiers) {
-                if (sha256 in existing) continue
+                if (sha256 in existing) {
+                    _uiState.update {
+                        it.copy(completedTraceCount = it.completedTraceCount + 1)
+                    }
+                    continue
+                }
 
+                _uiState.update {
+                    it.copy(traceMessage = "Downloading $sha256")
+                }
                 val apk = androZooService.downloadApk(apiKey, sha256)
                 if (apk != null) {
+                    _uiState.update {
+                        it.copy(traceMessage = "Tracing $sha256")
+                    }
                     traceApk(apk)
                     apk.delete()
                 }
-                logOnFailure(sha256, timestamp)
+                checkTraceResult(sha256)
+                _uiState.update {
+                    it.copy(traceMessage = null)
+                }
             }
         }
     }
@@ -234,17 +269,17 @@ class TraceApksViewModel(
         }
     }
 
-    private fun logOnFailure(apkName: String, timestamp: String) {
-        var isSuccess = false
-
-        Files.newDirectoryStream(Paths.get(outputDir)).use { stream ->
-            stream.forEach { path ->
-                isSuccess = path.name.contains(apkName)
-            }
+    private fun checkTraceResult(apkName: String) {
+        val isSuccess = Files.newDirectoryStream(Paths.get(outputDir)).use { stream ->
+            stream.any { path -> path.name.contains(apkName) }
         }
 
-        if (!isSuccess) {
-            val failed = File(outputDir, "logs/${timestamp}_failed.csv")
+        if (isSuccess) {
+            _uiState.update {
+                it.copy(completedTraceCount = it.completedTraceCount + 1)
+            }
+        } else {
+            val failed = File(outputDir, "logs/${traceStartTime}_failed.csv")
             failed.parentFile?.mkdirs()
 
             if (!failed.exists()) {
@@ -253,6 +288,10 @@ class TraceApksViewModel(
 
             csvWriter { delimiter = csvDelimiter.value }.open(failed, append = true) {
                 writeRow(apkName)
+            }
+
+            _uiState.update {
+                it.copy(failedTraceCount = it.failedTraceCount + 1)
             }
         }
     }

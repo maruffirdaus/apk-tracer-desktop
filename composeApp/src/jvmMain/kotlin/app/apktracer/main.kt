@@ -1,6 +1,6 @@
 package app.apktracer
 
-import androidx.compose.ui.window.application
+import androidx.compose.ui.window.singleWindowApplication
 import app.apktracer.common.model.RenderingMode
 import app.apktracer.common.model.SettingsKey
 import app.apktracer.di.networkModule
@@ -30,7 +30,9 @@ fun main() {
         System.setProperty("skiko.renderApi", "SOFTWARE")
     }
 
-    application {
-        App(::exitApplication)
+    singleWindowApplication(
+        title = "APK Tracer"
+    ) {
+        App()
     }
 }

@@ -15,6 +15,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.apktracer.common.model.ApkSource
 import app.apktracer.ui.common.component.ActionDivider
@@ -22,6 +24,7 @@ import app.apktracer.ui.common.component.Header
 import app.apktracer.ui.common.component.ItemList
 import app.apktracer.ui.common.component.SectionHeader
 import app.apktracer.ui.common.extension.alignHorizontalSpace
+import io.github.composefluent.FluentTheme
 import io.github.composefluent.component.AccentButton
 import io.github.composefluent.component.Button
 import io.github.composefluent.component.ContentDialog
@@ -85,9 +88,43 @@ private fun TraceApksScreenContent(
             },
             visible = true,
             content = {
-                ProgressBar(
-                    modifier = Modifier.fillMaxWidth()
-                )
+                if (uiState.isStoppingTrace) {
+                    ProgressBar(
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                } else {
+                    val progress =
+                        (uiState.completedTraceCount.toFloat() + uiState.failedTraceCount) / (uiState.totalTraceCount.toFloat()
+                            .takeIf { it > 0f } ?: 1f)
+
+                    if (uiState.traceMessage != null) {
+                        Text(
+                            text = uiState.traceMessage,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            style = FluentTheme.typography.caption
+                        )
+                        Spacer(Modifier.height(4.dp))
+                    }
+                    ProgressBar(
+                        progress = progress,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        text = buildString {
+                            append(uiState.completedTraceCount + uiState.failedTraceCount)
+                            append(" of ")
+                            append(uiState.totalTraceCount)
+                            append(" (")
+                            append(uiState.failedTraceCount)
+                            append(" failed)")
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.End,
+                        style = FluentTheme.typography.caption
+                    )
+                }
             },
             primaryButtonText = "Stop",
             onButtonClick = { button ->
