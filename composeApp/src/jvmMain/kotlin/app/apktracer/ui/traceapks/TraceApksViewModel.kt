@@ -154,6 +154,13 @@ class TraceApksViewModel(
                 return@launch
             }
 
+            _uiState.update {
+                it.copy(
+                    completedTraceCount = 0,
+                    failedTraceCount = 0
+                )
+            }
+
             if (apkSource == ApkSource.LOCAL) {
                 _uiState.update {
                     it.copy(totalTraceCount = it.apks.size)
