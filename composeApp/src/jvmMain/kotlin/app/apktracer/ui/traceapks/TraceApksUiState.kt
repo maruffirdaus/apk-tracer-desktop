@@ -14,6 +14,7 @@ data class TraceApksUiState(
     val failedTraceCount: Int = 0,
     val totalTraceCount: Int = 0,
     val traceMessage: String? = null,
+    val isSkipEnabled: Boolean = false,
     val isStoppingTrace: Boolean = false,
     val isLoading: Boolean = false,
     val loadingMessage: String? = null,

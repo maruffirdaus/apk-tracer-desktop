@@ -15,12 +15,16 @@ import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.nio.file.Files
@@ -57,7 +61,11 @@ class TraceApksViewModel(
     private lateinit var csvDelimiter: CsvDelimiter
 
     private var traceStartTime: String? = null
+    private var batchTraceJob: Job? = null
     private var traceJob: Job? = null
+    private var skipCurrentApkTraceJob: Job? = null
+
+    private var cleanupLeftoversMutex = Mutex()
 
     private fun loadSettings() {
         outputDir = settingsService.getValue(SettingsKey.OutputDir)
@@ -129,7 +137,7 @@ class TraceApksViewModel(
         LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"))
 
     fun startTrace() {
-        traceJob = viewModelScope.launch {
+        batchTraceJob = viewModelScope.launch {
             _uiState.update {
                 it.copy(isTracing = true)
             }
@@ -181,7 +189,7 @@ class TraceApksViewModel(
         }
     }
 
-    private suspend fun startLocalTrace() {
+    private suspend fun startLocalTrace() = coroutineScope {
         val existing = scanExistingTraces()
         traceStartTime = getCurrentTime()
 
@@ -196,7 +204,15 @@ class TraceApksViewModel(
             _uiState.update {
                 it.copy(traceMessage = "Tracing ${apk.nameWithoutExtension}")
             }
-            traceApk(apk)
+            traceJob = launch {
+                traceApk(apk)
+                traceJob = null
+            }
+            try {
+                traceJob?.join()
+            } finally {
+                skipCurrentApkTraceJob?.join()
+            }
             checkTraceResult(apk.nameWithoutExtension)
             _uiState.update {
                 it.copy(traceMessage = null)
@@ -204,7 +220,7 @@ class TraceApksViewModel(
         }
     }
 
-    private suspend fun startAndroZooTrace() {
+    private suspend fun startAndroZooTrace() = coroutineScope {
         androZooApiKey?.let { apiKey ->
             val existing = scanExistingTraces()
             traceStartTime = getCurrentTime()
@@ -223,14 +239,28 @@ class TraceApksViewModel(
                 val apk = androZooService.downloadApk(apiKey, sha256)
                 if (apk != null) {
                     _uiState.update {
-                        it.copy(traceMessage = "Tracing $sha256")
+                        it.copy(
+                            traceMessage = "Tracing $sha256",
+                            isSkipEnabled = true
+                        )
                     }
-                    traceApk(apk)
-                    apk.delete()
+                    traceJob = launch {
+                        traceApk(apk)
+                        traceJob = null
+                    }
+                    try {
+                        traceJob?.join()
+                    } finally {
+                        skipCurrentApkTraceJob?.join()
+                        apk.delete()
+                    }
                 }
                 checkTraceResult(sha256)
                 _uiState.update {
-                    it.copy(traceMessage = null)
+                    it.copy(
+                        traceMessage = null,
+                        isSkipEnabled = false
+                    )
                 }
             }
         }
@@ -303,21 +333,38 @@ class TraceApksViewModel(
         }
     }
 
+    fun skipCurrentApkTrace() {
+        _uiState.update {
+            it.copy(isSkipEnabled = false)
+        }
+        skipCurrentApkTraceJob = viewModelScope.launch {
+            traceJob?.cancelAndJoin()
+            traceJob = null
+            cleanupLeftovers()
+            skipCurrentApkTraceJob = null
+        }
+    }
+
     fun stopTrace() {
         viewModelScope.launch {
             _uiState.update {
                 it.copy(isStoppingTrace = true)
             }
-            traceJob?.cancel()
-            traceJob = null
-            straceService.cleanupLeftovers()
+            batchTraceJob?.cancelAndJoin()
+            batchTraceJob = null
+            cleanupLeftovers()
             _uiState.update {
                 it.copy(
                     isTracing = false,
+                    isSkipEnabled = false,
                     isStoppingTrace = false
                 )
             }
         }
+    }
+
+    private suspend fun cleanupLeftovers() = cleanupLeftoversMutex.withLock {
+        straceService.cleanupLeftovers()
     }
 
     fun clearErrorMessage() {
