@@ -56,7 +56,7 @@ fun TraceApksScreen(
         onSelectedFolderChange = viewModel::changeSelectedFolder,
         onSelectedCsvChange = viewModel::changeSelectedCsv,
         onTraceStart = viewModel::startTrace,
-        onSkipCurrentApkTrace = viewModel::skipCurrentApkTrace,
+        onCurrentTraceSkip = viewModel::skipCurrentTrace,
         onTraceStop = viewModel::stopTrace,
         onErrorMessageClear = viewModel::clearErrorMessage
     )
@@ -68,7 +68,7 @@ private fun TraceApksScreenContent(
     onSelectedFolderChange: (String?) -> Unit,
     onSelectedCsvChange: (String?) -> Unit,
     onTraceStart: () -> Unit,
-    onSkipCurrentApkTrace: () -> Unit,
+    onCurrentTraceSkip: () -> Unit,
     onTraceStop: () -> Unit,
     onErrorMessageClear: () -> Unit
 ) {
@@ -85,12 +85,14 @@ private fun TraceApksScreenContent(
         ContentDialog(
             title = if (uiState.isStoppingTrace) {
                 "Stopping trace"
+            } else if (uiState.isSkippingCurrentTrace) {
+                "Skipping current trace"
             } else {
                 "Tracing"
             },
             visible = true,
             content = {
-                if (uiState.isStoppingTrace) {
+                if (uiState.isSkippingCurrentTrace || uiState.isStoppingTrace) {
                     ProgressBar(
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -139,7 +141,7 @@ private fun TraceApksScreenContent(
                     }
 
                     ContentDialogButton.Secondary -> {
-                        onSkipCurrentApkTrace()
+                        onCurrentTraceSkip()
                     }
 
                     else -> {}

@@ -15,7 +15,6 @@ import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -333,15 +332,21 @@ class TraceApksViewModel(
         }
     }
 
-    fun skipCurrentApkTrace() {
+    fun skipCurrentTrace() {
         _uiState.update {
             it.copy(isSkipEnabled = false)
         }
         skipCurrentApkTraceJob = viewModelScope.launch {
-            traceJob?.cancelAndJoin()
+            _uiState.update {
+                it.copy(isSkippingCurrentTrace = true)
+            }
+            traceJob?.cancel()
             traceJob = null
             cleanupLeftovers()
             skipCurrentApkTraceJob = null
+            _uiState.update {
+                it.copy(isSkippingCurrentTrace = false)
+            }
         }
     }
 
@@ -350,7 +355,7 @@ class TraceApksViewModel(
             _uiState.update {
                 it.copy(isStoppingTrace = true)
             }
-            batchTraceJob?.cancelAndJoin()
+            batchTraceJob?.cancel()
             batchTraceJob = null
             cleanupLeftovers()
             _uiState.update {
