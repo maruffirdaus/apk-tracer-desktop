@@ -65,9 +65,10 @@ class TraceApksViewModel(
     private var traceStartTime: String? = null
     private var batchTraceJob: Job? = null
     private var traceJob: Job? = null
-    private var skipCurrentApkTraceJob: Job? = null
+    private var skipCurrentTraceJob: Job? = null
 
     private val traceMutex = Mutex()
+    private val cleanupLeftoversMutex = Mutex()
 
     private fun loadSettings() {
         outputDir = settingsService.getValue(SettingsKey.OutputDir)
@@ -286,7 +287,7 @@ class TraceApksViewModel(
             try {
                 traceJob?.join()
             } finally {
-                skipCurrentApkTraceJob?.join()
+                skipCurrentTraceJob?.join()
                 apk.delete()
             }
             checkTraceResult(apk.nameWithoutExtension)
@@ -334,7 +335,7 @@ class TraceApksViewModel(
         _uiState.update {
             it.copy(isSkipEnabled = false)
         }
-        skipCurrentApkTraceJob = viewModelScope.launch {
+        skipCurrentTraceJob = viewModelScope.launch {
             _uiState.update {
                 it.copy(isSkippingCurrentTrace = true)
             }
@@ -363,7 +364,7 @@ class TraceApksViewModel(
         }
     }
 
-    private suspend fun cleanupLeftovers() = traceMutex.withLock {
+    private suspend fun cleanupLeftovers() = cleanupLeftoversMutex.withLock {
         straceService.cleanupLeftovers()
     }
 
