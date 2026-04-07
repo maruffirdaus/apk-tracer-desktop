@@ -15,12 +15,15 @@ import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -64,7 +67,7 @@ class TraceApksViewModel(
     private var traceJob: Job? = null
     private var skipCurrentApkTraceJob: Job? = null
 
-    private var cleanupLeftoversMutex = Mutex()
+    private val traceMutex = Mutex()
 
     private fun loadSettings() {
         outputDir = settingsService.getValue(SettingsKey.OutputDir)
@@ -188,7 +191,7 @@ class TraceApksViewModel(
         }
     }
 
-    private suspend fun startLocalTrace() = coroutineScope {
+    private suspend fun startLocalTrace() {
         val existing = scanExistingTraces()
         traceStartTime = getCurrentTime()
 
@@ -200,68 +203,49 @@ class TraceApksViewModel(
                 continue
             }
 
-            _uiState.update {
-                it.copy(traceMessage = "Tracing ${apk.nameWithoutExtension}")
-            }
-            traceJob = launch {
-                traceApk(apk)
-                traceJob = null
-            }
-            try {
-                traceJob?.join()
-            } finally {
-                skipCurrentApkTraceJob?.join()
-            }
-            checkTraceResult(apk.nameWithoutExtension)
-            _uiState.update {
-                it.copy(traceMessage = null)
-            }
+            traceApk(apk)
         }
     }
 
     private suspend fun startAndroZooTrace() = coroutineScope {
         androZooApiKey?.let { apiKey ->
+            val channel = Channel<String>(Channel.UNLIMITED)
+            uiState.value.apkIdentifiers.forEach {
+                channel.send(it)
+            }
+
             val existing = scanExistingTraces()
             traceStartTime = getCurrentTime()
 
-            for (sha256 in uiState.value.apkIdentifiers) {
-                if (sha256 in existing) {
-                    _uiState.update {
-                        it.copy(completedTraceCount = it.completedTraceCount + 1)
-                    }
-                    continue
-                }
+            _uiState.update {
+                it.copy(traceMessage = "Waiting for download")
+            }
 
-                _uiState.update {
-                    it.copy(traceMessage = "Downloading $sha256")
-                }
-                val apk = androZooService.downloadApk(apiKey, sha256)
-                if (apk != null) {
-                    _uiState.update {
-                        it.copy(
-                            traceMessage = "Tracing $sha256",
-                            isSkipEnabled = true
-                        )
+            val workers = List(4) {
+                launch {
+                    for (sha256 in channel) {
+                        if (sha256 in existing) {
+                            _uiState.update {
+                                it.copy(completedTraceCount = it.completedTraceCount + 1)
+                            }
+                            continue
+                        }
+                        val apk = androZooService.downloadApk(apiKey, sha256)
+                        if (apk != null) {
+                            traceApk(apk)
+                        } else {
+                            checkTraceResult(sha256)
+                            _uiState.update {
+                                it.copy(
+                                    traceMessage = "Waiting for download",
+                                    isSkipEnabled = false
+                                )
+                            }
+                        }
                     }
-                    traceJob = launch {
-                        traceApk(apk)
-                        traceJob = null
-                    }
-                    try {
-                        traceJob?.join()
-                    } finally {
-                        skipCurrentApkTraceJob?.join()
-                        apk.delete()
-                    }
-                }
-                checkTraceResult(sha256)
-                _uiState.update {
-                    it.copy(
-                        traceMessage = null,
-                        isSkipEnabled = false
-                    )
                 }
             }
+            workers.joinAll()
         }
     }
 
@@ -281,9 +265,16 @@ class TraceApksViewModel(
             ?: emptySet()
     }
 
-    private suspend fun traceApk(apk: File) {
-        if (emulator == Emulator.AVD) {
-            if (avdIni != null) {
+    private suspend fun traceApk(apk: File) = coroutineScope {
+        traceMutex.withLock {
+            ensureActive()
+            _uiState.update {
+                it.copy(
+                    traceMessage = "Tracing ${apk.nameWithoutExtension}",
+                    isSkipEnabled = true
+                )
+            }
+            traceJob = launch {
                 straceService.traceApk(
                     apk = apk,
                     avdIni = avdIni,
@@ -292,16 +283,23 @@ class TraceApksViewModel(
                     emulatorLaunchWaitTime = emulatorLaunchWaitTime.duration
                 )
             }
-        }
-
-        if (emulator == Emulator.LD_PLAYER) {
-            straceService.traceApk(
-                apk = apk,
-                avdIni = null,
-                outputDir = outputDir,
-                timeout = traceTimeout.duration,
-                emulatorLaunchWaitTime = emulatorLaunchWaitTime.duration
-            )
+            try {
+                traceJob?.join()
+            } finally {
+                skipCurrentApkTraceJob?.join()
+                apk.delete()
+            }
+            checkTraceResult(apk.nameWithoutExtension)
+            _uiState.update {
+                it.copy(
+                    traceMessage = if (apkSource == ApkSource.ANDRO_ZOO) {
+                        "Waiting for download"
+                    } else {
+                        null
+                    },
+                    isSkipEnabled = false
+                )
+            }
         }
     }
 
@@ -341,9 +339,7 @@ class TraceApksViewModel(
                 it.copy(isSkippingCurrentTrace = true)
             }
             traceJob?.cancel()
-            traceJob = null
             cleanupLeftovers()
-            skipCurrentApkTraceJob = null
             _uiState.update {
                 it.copy(isSkippingCurrentTrace = false)
             }
@@ -356,7 +352,6 @@ class TraceApksViewModel(
                 it.copy(isStoppingTrace = true)
             }
             batchTraceJob?.cancel()
-            batchTraceJob = null
             cleanupLeftovers()
             _uiState.update {
                 it.copy(
@@ -368,7 +363,7 @@ class TraceApksViewModel(
         }
     }
 
-    private suspend fun cleanupLeftovers() = cleanupLeftoversMutex.withLock {
+    private suspend fun cleanupLeftovers() = traceMutex.withLock {
         straceService.cleanupLeftovers()
     }
 

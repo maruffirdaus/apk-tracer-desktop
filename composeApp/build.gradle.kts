@@ -59,7 +59,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Msi)
             packageName = "APK Tracer"
-            packageVersion = "0.2.7"
+            packageVersion = "0.2.8"
 
             windows {
                 upgradeUuid = "86216df0-0da7-5557-89e1-bd83e2449c5d"
